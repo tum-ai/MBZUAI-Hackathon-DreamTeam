@@ -28,6 +28,7 @@ function VoiceControl({
         onClick={handleClick}
         aria-label={ariaLabel}
         disabled={disabled}
+        data-nav-id="voice-control-mic"
       >
         <svg
           className="voice-control__icon"

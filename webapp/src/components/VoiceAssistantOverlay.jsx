@@ -84,12 +84,14 @@ function VoiceAssistantOverlay() {
             value={ttsInput}
             onChange={event => setTtsInput(event.target.value)}
             onKeyDown={handleKeyDown}
+            data-nav-id="voice-tts-input"
           />
           <button
             className="voice-assistant-overlay__tts-button"
             onClick={handleSpeak}
             disabled={!ttsInput.trim() || isSpeaking}
             type="button"
+            data-nav-id="voice-tts-speak"
           >
             Speak
           </button>
