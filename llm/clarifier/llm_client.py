@@ -3,6 +3,7 @@ import os
 import json
 from openai import OpenAI
 from dotenv import load_dotenv
+import httpx
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
@@ -16,11 +17,18 @@ def get_k2_client():
     if not api_key:
         raise ValueError("K2_API_KEY not found in environment variables")
     
+    # Create a custom httpx client without proxies to avoid compatibility issues
+    http_client = httpx.Client(
+        timeout=1200.0,
+        follow_redirects=True
+    )
+    
     return OpenAI(
         base_url=BASE_URL,
         api_key=api_key,
         timeout=1200.0,
-        max_retries=2
+        max_retries=2,
+        http_client=http_client
     )
 
 
@@ -42,23 +50,34 @@ def generate_clarification(intent: str, context: str) -> str:
 The user just said something ambiguous that needs clarification.
 
 **User's Request (with explanation):**
+
 {intent}
 
 **Previous Context (what they were doing before):**
+
 {context}
 
 Your job: Ask a clarification question that's:
+
 1. **Contextual** - Reference what they were just doing naturally
+
 2. **Clear** - Get straight to the point about what's ambiguous
+
 3. **Jarvis-style** - Confident, slightly witty, but professional when it matters
+
 4. **Helpful** - Make it easy for them to answer
 
+5. **Short** - Keep it to ONE sentence, but still keep it cool and natural
+
 Examples of Jarvis-style responses:
+
 - "Alright, just to make sure I've got this right - you want to change the submit button or the footer section? You mentioned both just now."
+
 - "Okay, I need a quick clarification here. When you say 'make it bigger', are we talking about the text size, the button itself, or the whole container?"
+
 - "Got it, but which 'that' are we working with? The image you just added or the header text from before?"
 
-Keep it casual but clear. Reference the context naturally. Be helpful, not robotic.
+Keep it casual but clear. Reference the context naturally. Be helpful, not robotic. Keep it to ONE sentence - short and punchy, but still maintain that cool Jarvis vibe.
 
 Respond with ONLY the clarification question - no JSON, no extra formatting. Just your natural Jarvis reply."""
 

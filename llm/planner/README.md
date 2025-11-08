@@ -171,3 +171,6 @@ Call /decide (Planner)
 curl -X POST http://localhost:8000/decide \  -H "Content-Type: application/json" \  -d '{"sid": "session-123", "text": "Make the button bigger"}'
 Call /clarify (Clarifier)
 curl -X POST http://localhost:8000/clarify \  -H "Content-Type: application/json" \  -d '{    "session_id": "session-123",    "step_id": "uuid",    "intent": "Change that | Ambiguous...",    "context": "Previous actions..."  }'
+
+
+kill it: lsof -ti:8000 | xargs kill -9

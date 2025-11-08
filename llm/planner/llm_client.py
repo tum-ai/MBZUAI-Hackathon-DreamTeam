@@ -16,10 +16,14 @@ def get_k2_client():
     if not api_key:
         raise ValueError("K2_API_KEY not found in environment variables")
     
+    # Explicitly create client without proxies to avoid version compatibility issues
+    import httpx
+    http_client = httpx.Client(timeout=1200.0)
+    
     return OpenAI(
         base_url=BASE_URL,
         api_key=api_key,
-        timeout=1200.0,
+        http_client=http_client,
         max_retries=2
     )
 
