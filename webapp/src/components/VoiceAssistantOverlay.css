@@ -42,18 +42,17 @@
 }
 
 .voice-assistant-overlay__orb {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(10, 10, 10, 0.35);
-  overflow: hidden;
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity var(--duration-normal) var(--ease-out),
-    transform var(--duration-normal) var(--ease-out);
-  pointer-events: none;
-  align-self: center;
+  width: 320px;            /* or 100% */
+  height: 200px;           /* whatever you want */
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  pointer-events: none;    /* keep clicks on UI, not canvas */
 }
 
 .voice-assistant-overlay__orb--active {
