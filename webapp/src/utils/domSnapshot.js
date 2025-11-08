@@ -2,6 +2,23 @@
  * Captures all interactive elements with data-nav-id attributes
  * This creates a "navigation map" for the LLM agent
  */
+const IFRAME_SELECTOR = '#dynamic-content-iframe'
+const IFRAME_TIMEOUT = 5000
+
+const resolveIframeOrigin = () => {
+  if (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_IFRAME_ORIGIN) {
+    return import.meta.env.VITE_IFRAME_ORIGIN
+  }
+
+  if (typeof window !== 'undefined' && window.location) {
+    return `${window.location.protocol}//${window.location.hostname}:5174`
+  }
+
+  return 'http://localhost:5174'
+}
+
+const IFRAME_ORIGIN = resolveIframeOrigin()
+
 export const captureDOMSnapshot = () => {
   const elements = document.querySelectorAll('[data-nav-id]')
   const snapshot = []
@@ -99,5 +116,75 @@ export const highlightElement = (element, duration = 1000) => {
       element.style.transition = originalTransition
     }, 200)
   }, duration)
+}
+
+export const captureIframeDOMSnapshot = () => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return Promise.resolve({ elements: [], source: 'no-window' })
+  }
+
+  return new Promise((resolve, reject) => {
+    const iframe = document.querySelector(IFRAME_SELECTOR)
+
+    if (!iframe || !iframe.contentWindow) {
+      console.log('[DOM Snapshot] iframe not found, returning empty snapshot')
+      resolve({ elements: [], source: 'iframe-not-found' })
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      cleanup()
+      reject(new Error('iframe snapshot timeout'))
+    }, IFRAME_TIMEOUT)
+
+    const messageHandler = (event) => {
+      if (event.origin !== IFRAME_ORIGIN) {
+        console.warn('[DOM Snapshot] Ignoring message from unexpected origin:', event.origin)
+        return
+      }
+
+      if (event.data?.type === 'DOM_SNAPSHOT_RESPONSE') {
+        cleanup()
+        resolve(event.data.snapshot)
+      }
+    }
+
+    const cleanup = () => {
+      clearTimeout(timeout)
+      window.removeEventListener('message', messageHandler)
+    }
+
+    window.addEventListener('message', messageHandler)
+
+    iframe.contentWindow.postMessage(
+      {
+        type: 'DOM_SNAPSHOT_REQUEST'
+      },
+      IFRAME_ORIGIN
+    )
+  })
+}
+
+export const captureCombinedDOMSnapshot = async () => {
+  const mainSnapshot = captureDOMSnapshot()
+
+  let iframeSnapshot = { elements: [] }
+  try {
+    iframeSnapshot = await captureIframeDOMSnapshot()
+  } catch (error) {
+    console.warn('[DOM Snapshot] Failed to capture iframe DOM:', error)
+  }
+
+  const combinedElements = [
+    ...mainSnapshot.elements.map((element) => ({ ...element, context: 'main-app' })),
+    ...(iframeSnapshot.elements || []).map((element) => ({ ...element, context: 'iframe' }))
+  ]
+
+  return {
+    ...mainSnapshot,
+    elements: combinedElements,
+    iframeElementCount: iframeSnapshot.elements?.length || 0,
+    totalElementCount: combinedElements.length
+  }
 }
 
