@@ -88,7 +88,9 @@ class Title {
     const textHeight = this.plane.scale.y * 0.15;
     const textWidth = textHeight * aspect;
     this.mesh.scale.set(textWidth, textHeight, 1);
-    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
+    // Adjust title position for 90° rotated parent - position to the right of image
+    this.mesh.position.x = this.plane.scale.x * 0.5 + textWidth * 0.5 + 0.05;
+    this.mesh.position.y = 0;
     this.mesh.setParent(this.plane);
   }
 }
@@ -209,11 +211,76 @@ class Media {
   }
 
   createMesh() {
+    // Create milk glass border background
+    this.createBorder();
+    
     this.plane = new Mesh(this.gl, {
       geometry: this.geometry,
       program: this.program
     });
+    this.plane.rotation.z = 0; // No rotation - natural orientation
     this.plane.setParent(this.scene);
+  }
+
+  createBorder() {
+    // Create a slightly larger plane for the milk glass border
+    const borderGeometry = new Plane(this.gl);
+    const borderProgram = new Program(this.gl, {
+      vertex: `
+        attribute vec3 position;
+        attribute vec2 uv;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragment: `
+        precision highp float;
+        uniform float uBorderRadius;
+        varying vec2 vUv;
+        
+        float roundedBoxSDF(vec2 p, vec2 b, float r) {
+          vec2 d = abs(p) - b;
+          return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
+        }
+        
+        void main() {
+          // Milk glass color - slightly off-white for better visibility
+          vec3 glassColor = vec3(0.95, 0.95, 0.95);
+          
+          // Border with minimal gap
+          vec2 p = vUv - 0.5;
+          float outerD = roundedBoxSDF(p, vec2(0.49), uBorderRadius);
+          
+          // Smooth edge
+          float edgeSmooth = 0.003;
+          float outerAlpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, outerD);
+          
+          // Create border frame effect - very close to the image
+          float innerD = roundedBoxSDF(p, vec2(0.46), uBorderRadius);
+          float borderMask = smoothstep(-edgeSmooth, edgeSmooth, innerD);
+          
+          // Very strong opacity for visibility
+          float finalAlpha = outerAlpha * borderMask * 0.9;
+          
+          gl_FragColor = vec4(glassColor, finalAlpha);
+        }
+      `,
+      uniforms: {
+        uBorderRadius: { value: 0.08 }
+      },
+      transparent: true,
+      depthTest: false,
+      depthWrite: false
+    });
+    
+    this.borderPlane = new Mesh(this.gl, { geometry: borderGeometry, program: borderProgram });
+    this.borderPlane.position.z = -0.001; // Very slightly behind the main image
+    this.borderPlane.renderOrder = -1; // Render before main image
+    this.borderPlane.setParent(this.scene);
   }
 
   createTitle() {
@@ -228,32 +295,41 @@ class Media {
   }
 
   update(scroll, direction) {
-    this.plane.position.x = this.x - scroll.current - this.extra;
-    const x = this.plane.position.x;
-    const H = this.viewport.width / 2;
+    // Changed to vertical positioning (Y-axis)
+    this.plane.position.y = this.x - scroll.current - this.extra;
+    const y = this.plane.position.y;
+    const H = this.viewport.height / 2;
     if (this.bend === 0) {
-      this.plane.position.y = 0;
-      this.plane.rotation.z = 0;
+      this.plane.position.x = 0;
+      this.plane.rotation.z = 0; // No rotation
     } else {
       const B_abs = Math.abs(this.bend);
       const R = (H * H + B_abs * B_abs) / (2 * B_abs);
-      const effectiveX = Math.min(Math.abs(x), H);
-      const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
+      const effectiveY = Math.min(Math.abs(y), H);
+      const arc = R - Math.sqrt(R * R - effectiveY * effectiveY);
       if (this.bend > 0) {
-        this.plane.position.y = -arc;
-        this.plane.rotation.z = -Math.sign(x) * Math.asin(effectiveX / R);
+        // Outward curve (positive X for curving away from center)
+        this.plane.position.x = arc;
+        this.plane.rotation.z = -Math.sign(y) * Math.asin(effectiveY / R);
       } else {
-        this.plane.position.y = arc;
-        this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R);
+        this.plane.position.x = -arc;
+        this.plane.rotation.z = Math.sign(y) * Math.asin(effectiveY / R);
       }
+    }
+    
+    // Update border plane to match main plane position and rotation
+    if (this.borderPlane) {
+      this.borderPlane.position.copy(this.plane.position);
+      this.borderPlane.rotation.copy(this.plane.rotation);
+      this.borderPlane.position.z = this.plane.position.z - 0.001;
     }
     this.speed = scroll.current - scroll.last;
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
-    const planeOffset = this.plane.scale.x / 2;
-    const viewportOffset = this.viewport.width / 2;
-    this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
-    this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
+    const planeOffset = this.plane.scale.y / 2;
+    const viewportOffset = this.viewport.height / 2;
+    this.isBefore = this.plane.position.y + planeOffset < -viewportOffset;
+    this.isAfter = this.plane.position.y - planeOffset > viewportOffset;
     if (direction === 'right' && this.isBefore) {
       this.extra -= this.widthTotal;
       this.isBefore = this.isAfter = false;
@@ -273,10 +349,19 @@ class Media {
       }
     }
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    // Reduced size to show ~5 images at once
+    this.plane.scale.y = (this.viewport.height * (250 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (200 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-    this.padding = 2;
+    
+    // Update border plane scale to be slightly larger
+    if (this.borderPlane) {
+      const borderPadding = 0.25; // 25% larger for border
+      this.borderPlane.scale.x = this.plane.scale.x * (1 + borderPadding);
+      this.borderPlane.scale.y = this.plane.scale.y * (1 + borderPadding);
+    }
+    
+    this.padding = 1.5;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
@@ -293,7 +378,8 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      onImageClick
     } = {}
   ) {
     document.documentElement.classList.remove('no-js');
@@ -301,6 +387,7 @@ class App {
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck, 200);
+    this.onImageClick = onImageClick;
     this.createRenderer();
     this.createCamera();
     this.createScene();
@@ -380,18 +467,50 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = e.touches ? e.touches[0].clientX : e.clientX;
+    this.hasMoved = false;
   }
 
   onTouchMove(e) {
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const distance = (x - this.start) * (this.scrollSpeed * 0.025);
+    if (Math.abs(distance) > 2) {
+      this.hasMoved = true;
+    }
     this.scroll.target = this.scroll.position - distance;
   }
 
-  onTouchUp() {
+  onTouchUp(e) {
+    if (this.isDown && !this.hasMoved && this.onImageClick) {
+      // This was a click, not a drag
+      this.onClick(e);
+    }
     this.isDown = false;
     this.onCheck();
+  }
+
+  onClick(e) {
+    if (!this.onImageClick || !this.medias || !this.medias.length) return;
+    
+    // Find the image closest to center (using Y-axis for vertical gallery)
+    let closestMedia = null;
+    let minDistance = Infinity;
+    
+    this.medias.forEach(media => {
+      const distance = Math.abs(media.plane.position.y);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestMedia = media;
+      }
+    });
+    
+    if (closestMedia) {
+      // Get the original image data
+      const halfLength = this.mediasImages.length / 2;
+      const originalIndex = closestMedia.index % halfLength;
+      const imageData = this.mediasImages[originalIndex];
+      this.onImageClick(imageData);
+    }
   }
 
   onWheel(e) {
@@ -478,15 +597,16 @@ export default function CircularGallery({
   borderRadius = 0.05,
   font = 'bold 30px Figtree',
   scrollSpeed = 1,
-  scrollEase = 0.02
+  scrollEase = 0.02,
+  onImageClick
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, onImageClick });
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, onImageClick]);
   return <div className="circular-gallery" ref={containerRef} />;
 }
 

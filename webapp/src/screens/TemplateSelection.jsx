@@ -13,6 +13,7 @@ function TemplateSelection() {
   const [editMode, setEditMode] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState('connected')
   const [showGallery, setShowGallery] = useState(false)
+  const [enlargedImage, setEnlargedImage] = useState(null)
 
   const options = [
     { id: 'A' },
@@ -45,14 +46,26 @@ function TemplateSelection() {
     // Only trigger gallery in edit mode
     if (!editMode) return
     
+    // If viewing enlarged image, keep gallery visible
+    if (enlargedImage) return
+    
     const modalContent = e.currentTarget
     const rect = modalContent.getBoundingClientRect()
-    const mouseY = e.clientY - rect.top
-    const height = rect.height
+    const mouseX = e.clientX - rect.left
+    const width = rect.width
     
-    // Show gallery when mouse is in bottom 20% of the modal
-    const threshold = height * 0.8
-    setShowGallery(mouseY > threshold)
+    // Show gallery when mouse is in right 20% of the modal
+    const threshold = width * 0.8
+    setShowGallery(mouseX > threshold)
+  }
+
+  const handleImageClick = (imageData) => {
+    setEnlargedImage(imageData)
+    setShowGallery(true) // Keep gallery visible when viewing enlarged image
+  }
+
+  const handleCloseEnlargedImage = () => {
+    setEnlargedImage(null)
   }
 
   return (
@@ -168,7 +181,10 @@ function TemplateSelection() {
 
             {/* Circular Gallery - only in edit mode */}
             {editMode && showGallery && (
-              <div className="inspection-modal__gallery-container">
+              <div 
+                className="inspection-modal__gallery-container"
+                style={{ pointerEvents: enlargedImage ? 'none' : 'auto' }}
+              >
                 <CircularGallery
                   bend={5}
                   textColor="#E8EDF3"
@@ -176,7 +192,35 @@ function TemplateSelection() {
                   font="bold 24px Inter"
                   scrollSpeed={2}
                   scrollEase={0.05}
+                  onImageClick={handleImageClick}
                 />
+              </div>
+            )}
+
+            {/* Enlarged Image View */}
+            {editMode && enlargedImage && (
+              <div className="enlarged-image-overlay">
+                <div className="enlarged-image-container">
+                  <img 
+                    src={enlargedImage.image}
+                    alt={enlargedImage.text}
+                    className="enlarged-image"
+                  />
+                  <button 
+                    className="enlarged-image__close"
+                    onClick={handleCloseEnlargedImage}
+                    aria-label="Close enlarged view"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M15 5L5 15M5 5L15 15"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             )}
           </div>
