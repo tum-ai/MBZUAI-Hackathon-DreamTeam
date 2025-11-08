@@ -210,3 +210,4 @@ __marimo__/
 llm/venv/
 llm/planner/sessions/
 compiler/output
+compiler/server/inputs

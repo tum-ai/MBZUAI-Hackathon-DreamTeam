@@ -85,7 +85,7 @@ class SubprocessManager:
         # Start the dev server
         print(f"Starting Vite server in: {self.path}")
         self.process = subprocess.Popen(
-            ["npm", "run", "dev", "--", "--port", str(self.port)],
+            ["npm", "run", "dev", "--port", str(self.port)],
             cwd=self.path,
             shell=True # Use shell=True for npm on Windows
         )
