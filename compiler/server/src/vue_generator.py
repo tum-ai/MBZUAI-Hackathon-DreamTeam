@@ -1,4 +1,4 @@
-# src/vue_generator.py
+# compiler/server/src/vue_generator.py
 import json
 import os
 import re
@@ -8,8 +8,7 @@ class VueGenerator:
     """
     Takes an AST (with state and events) and compiles
     a single-file .vue component.
-    V18: Fixes the Icon component renderer to correctly
-    add the `d=` attribute to the <path> tag.
+    V19: Adds data-nav-id to all generated nodes for automation.
     """
     def __init__(self, manifests_path):
         self.manifests_path = Path(manifests_path)
@@ -192,7 +191,11 @@ class VueGenerator:
         manifest = self.manifests[node_type]
         tag = node.get('props', {}).get('as', manifest['componentName'])
         
-        props_map = { 'data-component-id': f'"{node["id"]}"' }
+        # V19: Add data-nav-id for automation
+        props_map = {
+            'data-component-id': f'"{node["id"]}"',
+            'data-nav-id': f'"{node["id"]}"'
+        }
         
         v_if = node.get('v-if')
         if isinstance(v_if, dict):

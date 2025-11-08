@@ -2,8 +2,10 @@
 import requests
 import json
 import time
-import config  # <-- Import the config
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Adjust path to import config
+import config  # <-- Import the config
 
 # --- V15: Read URL from config ---
 BASE_URL = f"http://{config.HOST}:{config.PORT}"

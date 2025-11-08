@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Frontend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md w-full p-4 z-10">
+        <h1 class="text-2xl font-bold text-gray-800">Main AI Agent UI</h1>
+        <p class="text-sm text-gray-600">This window (running on `file://` or any port) controls the iframe below by talking to the Automation Server on port 3000.</p>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Controls -->
+        <aside class="w-1/4 bg-white p-6 overflow-y-auto shadow-lg z-10">
+            <h2 class="text-xl font-semibold mb-4">AI Controls</h2>
+            <div class="space-y-4">
+                <button id="get-dom-btn" class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Get DOM Snapshot ("Eyes")
+                </button>
+                <button id="test-action-btn" class="w-full bg-green-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors">
+                    Test Action ("Hands")
+                </button>
+                <p class="text-xs text-gray-500">
+                    The "Test Action" button will try to click any element with `data-nav-id="header-buy-btn"`. This is the "Buy" button in the iPhone demo.
+                </p>
+            </div>
+
+            <h3 class="text-lg font-semibold mt-6 mb-2">API Log</h3>
+            <pre id="api-log" class="bg-gray-800 text-white text-xs rounded-lg p-4 h-96 overflow-y-auto w-full break-words whitespace-pre-wrap">Waiting for commands...</pre>
+        </aside>
+
+        <!-- Main Iframe Content -->
+        <main class="flex-1 flex flex-col bg-gray-200">
+            <div class="bg-gray-700 text-white px-4 py-2">
+                <p class="font-mono text-sm">iFrame Content (from <strong>http://localhost:5173</strong>)</p>
+            </div>
+            <div class="flex-1 w-full h-full">
+                <iframe id="automation-iframe" 
+                        src="http://localhost:5173" 
+                        class="w-full h-full border-none"
+                        title="Automation Target">
+                </iframe>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const getDomBtn = document.getElementById('get-dom-btn');
+        const testActionBtn = document.getElementById('test-action-btn');
+        const apiLog = document.getElementById('api-log');
+
+        const AUTOMATION_SERVER_URL = 'http://localhost:3000';
+
+        function logToScreen(message) {
+            console.log(message);
+            apiLog.textContent = JSON.stringify(message, null, 2);
+        }
+
+        getDomBtn.addEventListener('click', async () => {
+            logToScreen('Fetching DOM snapshot...');
+            try {
+                const response = await fetch(`${AUTOMATION_SERVER_URL}/api/browser/dom`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                logToScreen(data);
+            } catch (error) {
+                logToScreen({ error: 'Failed to fetch DOM', message: error.message });
+            }
+        });
+
+        testActionBtn.addEventListener('click', async () => {
+            logToScreen('Sending test "click" action...');
+            
+            // This action is based on actionExecutor.js and test_client_iphone.py
+            const action = {
+                action: 'navigate', // 'navigate' is our 'click'
+                targetId: 'nav-text-features' // The "Buy" button
+            };
+
+            try {
+                const response = await fetch(`${AUTOMATION_SERVER_URL}/api/browser/action`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(action)
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                logToScreen(data);
+            } catch (error) {
+                logToScreen({ error: 'Failed to send action', message: error.message });
+            }
+        });
+
+        // Optional: Listen for the refresh callback from the automation server
+        // This requires your main frontend to be a real server, but for now,
+        // we can just log to the console if we were set up to receive it.
+        console.log('Main frontend loaded. This window would listen for callbacks from port 3000.');
+
+    </script>
+</body>
+</html>

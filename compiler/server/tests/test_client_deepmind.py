@@ -2,8 +2,9 @@
 import requests
 import json
 import time
-import config
-import os
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Adjust path to import config
+import config  # <-- Import the configimport os
 import random
 
 # --- V12: Read URL from config ---

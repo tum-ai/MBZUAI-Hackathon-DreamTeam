@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Frontend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Add some padding to the dropdown */
+        select option {
+            padding: 4px 8px;
+        }
+        /* Style for disabled buttons */
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md w-full p-4 z-10">
+        <h1 class="text-2xl font-bold text-gray-800">Main AI Agent UI</h1>
+        <p class="text-sm text-gray-600">This window controls the iframe by sending `postMessage` commands to it.</p>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Controls -->
+        <aside class="w-1/3 bg-white p-6 overflow-y-auto shadow-lg z-10 space-y-6">
+            
+            <!-- Connection Status -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Connection Status</h2>
+                <div id="ws-status" class="w-full text-center p-2 rounded-lg bg-gray-200 text-gray-700 font-medium">
+                    Connecting to Container Server...
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                    Listening for "refresh" commands from the Container Server (port 3000) via WebSocket.
+                </p>
+            </div>
+
+            <!-- Step 1: Get DOM -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">1. Get DOM ("Eyes")</h2>
+                <button id="get-dom-btn" class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Get DOM Snapshot
+                </button>
+            </div>
+
+            <!-- Step 2: Select Element -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">2. Select Element</h2>
+                <select id="element-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white" disabled>
+                    <option value="">First, get DOM snapshot...</option>
+                </select>
+            </div>
+
+            <!-- Step 3: Page/Element Actions -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-semibold mb-2">3. Execute Action ("Hands")</h2>
+                
+                <!-- Click/Scroll to -->
+                <fieldset class="border rounded-lg p-4">
+                    <legend class="font-medium px-1">Element Actions</legend>
+                    <div class="space-y-3">
+                        <button id="click-btn" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors" disabled>
+                            Click Selected Element
+                        </button>
+                        <button id="scroll-to-btn" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors" disabled>
+                            Scroll to Selected Element
+                        </button>
+                    </div>
+                </fieldset>
+
+                <!-- Page Scroll -->
+                <fieldset class="border rounded-lg p-4">
+                    <legend class="font-medium px-1">Page Scroll</legend>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="scroll-up-btn" class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                            Scroll Up
+                        </button>
+                        <button id="scroll-down-btn" class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                            Scroll Down
+                        </button>
+                        <button id="scroll-top-btn" class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                            Scroll to Top
+                        </button>
+                        <button id="scroll-bottom-btn" class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                            Scroll to Bottom
+                        </button>
+                    </div>
+                </fieldset>
+                
+                <!-- Form Controls -->
+                <fieldset class="border rounded-lg p-4">
+                    <legend class="font-medium px-1">Form Controls</legend>
+                    <div class="space-y-3">
+                        <input type="text" id="text-input" placeholder="Enter text to type..." class="w-full p-2 border border-gray-300 rounded-lg">
+                        <button id="type-btn" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors" disabled>
+                            Type Text in Selected
+                        </button>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="focus-btn" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors" disabled>
+                                Focus Selected
+                            </button>
+                            <button id="clear-btn" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors" disabled>
+                                Clear Selected
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Log Output -->
+            <div>
+                <h3 class="text-lg font-semibold mt-6 mb-2">API Log</h3>
+                <pre id="api-log" class="bg-gray-800 text-white text-xs rounded-lg p-4 h-64 overflow-y-auto w-full break-words whitespace-pre-wrap">Waiting for commands...</pre>
+            </div>
+
+        </aside>
+
+        <!-- Main Iframe Content -->
+        <main class="flex-1 flex flex-col bg-gray-200">
+            <div class="bg-gray-700 text-white px-4 py-2">
+                <p class="font-mono text-sm">iFrame Content (from <strong>http://localhost:5173</strong>)</p>
+            </div>
+            <div class="flex-1 w-full h-full">
+                <iframe id="automation-iframe" 
+                        src="http://localhost:5173" 
+                        class="w-full h-full border-none"
+                        title="Automation Target">
+                </iframe>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const CONTAINER_WEBSOCKET_URL = 'ws://localhost:3000/ws';
+        const IFRAME_ORIGIN = 'http://localhost:5173';
+
+        // --- DOM Elements ---
+        const wsStatus = document.getElementById('ws-status');
+        const apiLog = document.getElementById('api-log');
+        const getDomBtn = document.getElementById('get-dom-btn');
+        const elementSelect = document.getElementById('element-select');
+        const clickBtn = document.getElementById('click-btn');
+        const scrollToBtn = document.getElementById('scroll-to-btn');
+        const scrollUpBtn = document.getElementById('scroll-up-btn');
+        const scrollDownBtn = document.getElementById('scroll-down-btn');
+        const scrollTopBtn = document.getElementById('scroll-top-btn');
+        const scrollBottomBtn = document.getElementById('scroll-bottom-btn');
+        const textInput = document.getElementById('text-input');
+        const typeBtn = document.getElementById('type-btn');
+        const focusBtn = document.getElementById('focus-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const iframe = document.getElementById('automation-iframe');
+
+        const allActionButtons = [elementSelect, clickBtn, scrollToBtn, typeBtn, focusBtn, clearBtn];
+
+        // --- State ---
+        let lastSnapshot = [];
+
+        // --- Logger ---
+        function logToScreen(message, type = 'info') {
+            console.log(message);
+            const formattedMessage = JSON.stringify(message, null, 2);
+            apiLog.textContent = `[${type.toUpperCase()}] ${new Date().toLocaleTimeString()}\n${formattedMessage}\n\n${apiLog.textContent}`;
+        }
+
+        // --- WebSocket (for Refresh) ---
+        function setupWebSocket() {
+            logToScreen('Connecting to Container Server...', 'WS');
+            const ws = new WebSocket(CONTAINER_WEBSOCKET_URL);
+
+            ws.onopen = () => {
+                wsStatus.textContent = 'Connected (Port 3000)';
+                wsStatus.classList.remove('bg-gray-200', 'text-gray-700');
+                wsStatus.classList.add('bg-green-100', 'text-green-700');
+                logToScreen('WebSocket connection established.', 'WS');
+            };
+
+            ws.onmessage = (event) => {
+                logToScreen(`Received message from server: ${event.data}`, 'WS');
+                if (event.data === 'refresh') {
+                    logToScreen('Refresh command received! Reloading iframe...', 'WS');
+                    iframe.src = iframe.src; // Simple way to reload
+                    // Reset UI
+                    allActionButtons.forEach(btn => btn.disabled = true);
+                    elementSelect.innerHTML = '<option value="">First, get DOM snapshot...</option>';
+                }
+            };
+
+            ws.onclose = () => {
+                wsStatus.textContent = 'Disconnected. Retrying...';
+                wsStatus.classList.add('bg-red-100', 'text-red-700');
+                logToScreen('WebSocket disconnected. Retrying in 3 seconds...', 'WS');
+                setTimeout(setupWebSocket, 3000); // Retry connection
+            };
+
+            ws.onerror = (error) => {
+                logToScreen(`WebSocket error: ${error.message}`, 'WS Error');
+                ws.close();
+            };
+        }
+
+        // --- postMessage (for Agent) ---
+        function setupPostMessageListener() {
+            window.addEventListener('message', (event) => {
+                // Security: Check origin
+                if (event.origin !== IFRAME_ORIGIN) {
+                    return;
+                }
+
+                const { type, snapshot, result } = event.data;
+
+                if (type === 'DOM_SNAPSHOT_RESPONSE') {
+                    logToScreen(snapshot, 'DOM Snapshot');
+                    populateDropdown(snapshot); // <-- THE FIX IS HERE
+                } else if (type === 'ACTION_RESULT') {
+                    logToScreen(result, result.success ? 'Action Success' : 'Action Error');
+                }
+            });
+            logToScreen(`postMessage listener added for origin ${IFRAME_ORIGIN}.`);
+        }
+
+        // --- Helper Functions ---
+        function populateDropdown(elements) {
+            lastSnapshot = elements || [];
+            elementSelect.innerHTML = '<option value="">-- Select an element --</option>';
+            
+            const visibleElements = elements.filter(el => el.isVisible && (el.tagName === 'button' || el.tagName === 'a' || el.tagName === 'input' || el.tagName === 'textarea'));
+            
+            if (visibleElements.length === 0) {
+                 elementSelect.innerHTML = '<option value="">No visible interactive elements found</option>';
+                 allActionButtons.forEach(btn => btn.disabled = true);
+                 return;
+            }
+
+            visibleElements.forEach(el => {
+                const text = el.text ? `"${el.text.substring(0, 30)}..."` : `(No text)`;
+                const option = document.createElement('option');
+                option.value = el.navId;
+                option.textContent = `[${el.tagName}] ${text} - (${el.navId})`;
+                elementSelect.appendChild(option);
+            });
+
+            allActionButtons.forEach(btn => btn.disabled = false);
+        }
+
+        function getSelectedNavId() {
+            return elementSelect.value;
+        }
+        
+        function sendAction(action) {
+            if (!iframe.contentWindow) {
+                logToScreen('Iframe is not loaded yet!', 'Error');
+                return;
+            }
+            logToScreen(action, 'Sending Action');
+            iframe.contentWindow.postMessage({ type: 'EXECUTE_ACTION', action }, IFRAME_ORIGIN);
+        }
+
+        // --- Event Listeners ---
+        
+        // 1. Get DOM
+        getDomBtn.addEventListener('click', () => {
+            logToScreen('Requesting DOM Snapshot from iframe...');
+            iframe.contentWindow.postMessage({ type: 'DOM_SNAPSHOT_REQUEST' }, IFRAME_ORIGIN);
+        });
+
+        // 2. Click
+        clickBtn.addEventListener('click', () => {
+            const targetId = getSelectedNavId();
+            if (!targetId) { alert('Please select an element first.'); return; }
+            sendAction({ action: 'navigate', targetId });
+        });
+        
+        // 3. Scroll to
+        scrollToBtn.addEventListener('click', () => {
+            const targetId = getSelectedNavId();
+            if (!targetId) { alert('Please select an element first.'); return; }
+            sendAction({ action: 'scrollToElement', targetId });
+        });
+
+        // 4. Page Scroll
+        scrollUpBtn.addEventListener('click', () => sendAction({ action: 'scroll', direction: 'up' }));
+        scrollDownBtn.addEventListener('click', () => sendAction({ action: 'scroll', direction: 'down' }));
+        scrollTopBtn.addEventListener('click', () => sendAction({ action: 'scroll', direction: 'top' }));
+        scrollBottomBtn.addEventListener('click', () => sendAction({ action: 'scroll', direction: 'bottom' }));
+
+        // 5. Form Controls
+        typeBtn.addEventListener('click', () => {
+            const targetId = getSelectedNavId();
+            if (!targetId) { alert('Please select an element to type into.'); return; }
+            sendAction({ action: 'type', targetId, text: textInput.value });
+        });
+        
+        focusBtn.addEventListener('click', () => {
+            const targetId = getSelectedNavId();
+            if (!targetId) { alert('Please select an element to focus.'); return; }
+            sendAction({ action: 'focus', targetId });
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            const targetId = getSelectedNavId();
+            if (!targetId) { alert('Please select an element to clear.'); return; }
+            sendAction({ action: 'clear', targetId });
+        });
+
+        // --- Init ---
+        setupWebSocket();
+        setupPostMessageListener();
+    </script>
+</body>
+</html>

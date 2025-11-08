@@ -2,6 +2,7 @@
 import requests
 import json
 import time
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Adjust path to import config
 import config  # <-- Import the config
 import os
 

@@ -1,9 +1,6 @@
 # src/server.py
-import asyncio
 import json
-import os
-import requests
-from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Request
 import jsonpatch
 
 import config
@@ -11,55 +8,8 @@ from .project_generator import ProjectGenerator
 
 app = FastAPI()
 
-# --- Lock to prevent race conditions ---
-generation_lock = asyncio.Lock()
-
-# --- Background Generation Task ---
-
-async def run_generation_task(page_name: str = "project"):
-    """
-    The background task that runs the full project generator.
-    This is triggered *after* a patch is successfully applied.
-    It uses a lock to prevent concurrent builds.
-    """
-    
-    # Try to acquire the lock. If it's already held, this will wait.
-    try:
-        await asyncio.wait_for(generation_lock.acquire(), timeout=10.0)
-    except asyncio.TimeoutError:
-        print("WARNING: Could not acquire generation lock. Another build is likely in progress. Skipping.")
-        return
-
-    print(f"--- [Generator Lock Acquired for: {page_name}] ---")
-    print("Starting background generation task...")
-    
-    try:
-        # V4: Initialize the "Empty-Aware" generator.
-        project_gen = ProjectGenerator()
-        
-        # Run the full project build
-        project_gen.generate_project() 
-        print("Background generation task complete.")
-
-        # --- Send HTTP Webhook ---
-        print(f"Sending refresh webhook to: {config.FRONTEND_REFRESH_WEBHOOK}")
-        try:
-            payload = {"status": "success", "updated": page_name}
-            requests.post(config.FRONTEND_REFRESH_WEBHOOK, json=payload, timeout=3.0)
-            print("Refresh webhook sent successfully.")
-        except requests.exceptions.ConnectionError:
-            print(f"WARNING: Could not connect to frontend server at {config.FRONTEND_REFRESH_WEBHOOK}. Is it running?")
-        except requests.exceptions.RequestException as e:
-            print(f"WARNING: Failed to send refresh webhook: {e}")
-        # --- End Webhook ---
-
-    except Exception as e:
-        print(f"ERROR during background generation: {e}")
-    finally:
-        # ALWAYS release the lock when done
-        generation_lock.release()
-        print(f"--- [Generator Lock Released for: {page_name}] ---")
-
+# --- Lock and Generation Task REMOVED ---
+# This server's only job is to apply patches and write files.
 
 # --- API Endpoints ---
 
@@ -86,12 +36,12 @@ async def get_project_config():
 @app.patch("/project", summary="Patch the main project configuration")
 async def patch_project_config(
     patch: Request, 
-    background_tasks: BackgroundTasks,
-    trigger_build: bool = False  # <-- V5 FIX: Add query param
+    # BackgroundTasks and trigger_build REMOVED
 ):
     """
     Applies a JSON patch to the project.json file.
     V4: Creates project.json from a default if it doesn't exist.
+    V5: REMOVED build trigger. This endpoint only writes files.
     """
     try:
         patch_ops = await patch.json()
@@ -101,19 +51,14 @@ async def patch_project_config(
         if config.PROJECT_CONFIG_FILE.exists():
             try:
                 with open(config.PROJECT_CONFIG_FILE, 'r') as f:
-                    # Load file if it exists and is valid
                     current_config = json.load(f)
             except json.JSONDecodeError:
                 print(f"Warning: {config.PROJECT_CONFIG_FILE.name} corrupted. Starting from default.")
-                # current_config is already the default, so we just proceed
         else:
              print(f"Info: {config.PROJECT_CONFIG_FILE.name} not found. Creating new one from patch.")
-        # --- End V4 Fix ---
-
-        # Apply the patch to the in-memory version
+        
         patched_config = jsonpatch.apply_patch(current_config, patch_ops)
 
-        # Write (or create) the new config back to disk
         with open(config.PROJECT_CONFIG_FILE, 'w') as f:
             json.dump(patched_config, f, indent=2)
 
@@ -126,7 +71,6 @@ async def patch_project_config(
                     ast_file_lower = ast_file.lower()
                     ast_path = config.AST_INPUT_DIR / ast_file_lower
                     if not ast_path.exists():
-                        # Create a new blank AST file for the page
                         blank_ast = {
                             "state": {},
                             "tree": {
@@ -145,15 +89,15 @@ async def patch_project_config(
                             json.dump(blank_ast, f, indent=2)
                         print(f"Created new blank AST: {ast_path}")
                     
-                    # Also ensure the value in the config is lowercase
                     new_page_config['astFile'] = ast_file_lower
-
-        # --- V5 FIX: Only trigger build if requested ---
-        if trigger_build:
-            print("Build triggered for /project patch.")
-            background_tasks.add_task(run_generation_task, page_name="project_config")
-        else:
-            print("Patch applied to /project. Build not triggered.")
+        
+        # --- Run the generator SYNCHRONOUSLY ---
+        # The request will hang until the files are written, which is what we want.
+        print("Patch applied to /project. Running generator...")
+        project_gen = ProjectGenerator()
+        project_gen.generate_project()
+        print("File generation complete.")
+        # --- End V5 change ---
 
         return {"status": "success", "data": patched_config}
 
@@ -171,7 +115,6 @@ async def get_page_ast(page_name: str):
     ast_file_path = config.AST_INPUT_DIR / f"{page_name.lower()}.json"
     
     if not ast_file_path.exists():
-        # V4: Return a default blank page AST if not found
         print(f"Info: AST file not found: {ast_file_path.name}. Returning blank AST.")
         return {
             "state": {},
@@ -202,12 +145,11 @@ async def get_page_ast(page_name: str):
 async def patch_page_ast(
     page_name: str, 
     patch: Request, 
-    background_tasks: BackgroundTasks,
-    trigger_build: bool = True  # <-- V5 FIX: Add query param
+    # BackgroundTasks and trigger_build REMOVED
 ):
     """
     Applies a JSON patch to a specific page's AST file (e.g., 'home.json').
-    V4: Creates the file from a default if it doesn't exist.
+    V5: REMOVED build trigger. This endpoint only writes files.
     """
     page_name_lower = page_name.lower()
     ast_file_path = config.AST_INPUT_DIR / f"{page_name_lower}.json"
@@ -238,22 +180,19 @@ async def patch_page_ast(
                 print(f"Warning: {ast_file_path.name} corrupted. Starting from default.")
         else:
             print(f"Info: {ast_file_path.name} not found. Creating new one from patch.")
-        # --- End V4 Fix ---
 
-        # Apply the patch
         patched_ast = jsonpatch.apply_patch(current_ast, patch_ops)
 
-        # Write the new AST back to disk
         with open(ast_file_path, 'w') as f:
             json.dump(patched_ast, f, indent=2)
 
-        # --- V5 FIX: Only trigger build if requested ---
-        if trigger_build:
-            print(f"Build triggered for /ast/{page_name_lower} patch.")
-            background_tasks.add_task(run_generation_task, page_name=page_name_lower)
-        else:
-            print(f"Patch applied to /ast/{page_name_lower}. Build not triggered.")
-
+        # --- Run the generator SYNCHRONOUSLY ---
+        print(f"Patch applied to /ast/{page_name_lower}. Running generator...")
+        project_gen = ProjectGenerator()
+        project_gen.generate_project()
+        print("File generation complete.")
+        # --- End V5 change ---
+        
         return {"status": "success", "data": patched_ast}
 
     except jsonpatch.JsonPatchException as e:

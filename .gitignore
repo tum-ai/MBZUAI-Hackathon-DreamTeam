@@ -209,3 +209,4 @@ __marimo__/
 # LLM
 llm/venv/
 llm/planner/sessions/
+compiler/output

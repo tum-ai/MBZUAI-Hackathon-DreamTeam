@@ -1,0 +1,131 @@
+{
+  "state": {
+    "contactName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "contactEmail": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "tree": {
+    "id": "root-container",
+    "type": "Box",
+    "props": {
+      "class": "page-container",
+      "style": {
+        "max-width": "800px"
+      }
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "contact-title",
+          "type": "Text",
+          "props": {
+            "content": "Contact Us",
+            "as": "h1",
+            "style": {
+              "font-size": "60px"
+            }
+          }
+        },
+        {
+          "id": "contact-subtitle",
+          "type": "Text",
+          "props": {
+            "content": "This form demonstrates state binding (v-model) and event handling.",
+            "as": "p",
+            "style": {
+              "font-size": "20px",
+              "color": "#aaa",
+              "margin-bottom": "2rem"
+            }
+          }
+        },
+        {
+          "id": "name-input",
+          "type": "Textbox",
+          "props": {
+            "modelValue": {
+              "type": "stateBinding",
+              "stateKey": "contactName"
+            },
+            "placeholder": "Your Name",
+            "style": {
+              "width": "100%",
+              "padding": "1rem",
+              "font-size": "16px",
+              "border-radius": "8px",
+              "border": "none",
+              "margin-bottom": "1rem"
+            }
+          },
+          "events": {
+            "input": [
+              {
+                "type": "action:setState",
+                "stateKey": "contactName",
+                "newValue": {
+                  "type": "expression",
+                  "value": "event.target.value"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "email-input",
+          "type": "Textbox",
+          "props": {
+            "modelValue": {
+              "type": "stateBinding",
+              "stateKey": "contactEmail"
+            },
+            "placeholder": "Your Email",
+            "style": {
+              "width": "100%",
+              "padding": "1rem",
+              "font-size": "16px",
+              "border-radius": "8px",
+              "border": "none",
+              "margin-bottom": "2rem"
+            }
+          },
+          "events": {
+            "input": [
+              {
+                "type": "action:setState",
+                "stateKey": "contactEmail",
+                "newValue": {
+                  "type": "expression",
+                  "value": "event.target.value"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "submit-btn",
+          "type": "Button",
+          "props": {
+            "text": "Submit",
+            "class": "btn-primary"
+          },
+          "events": {
+            "click": [
+              {
+                "type": "action:showAlert",
+                "message": {
+                  "type": "expression",
+                  "value": "Thanks, ${state.contactName}! We'll email you at ${state.contactEmail}."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

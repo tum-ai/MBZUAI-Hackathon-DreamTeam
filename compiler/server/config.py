@@ -11,7 +11,7 @@ PORT = 8000
 # (e.g., /app/run_server.py, /app/src/server.py)
 BASE_DIR = Path(__file__).resolve().parent
 INPUTS_DIR_NAME = "inputs"
-OUTPUT_DIR_NAME = "my-new-site"
+OUTPUT_DIR_NAME = "../output/my-new-site"
 STATIC_DIR_NAME = "static"
 MANIFESTS_DIR_NAME = "manifests"
 

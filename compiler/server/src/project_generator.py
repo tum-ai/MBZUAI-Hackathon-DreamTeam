@@ -9,9 +9,7 @@ from .vue_generator import VueGenerator
 class ProjectGenerator:
     """
     Orchestrates the creation of the entire Vue.js project.
-    V11: Removes the global nav from App.vue. The generator is now
-    100% "dumb" and only provides the router-view shell.
-    All navs must be provided by the AST.
+    V19: Injects the automation_agent.js script.
     """
     def __init__(self):
         self.manifests_dir = config.MANIFESTS_DIR
@@ -45,7 +43,7 @@ class ProjectGenerator:
         self._generate_views()
         
         print("Project generation complete.")
-        print(f"To run your project:\n  cd {self.output_dir.name}\n  npm install --ignore-scripts\n  npm run dev")
+        # Removed the `npm install` instructions as the container server will handle it
 
     def _create_skeleton(self):
         """
@@ -60,7 +58,20 @@ class ProjectGenerator:
     def _copy_static_files(self):
         """
         Copies boilerplate files like index.html, vite.config.js, etc.
+        V19: Also copies the new automation_agent.js
         """
+        # --- V19: Copy automation_agent.js to the output 'public' directory ---
+        agent_src = self.static_dir / 'automation_agent.js'
+        # --- THIS IS THE FIX ---
+        agent_dest = self.output_dir / 'public' / 'automation_agent.js'
+        # --- END OF FIX ---
+        
+        if agent_src.exists():
+            shutil.copy(agent_src, agent_dest)
+        else:
+            print(f"Warning: Static file not found: {agent_src}")
+        # --- End V19 Change ---
+
         static_files_to_root = ['vite.config.js', 'index.html']
         for file_name in static_files_to_root:
             src = self.static_dir / file_name
@@ -82,6 +93,7 @@ class ProjectGenerator:
         print("Copied static files...")
 
     def _generate_router(self):
+# ... (rest of the file is unchanged) ...
         """
         Generates the src/router/index.js file based on project.json.
         """
@@ -233,7 +245,7 @@ class ProjectGenerator:
     def _write_file(self, file_path: Path, content: str):
         """Utility to write a file and print success."""
         try:
-            with open(file_path, 'w') as f:
+            with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
             print(f"Successfully generated {file_path}")
         except Exception as e:
