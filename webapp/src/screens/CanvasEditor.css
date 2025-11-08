@@ -50,15 +50,6 @@
   animation: scaleIn var(--duration-slow) var(--ease-out);
 }
 
-.canvas-editor__voice-overlay {
-  position: absolute;
-  bottom: var(--space-4);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: var(--z-elevated);
-  animation: slideUp var(--duration-slow) var(--ease-out) 0.3s both;
-}
-
 .canvas-editor__sidebar {
   width: 320px;
   flex-shrink: 0;

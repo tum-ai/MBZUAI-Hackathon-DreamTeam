@@ -1,42 +1,73 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import TopBar from '../components/TopBar'
 import CanvasFrame from '../components/CanvasFrame'
-import VoiceControl from '../components/VoiceControl'
 import GlassCard from '../components/GlassCard'
+import { useVoiceAssistantContext } from '../context/VoiceAssistantContext'
 import './CanvasEditor.css'
 
 function CanvasEditor() {
   const { projectId } = useParams()
   const location = useLocation()
   const [status, setStatus] = useState('connected')
-  const [isRecording, setIsRecording] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [commandHistory, setCommandHistory] = useState([])
 
   const selectedOption = location.state?.selectedOption || projectId?.toUpperCase() || 'A'
   const projectTitle = `Editing: Option ${selectedOption}`
 
-  const handleVoiceStart = () => {
-    setIsRecording(true)
-    console.log('Voice recording started')
-    // TODO: Integrate with Whisper API
-  }
+  const voiceBiasPhrases = useMemo(
+    () => ['canvas', 'layer', 'export', 'color', 'grid', 'history', 'selection', 'template'],
+    []
+  )
 
-  const handleVoiceStop = () => {
-    setIsRecording(false)
-    console.log('Voice recording stopped')
-    
-    // Mock: Add to history
-    const mockCommand = {
+  const handleFinalSegment = useCallback(text => {
+    if (!text) return
+    const entry = {
       id: Date.now(),
-      text: 'Example voice command',
+      text,
       timestamp: new Date().toLocaleTimeString()
     }
-    setCommandHistory(prev => [mockCommand, ...prev])
-    
-    // TODO: Process voice command and update canvas
-  }
+    setCommandHistory(prev => [entry, ...prev])
+  }, [])
+
+  const handleInterim = useCallback(interim => {
+    if (interim) {
+      setStatus('listening')
+    }
+  }, [])
+
+  const handleWakeTriggered = useCallback(transcript => {
+    setStatus('wake detected')
+    if (transcript) {
+      const entry = {
+        id: Date.now(),
+        text: `[Wake] ${transcript}`,
+        timestamp: new Date().toLocaleTimeString()
+      }
+      setCommandHistory(prev => [entry, ...prev])
+    }
+  }, [])
+
+  const {
+    isListening,
+    isWakeActive,
+    registerListener,
+    setBiasPhrases
+  } = useVoiceAssistantContext()
+
+  useEffect(() => {
+    const unregister = registerListener({
+      onFinal: handleFinalSegment,
+      onInterim: handleInterim,
+      onWakeTriggered: handleWakeTriggered
+    })
+    setBiasPhrases(voiceBiasPhrases)
+    return () => {
+      unregister()
+      setBiasPhrases([])
+    }
+  }, [registerListener, setBiasPhrases, voiceBiasPhrases, handleFinalSegment, handleInterim, handleWakeTriggered])
 
   // Simulate status changes
   useEffect(() => {
@@ -44,13 +75,21 @@ function CanvasEditor() {
       // Randomly change status for demo purposes
       const statuses = ['connected', 'updating']
       const randomStatus = statuses[Math.floor(Math.random() * statuses.length)]
-      if (!isRecording) {
+      if (!isListening && !isWakeActive) {
         setStatus(randomStatus)
       }
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [isRecording])
+  }, [isListening, isWakeActive])
+
+  useEffect(() => {
+    if (isListening) {
+      setStatus('listening')
+    } else if (isWakeActive) {
+      setStatus('wake ready')
+    }
+  }, [isListening, isWakeActive])
 
   return (
     <div className="canvas-editor">
@@ -102,15 +141,6 @@ function CanvasEditor() {
             status={status}
             title="Canvas — Live Preview"
           />
-          
-          <div className="canvas-editor__voice-overlay">
-            <VoiceControl
-              onStart={handleVoiceStart}
-              onStop={handleVoiceStop}
-              isRecording={isRecording}
-              label={isRecording ? 'Listening...' : 'Voice Control'}
-            />
-          </div>
         </div>
 
         {/* Optional: Right sidebar with history, layers, actions */}

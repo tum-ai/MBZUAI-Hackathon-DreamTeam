@@ -1,0 +1,31 @@
+.voice-assistant-overlay {
+  position: fixed;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.voice-assistant-overlay > * {
+  pointer-events: auto;
+}
+
+.voice-assistant-overlay__error {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: rgba(30, 30, 30, 0.85);
+  border-radius: var(--radius-small);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  text-align: center;
+  box-shadow: var(--shadow-small);
+}
+
+@media (max-width: 600px) {
+  .voice-assistant-overlay {
+    right: var(--space-3);
+    bottom: var(--space-3);
+  }
+}
+
+

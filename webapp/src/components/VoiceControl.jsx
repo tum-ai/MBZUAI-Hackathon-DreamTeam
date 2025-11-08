@@ -1,8 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { setAudioVisualizerContainer } from '../lib/voice/audioVisualizer'
 import './VoiceControl.css'
 
-function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to speak' }) {
+function VoiceControl({
+  onStart,
+  onStop,
+  isRecording = false,
+  label,
+  wakeActive = false,
+  interimText = '',
+  disabled = false
+}) {
+  const visualizerRef = useRef(null)
+  const defaultLabel = isRecording
+    ? 'Listening...'
+    : wakeActive
+    ? 'Say "Hey K2"'
+    : 'Voice Control'
+
+  useEffect(() => {
+    const node = visualizerRef.current
+    setAudioVisualizerContainer(node)
+    return () => {
+      if (visualizerRef.current === node) {
+        setAudioVisualizerContainer(null)
+      }
+    }
+  }, [])
+
   const handleClick = () => {
+    if (disabled) return
     if (isRecording) {
       onStop?.()
     } else {
@@ -11,11 +38,19 @@ function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to sp
   }
 
   return (
-    <div className="voice-control">
+    <div className={`voice-control ${wakeActive ? 'voice-control--wake-armed' : ''}`}>
+      <div
+        ref={visualizerRef}
+        className="voice-control__visualizer"
+        aria-hidden="true"
+      />
       <button
-        className={`voice-control__button ${isRecording ? 'voice-control__button--recording' : ''}`}
+        className={`voice-control__button ${
+          isRecording ? 'voice-control__button--recording' : ''
+        }`}
         onClick={handleClick}
         aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+        disabled={disabled}
       >
         <svg
           className="voice-control__icon"
@@ -47,10 +82,15 @@ function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to sp
             strokeLinejoin="round"
           />
         </svg>
-        <span className="voice-control__label">{label}</span>
+        <span className="voice-control__label">{label || defaultLabel}</span>
       </button>
       {isRecording && (
         <div className="voice-control__pulse" aria-hidden="true" />
+      )}
+      {isRecording && interimText && (
+        <div className="voice-control__interim" aria-live="polite">
+          {interimText}
+        </div>
       )}
     </div>
   )

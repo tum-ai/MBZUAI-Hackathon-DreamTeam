@@ -3,6 +3,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  padding: var(--space-3);
 }
 
 .voice-control__button {
@@ -28,6 +29,14 @@
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
+}
+
+.voice-control__button:disabled,
+.voice-control__button:disabled:hover {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
 }
 
 .voice-control__button--recording {
@@ -56,6 +65,46 @@
   border-radius: var(--radius-full);
   border: 2px solid var(--color-accent);
   animation: pulseRing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+.voice-control__visualizer {
+  position: absolute;
+  inset: auto auto -42px -42px;
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 10, 10, 0.35);
+  backdrop-filter: blur(18px);
+  pointer-events: none;
+  transition: border-color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+}
+
+.voice-control__visualizer.speaking {
+  border-color: rgba(255, 107, 53, 0.6);
+  box-shadow: 0 0 40px rgba(255, 107, 53, 0.5);
+}
+
+.voice-control--wake-armed .voice-control__button:not(.voice-control__button--recording) {
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.35);
+}
+
+.voice-control__interim {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-medium);
+  background: rgba(15, 15, 15, 0.75);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  box-shadow: var(--shadow-medium);
   pointer-events: none;
 }
 
