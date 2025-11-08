@@ -153,15 +153,28 @@ curl -X POST http://localhost:8000/edit \
 
 1. **Set API Key:**
    ```bash
-   echo "K2_API_KEY=your_key" > /llm/.env
+   echo "K2_API_KEY=your_key" > llm/.env
    ```
 
 2. **Start Server:**
    ```bash
-   uvicorn llm.server:app --reload --port 8000
+   cd llm && source venv/bin/activate
+   python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
    ```
 
-3. **Test:**
+3. **Run Tests:**
+   ```bash
+   cd llm/editor/tests
+   python runner.py
+   ```
+   
+   The test suite will:
+   - Run 10 comprehensive tests in parallel
+   - Test both generate and edit actions
+   - Validate component structure
+   - Save results to `results/run-N/`
+
+4. **Manual Test:**
    ```bash
    curl -X POST http://localhost:8000/edit \
      -H "Content-Type: application/json" \
