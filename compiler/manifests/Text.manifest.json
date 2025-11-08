@@ -1,12 +1,33 @@
 {
   "componentName": "p",
   "friendlyName": "Text",
+  "description": "Versatile text component for displaying paragraphs, headings, labels, and inline text. Supports semantic HTML tags through 'as' prop for proper document structure and accessibility.",
+  "useCase": "Use for body text, headings (h1-h6), labels, captions, quotes, and any textual content. Critical for content hierarchy and SEO.",
+  "examples": [
+    {
+      "scenario": "Hero heading",
+      "code": { "type": "Text", "props": { "as": "h1", "content": "Transform Your Business", "class": "text-5xl font-bold" } }
+    },
+    {
+      "scenario": "Body paragraph",
+      "code": { "type": "Text", "props": { "content": "Our platform helps you scale efficiently with enterprise-grade tools." } }
+    },
+    {
+      "scenario": "Caption text",
+      "code": { "type": "Text", "props": { "as": "span", "content": "Last updated: March 2024", "class": "text-sm text-gray-500" } }
+    }
+  ],
   "props": {
-    "content": { "type": "string" },
-    "style": { "type": "object" },
-    "as": { "type": "string", "default": "p" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "content": { "type": "string", "description": "The text content to display" },
+    "style": { "type": "object", "description": "Inline CSS styles object" },
+    "as": { "type": "string", "default": "p", "description": "HTML tag to render (p, h1, h2, h3, h4, h5, h6, span, label, etc.)" },
+    "class": { "type": "string", "description": "CSS classes for styling" },
+    "id": { "type": "string", "description": "Unique identifier for the text element" }
   },
-  "slots": []
+  "slots": [],
+  "automation": {
+    "readableText": true,
+    "semanticRole": "Display text content with semantic HTML tags",
+    "note": "Text elements are read-only and non-interactive. Use appropriate 'as' prop for document structure."
+  }
 }

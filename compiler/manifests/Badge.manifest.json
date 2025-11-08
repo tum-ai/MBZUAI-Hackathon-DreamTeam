@@ -1,0 +1,111 @@
+{
+  "componentName": "span",
+  "friendlyName": "Badge",
+  "description": "Small label or indicator for status, counts, or categories. Badges draw attention to new/important information.",
+  "useCase": "Use Badge for: status indicators (New, Beta, Pro), notification counts, category tags, feature labels, version numbers, user roles",
+  "examples": [
+    "New feature indicator (New!)",
+    "Notification count (5)",
+    "Status badge (Active, Pending)",
+    "Category tag (Featured, Premium)",
+    "Version label (v2.0)"
+  ],
+  "props": {
+    "content": {
+      "type": "string",
+      "required": true,
+      "description": "Badge text or number"
+    },
+    "style": {
+      "type": "object",
+      "description": "CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "success", "warning", "error", "info", "outline"],
+      "default": "default",
+      "description": "Visual style variant"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["sm", "md", "lg"],
+      "default": "md",
+      "description": "Badge size"
+    }
+  },
+  "slots": [],
+  "events": ["click"],
+  "variants": {
+    "default": {
+      "description": "Gray badge for general use",
+      "props": {
+        "style": {
+          "backgroundColor": "#6b7280",
+          "color": "#ffffff",
+          "padding": "0.25rem 0.75rem",
+          "borderRadius": "9999px",
+          "fontSize": "0.75rem",
+          "fontWeight": "600",
+          "display": "inline-block"
+        }
+      }
+    },
+    "success": {
+      "description": "Green badge for positive status",
+      "props": {
+        "style": {
+          "backgroundColor": "#10b981",
+          "color": "#ffffff",
+          "padding": "0.25rem 0.75rem",
+          "borderRadius": "9999px",
+          "fontSize": "0.75rem",
+          "fontWeight": "600"
+        }
+      }
+    },
+    "warning": {
+      "description": "Yellow badge for caution",
+      "props": {
+        "style": {
+          "backgroundColor": "#f59e0b",
+          "color": "#ffffff",
+          "padding": "0.25rem 0.75rem",
+          "borderRadius": "9999px",
+          "fontSize": "0.75rem",
+          "fontWeight": "600"
+        }
+      }
+    },
+    "error": {
+      "description": "Red badge for errors/alerts",
+      "props": {
+        "style": {
+          "backgroundColor": "#ef4444",
+          "color": "#ffffff",
+          "padding": "0.25rem 0.75rem",
+          "borderRadius": "9999px",
+          "fontSize": "0.75rem",
+          "fontWeight": "600"
+        }
+      }
+    }
+  },
+  "bestPractices": [
+    "Keep text very short (1-3 words or numbers)",
+    "Use semantic variants (success/error) for status",
+    "Place next to relevant content",
+    "Use small size for subtle indicators"
+  ],
+  "automation": {
+    "clickable": "conditional",
+    "note": "Can be clickable if used as a filter tag or interactive element"
+  }
+}

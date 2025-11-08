@@ -1,12 +1,35 @@
 {
     "componentName": "a",
     "friendlyName": "Link",
+    "description": "Navigation link component for internal and external links. Supports slots for custom content (text, icons, images). Interactive and keyboard-accessible.",
+    "useCase": "Use for navigation menus, text links, call-to-action links, footer links, breadcrumbs, and any clickable navigation. Can contain text, icons, or images as children.",
+    "examples": [
+        {
+            "scenario": "Navigation link",
+            "code": { "type": "Link", "props": { "href": "/about", "target": "_self", "class": "text-blue-600 hover:underline" }, "children": [{ "type": "Text", "props": { "content": "About Us" } }] }
+        },
+        {
+            "scenario": "External link",
+            "code": { "type": "Link", "props": { "href": "https://example.com", "target": "_blank", "class": "flex items-center gap-2" }, "children": [{ "type": "Text", "props": { "content": "Visit Site" } }, { "type": "Icon", "props": { "name": "external-link" } }] }
+        },
+        {
+            "scenario": "Logo link",
+            "code": { "type": "Link", "props": { "href": "/", "target": "_self" }, "children": [{ "type": "Image", "props": { "src": "/logo.svg", "alt": "Home" } }] }
+        }
+    ],
     "props": {
-        "href": { "type": "string" },
-        "target": { "type": "string", "default": "_blank" },
-        "style": { "type": "object" },
-        "class": { "type": "string" },
-    "id": { "type": "string" }
+        "href": { "type": "string", "description": "URL destination (relative or absolute)" },
+        "target": { "type": "string", "default": "_blank", "description": "Where to open link (_self, _blank, _parent, _top)" },
+        "style": { "type": "object", "description": "Inline CSS styles" },
+        "class": { "type": "string", "description": "CSS classes for styling and hover effects" },
+        "id": { "type": "string", "description": "Unique identifier" }
     },
-    "slots": [ "default" ]
+    "slots": [ "default" ],
+    "automation": {
+        "interactive": true,
+        "action": "navigate",
+        "semanticRole": "Clickable link for navigation",
+        "recognitionPattern": "Detected by <a> tag, automatically recognized by automation_agent.js",
+        "note": "Links trigger navigation actions. Use target='_blank' for external sites, '_self' for internal routing."
+    }
 }

@@ -1,0 +1,158 @@
+{
+  "componentName": "Toggle",
+  "friendlyName": "Toggle",
+  "description": "Toggle switch component for boolean on/off states. Modern alternative to checkboxes for settings and feature flags. Animated transition between states.",
+  "useCase": "Use for settings (dark mode, notifications), feature toggles, binary preferences, and any yes/no or on/off choice where the visual metaphor of a switch is appropriate.",
+  "examples": [
+    {
+      "scenario": "Dark mode toggle",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "flex items-center gap-3"
+        },
+        "children": [
+          {
+            "type": "Toggle",
+            "props": {
+              "id": "dark-mode-toggle",
+              "modelValue": "$.darkMode",
+              "variant": "default"
+            }
+          },
+          {
+            "type": "Text",
+            "props": {
+              "content": "Dark Mode",
+              "as": "label",
+              "class": "cursor-pointer"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Notification settings",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "space-y-3"
+        },
+        "children": [
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex justify-between items-center"
+            },
+            "children": [
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Email Notifications"
+                }
+              },
+              {
+                "type": "Toggle",
+                "props": {
+                  "modelValue": "$.emailNotifications",
+                  "variant": "success"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex justify-between items-center"
+            },
+            "children": [
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Push Notifications"
+                }
+              },
+              {
+                "type": "Toggle",
+                "props": {
+                  "modelValue": "$.pushNotifications",
+                  "variant": "success"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "props": {
+    "modelValue": {
+      "type": "stateBinding",
+      "description": "Boolean state binding (e.g., '$.isEnabled')"
+    },
+    "variant": {
+      "type": "string",
+      "default": "default",
+      "description": "Visual style variant"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether toggle is disabled"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    }
+  },
+  "slots": [],
+  "events": ["change"],
+  "variants": [
+    {
+      "name": "default",
+      "description": "Blue toggle switch",
+      "classes": {
+        "track": "w-11 h-6 bg-gray-300 rounded-full transition-colors",
+        "trackActive": "bg-blue-600",
+        "thumb": "w-4 h-4 bg-white rounded-full shadow-md transform transition-transform",
+        "thumbActive": "translate-x-5"
+      }
+    },
+    {
+      "name": "success",
+      "description": "Green toggle for positive actions",
+      "classes": {
+        "track": "w-11 h-6 bg-gray-300 rounded-full transition-colors",
+        "trackActive": "bg-green-500",
+        "thumb": "w-4 h-4 bg-white rounded-full shadow-md transform transition-transform",
+        "thumbActive": "translate-x-5"
+      }
+    },
+    {
+      "name": "compact",
+      "description": "Smaller toggle for dense layouts",
+      "classes": {
+        "track": "w-9 h-5 bg-gray-300 rounded-full transition-colors",
+        "trackActive": "bg-blue-600",
+        "thumb": "w-3 h-3 bg-white rounded-full shadow-md transform transition-transform",
+        "thumbActive": "translate-x-4"
+      }
+    }
+  ],
+  "automation": {
+    "interactive": true,
+    "action": "click",
+    "componentType": "toggle",
+    "semanticRole": "Toggle switch for boolean state",
+    "recognitionPattern": "Toggle is a clickable div with role='switch' and data-component-type='toggle', detected by automation_agent.js v20",
+    "note": "Toggles can be clicked to change state. Automation reads aria-checked attribute for current state (true/false)."
+  }
+}

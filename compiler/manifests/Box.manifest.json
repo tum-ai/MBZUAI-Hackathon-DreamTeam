@@ -1,10 +1,38 @@
 {
   "componentName": "div",
   "friendlyName": "Box",
+  "description": "The fundamental layout container. Use Box as the primary building block for all layouts - sections, grids, flex containers, wrappers, and any structural element.",
+  "useCase": "Use Box for: layout structure (flex, grid), sections/containers, wrappers for grouping, positioning contexts (relative/absolute), spacing control (padding, margin)",
+  "examples": [
+    "Hero section container with flex layout",
+    "Grid container for feature cards",
+    "Wrapper for absolute positioning",
+    "Spacer/separator elements"
+  ],
   "props": {
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "style": { 
+      "type": "object",
+      "description": "CSS styles - most commonly used for display (flex/grid), positioning, spacing, and sizing"
+    },
+    "class": { 
+      "type": "string",
+      "description": "CSS class name for styling"
+    },
+    "id": { 
+      "type": "string",
+      "description": "Unique identifier for the element"
+    },
+    "as": {
+      "type": "string",
+      "default": "div",
+      "description": "HTML tag to render as (div, section, article, aside, nav, header, footer, main)"
+    }
   },
-  "slots": ["default"]
+  "slots": ["default"],
+  "events": [],
+  "bestPractices": [
+    "Use 'as' prop to render semantic HTML (section, article, nav, etc.)",
+    "Prefer flex/grid over float for layouts",
+    "Use relative positioning for creating positioning contexts"
+  ]
 }

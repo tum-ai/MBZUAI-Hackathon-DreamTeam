@@ -1,0 +1,87 @@
+{
+  "componentName": "div",
+  "friendlyName": "Tabs",
+  "description": "Tabbed interface for organizing content into switchable panels. Essential for complex UIs with multiple views.",
+  "useCase": "Use Tabs for: settings panels, product details (description/specs/reviews), dashboard sections, documentation navigation, multi-step processes",
+  "examples": [
+    "Product page tabs (Overview, Specs, Reviews)",
+    "Settings panel (Profile, Security, Notifications)",
+    "Dashboard (Analytics, Reports, Settings)",
+    "Documentation sections"
+  ],
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "CSS styles for tab container"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "tabs": {
+      "type": "array",
+      "required": true,
+      "description": "Array of tab objects: [{id: 'tab1', label: 'Tab 1'}, ...]"
+    },
+    "activeTab": {
+      "type": "stateBinding",
+      "description": "State binding for currently active tab ID"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["underline", "pills", "boxed"],
+      "default": "underline",
+      "description": "Visual style of tabs"
+    }
+  },
+  "slots": ["default"],
+  "events": ["click"],
+  "composition": {
+    "template": "tab-list + tab-panels",
+    "note": "Children should be TabPanel components with matching IDs"
+  },
+  "variants": {
+    "underline": {
+      "description": "Tabs with bottom underline indicator",
+      "props": {
+        "style": {
+          "borderBottom": "1px solid #e5e7eb"
+        }
+      }
+    },
+    "pills": {
+      "description": "Rounded pill-style tabs",
+      "props": {
+        "style": {
+          "backgroundColor": "#f3f4f6",
+          "borderRadius": "9999px",
+          "padding": "0.25rem"
+        }
+      }
+    },
+    "boxed": {
+      "description": "Bordered box tabs",
+      "props": {
+        "style": {
+          "border": "1px solid #e5e7eb",
+          "borderRadius": "0.5rem"
+        }
+      }
+    }
+  },
+  "bestPractices": [
+    "Limit to 3-7 tabs for usability",
+    "Use short, clear tab labels",
+    "Show active tab clearly",
+    "Consider responsive behavior (stack on mobile)"
+  ],
+  "automation": {
+    "clickable": true,
+    "selector": "[data-component-type='tab-button']",
+    "note": "Each tab button should be separately clickable. Mark with data-component-type='tab-button'"
+  }
+}

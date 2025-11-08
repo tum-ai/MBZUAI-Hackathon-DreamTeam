@@ -1,0 +1,136 @@
+{
+  "componentName": "Dialog",
+  "friendlyName": "Dialog",
+  "description": "Modal dialog/popup component with backdrop overlay. Contains a close button and customizable content area. Controlled by state binding for open/close.",
+  "useCase": "Use for modals, popups, alerts, confirmations, forms in overlay, image lightboxes, and any content that requires user focus and blocks interaction with the page.",
+  "examples": [
+    {
+      "scenario": "Confirmation dialog",
+      "code": {
+        "type": "Dialog",
+        "props": {
+          "id": "confirm-dialog",
+          "isOpen": "$.showConfirmDialog",
+          "title": "Delete Account",
+          "class": "max-w-md"
+        },
+        "children": [
+          {
+            "type": "Text",
+            "props": {
+              "content": "Are you sure you want to delete your account? This action cannot be undone.",
+              "class": "mb-4"
+            }
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex gap-3 justify-end"
+            },
+            "children": [
+              {
+                "type": "Button",
+                "props": {
+                  "label": "Cancel",
+                  "onClick": "closeConfirmDialog",
+                  "variant": "secondary"
+                }
+              },
+              {
+                "type": "Button",
+                "props": {
+                  "label": "Delete",
+                  "onClick": "confirmDelete",
+                  "variant": "danger"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Contact form modal",
+      "code": {
+        "type": "Dialog",
+        "props": {
+          "id": "contact-modal",
+          "isOpen": "$.showContactModal",
+          "title": "Get in Touch",
+          "class": "max-w-lg"
+        },
+        "children": [
+          {
+            "type": "Textbox",
+            "props": {
+              "placeholder": "Your email",
+              "modelValue": "$.contactEmail",
+              "type": "email",
+              "class": "w-full mb-3"
+            }
+          },
+          {
+            "type": "Textbox",
+            "props": {
+              "placeholder": "Message",
+              "modelValue": "$.contactMessage",
+              "class": "w-full mb-4"
+            }
+          },
+          {
+            "type": "Button",
+            "props": {
+              "label": "Send Message",
+              "onClick": "submitContactForm",
+              "class": "w-full"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "props": {
+    "isOpen": {
+      "type": "stateBinding",
+      "description": "Boolean state binding controlling visibility (e.g., '$.isDialogOpen')"
+    },
+    "title": {
+      "type": "string",
+      "description": "Dialog title shown in header"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles for dialog content"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for dialog sizing and styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier, used for close button ID"
+    }
+  },
+  "slots": ["default"],
+  "events": ["close"],
+  "variants": [
+    {
+      "name": "default",
+      "description": "Standard centered modal with backdrop",
+      "defaultClasses": "bg-white rounded-lg shadow-xl p-6 relative z-50"
+    },
+    {
+      "name": "fullscreen",
+      "description": "Full viewport modal",
+      "defaultClasses": "bg-white w-screen h-screen p-8 overflow-auto"
+    }
+  ],
+  "automation": {
+    "interactive": true,
+    "action": "click_close",
+    "componentType": "dialog",
+    "semanticRole": "Modal overlay with close button",
+    "recognitionPattern": "Dialog close button has ID '{dialog-id}.close-button' and role='button' for automation_agent.js v20 detection",
+    "note": "Automation should target the close button (×) to dismiss. Dialog backdrop click may also close. Trap focus within dialog for accessibility."
+  }
+}

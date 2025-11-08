@@ -1,12 +1,53 @@
 {
   "componentName": "table",
   "friendlyName": "Table",
+  "description": "Structured data table component for displaying tabular information with headers and rows. Supports responsive layouts and custom cell formatting.",
+  "useCase": "Use for pricing comparisons, feature matrices, data reports, schedules, product specifications, and any structured data that requires rows and columns.",
+  "examples": [
+    {
+      "scenario": "Pricing comparison table",
+      "code": { 
+        "type": "Table", 
+        "props": { 
+          "id": "pricing-table",
+          "headers": ["Feature", "Basic", "Pro", "Enterprise"], 
+          "rows": [
+            ["Users", "5", "25", "Unlimited"],
+            ["Storage", "10 GB", "100 GB", "1 TB"],
+            ["Support", "Email", "Priority", "24/7 Phone"]
+          ],
+          "class": "w-full border-collapse" 
+        } 
+      }
+    },
+    {
+      "scenario": "Product specifications",
+      "code": { 
+        "type": "Table", 
+        "props": { 
+          "id": "specs",
+          "headers": ["Specification", "Value"], 
+          "rows": [
+            ["Weight", "2.5 kg"],
+            ["Dimensions", "30 x 20 x 10 cm"],
+            ["Material", "Aluminum"]
+          ],
+          "class": "text-sm" 
+        } 
+      }
+    }
+  ],
   "props": {
-    "headers": { "type": "array" },
-    "rows": { "type": "array" },
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "headers": { "type": "array", "description": "Array of header cell strings for <thead>" },
+    "rows": { "type": "array", "description": "2D array of row data, each row is array of cell strings" },
+    "style": { "type": "object", "description": "Inline CSS styles for table element" },
+    "class": { "type": "string", "description": "CSS classes for styling (borders, spacing, responsive)" },
+    "id": { "type": "string", "description": "Unique identifier for the table" }
   },
-  "slots": []
+  "slots": [],
+  "automation": {
+    "dataStructure": true,
+    "semanticRole": "Display structured tabular data with headers and rows",
+    "note": "Tables are read-only displays. Individual cells are not interactive but the table structure is scrapeable for data extraction."
+  }
 }

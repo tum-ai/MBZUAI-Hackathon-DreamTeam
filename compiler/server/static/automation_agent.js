@@ -21,6 +21,66 @@
     };
 
     /**
+     * V20: Enhanced to detect more interactive component types
+     */
+    const getComponentType = (element) => {
+        // Check explicit component type marker
+        const explicitType = element.getAttribute('data-component-type');
+        if (explicitType) return explicitType;
+        
+        // Detect by ID patterns (semantic IDs)
+        const navId = element.getAttribute('data-nav-id') || '';
+        
+        // Check for specific component patterns in ID
+        if (navId.includes('accordion') && navId.includes('header')) return 'accordion-header';
+        if (navId.includes('tab') && navId.includes('button')) return 'tab-button';
+        if (navId.includes('dialog') && navId.includes('close')) return 'dialog-close';
+        if (navId.includes('modal') && navId.includes('close')) return 'modal-close';
+        if (navId.includes('toggle') || navId.includes('switch')) return 'toggle';
+        
+        // Check for role attribute
+        const role = element.getAttribute('role');
+        if (role === 'button' || role === 'tab' || role === 'switch') return role;
+        
+        // Check for click event handlers on divs (custom interactive elements)
+        if (element.tagName === 'DIV' && element.hasAttribute('@click')) return 'clickable-div';
+        
+        // Standard form elements
+        if (element.tagName === 'SELECT') return 'select';
+        if (element.tagName === 'INPUT') {
+            const inputType = element.getAttribute('type');
+            if (inputType === 'checkbox') return 'checkbox';
+            if (inputType === 'radio') return 'radio';
+            return 'input';
+        }
+        
+        return element.tagName.toLowerCase();
+    };
+
+    /**
+     * V20: Determines if an element is interactive
+     */
+    const isInteractive = (element) => {
+        const interactiveTags = ['button', 'a', 'input', 'textarea', 'select'];
+        const componentType = getComponentType(element);
+        const interactiveTypes = [
+            'accordion-header', 'tab-button', 'dialog-close', 'modal-close',
+            'toggle', 'switch', 'checkbox', 'radio', 'select', 'clickable-div'
+        ];
+        
+        // Check if it's a standard interactive element
+        if (interactiveTags.includes(element.tagName.toLowerCase())) return true;
+        
+        // Check if it has an interactive component type
+        if (interactiveTypes.includes(componentType)) return true;
+        
+        // Check if it has click handlers (Vue @click attribute won't be in DOM, but check for onclick)
+        if (element.onclick || element.hasAttribute('onclick')) return true;
+        
+        return false;
+    };
+
+    /**
      * Captures DOM snapshot of all elements with data-nav-id
      */
     const captureDOMSnapshot = () => {
@@ -34,10 +94,14 @@
             const navId = element.getAttribute('data-nav-id');
             const rect = element.getBoundingClientRect();
             const isVisible = isElementVisible(element);
+            const componentType = getComponentType(element);
+            const interactive = isInteractive(element);
 
             snapshot.push({
                 navId,
                 tagName: element.tagName.toLowerCase(),
+                componentType, // V20: Added component type detection
+                isInteractive: interactive, // V20: Added interactivity flag
                 text: (element.textContent || '').trim().substring(0, 100),
                 isVisible: isVisible,
                 position: {
@@ -52,6 +116,9 @@
                 // element.className can be an SVGAnimatedString, which is not cloneable.
                 // getAttribute('class') always returns a plain string.
                 className: element.getAttribute('class') || '',
+                // V20: Additional metadata
+                role: element.getAttribute('role') || null,
+                ariaLabel: element.getAttribute('aria-label') || null
             });
         });
         return snapshot;

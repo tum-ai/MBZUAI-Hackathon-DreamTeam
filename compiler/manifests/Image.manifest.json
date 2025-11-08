@@ -1,22 +1,33 @@
 {
     "componentName": "img",
     "friendlyName": "Image",
-    "props": {
-        "src": {
-            "type": "string"
+    "description": "Image component for displaying photos, graphics, icons, logos, and visual content. Supports responsive sizing and accessibility through alt text.",
+    "useCase": "Use for hero images, product photos, team pictures, logos, decorative graphics, and any visual content. Always provide descriptive alt text for accessibility.",
+    "examples": [
+        {
+            "scenario": "Hero image",
+            "code": { "type": "Image", "props": { "src": "/images/hero.jpg", "alt": "Team collaborating on project", "class": "w-full h-96 object-cover" } }
         },
-        "alt": {
-            "type": "string"
+        {
+            "scenario": "Logo",
+            "code": { "type": "Image", "props": { "src": "/logo.svg", "alt": "Company logo", "class": "h-12 w-auto" } }
         },
-        "style": {
-            "type": "object"
-        },
-        "class": {
-            "type": "string"
-        },
-        "id": {
-            "type": "string"
+        {
+            "scenario": "Product thumbnail",
+            "code": { "type": "Image", "props": { "src": "/products/item1.jpg", "alt": "Wireless headphones in black", "class": "rounded-lg shadow-md" } }
         }
+    ],
+    "props": {
+        "src": { "type": "string", "description": "Image source URL (relative or absolute path)" },
+        "alt": { "type": "string", "description": "Alternative text for accessibility and SEO (required)" },
+        "style": { "type": "object", "description": "Inline CSS styles" },
+        "class": { "type": "string", "description": "CSS classes for responsive sizing and styling" },
+        "id": { "type": "string", "description": "Unique identifier" }
     },
-    "slots": []
+    "slots": [],
+    "automation": {
+        "visualElement": true,
+        "semanticRole": "Display visual content with accessibility metadata",
+        "note": "Images are non-interactive but should have meaningful alt text. Can be wrapped in Link for clickable images."
+    }
 }

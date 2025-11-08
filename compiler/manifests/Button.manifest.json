@@ -1,12 +1,55 @@
 {
   "componentName": "button",
   "friendlyName": "Button",
+  "description": "Interactive button element for user actions. Buttons are the primary way users interact with the application.",
+  "useCase": "Use Button for: form submissions, navigation triggers, action confirmations, modal opens/closes, state changes, any user-initiated action",
+  "examples": [
+    "Call-to-action buttons (Sign Up, Get Started)",
+    "Form submit buttons",
+    "Navigation buttons (Next, Previous)",
+    "Action buttons (Delete, Edit, Save)",
+    "Modal triggers (Open Menu, Show Details)"
+  ],
   "props": {
-    "text": { "type": "string" },
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "text": { 
+      "type": "string",
+      "description": "Button label text (alternative to using slot)"
+    },
+    "style": { 
+      "type": "object",
+      "description": "CSS styles - commonly used for colors, padding, borders, shadows"
+    },
+    "class": { 
+      "type": "string",
+      "description": "CSS class name for styling"
+    },
+    "id": { 
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Disables the button interaction"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["button", "submit", "reset"],
+      "default": "button",
+      "description": "Button type for forms"
+    }
   },
   "slots": ["default"],
-  "events": ["click"]
+  "events": ["click", "focus", "blur"],
+  "bestPractices": [
+    "Use descriptive text (not just 'Click Here')",
+    "Make buttons visually distinct (color, size, shadow)",
+    "Add hover/active states for feedback",
+    "Ensure sufficient padding for touch targets (min 44x44px)"
+  ],
+  "automation": {
+    "clickable": true,
+    "selector": "button",
+    "note": "Automatically recognized by automation system"
+  }
 }

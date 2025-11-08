@@ -1,0 +1,208 @@
+{
+  "componentName": "Radio",
+  "friendlyName": "Radio",
+  "description": "Radio button input for single selection from multiple options. Native HTML radio with custom styling. Must be used in groups with same name attribute.",
+  "useCase": "Use for mutually exclusive choices (payment method, shipping option, plan selection), single-answer questions, and any scenario where only one option can be selected from a group.",
+  "examples": [
+    {
+      "scenario": "Payment method selector",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "space-y-3"
+        },
+        "children": [
+          {
+            "type": "Text",
+            "props": {
+              "content": "Payment Method",
+              "class": "font-semibold mb-2"
+            }
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Radio",
+                "props": {
+                  "id": "payment-card",
+                  "name": "payment",
+                  "value": "card",
+                  "modelValue": "$.paymentMethod"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Credit Card",
+                  "as": "label"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Radio",
+                "props": {
+                  "id": "payment-paypal",
+                  "name": "payment",
+                  "value": "paypal",
+                  "modelValue": "$.paymentMethod"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "PayPal",
+                  "as": "label"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Radio",
+                "props": {
+                  "id": "payment-bank",
+                  "name": "payment",
+                  "value": "bank",
+                  "modelValue": "$.paymentMethod"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Bank Transfer",
+                  "as": "label"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Plan selection",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "space-y-2"
+        },
+        "children": [
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Radio",
+                "props": {
+                  "id": "plan-free",
+                  "name": "plan",
+                  "value": "free",
+                  "modelValue": "$.selectedPlan"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Free - $0/month"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Radio",
+                "props": {
+                  "id": "plan-pro",
+                  "name": "plan",
+                  "value": "pro",
+                  "modelValue": "$.selectedPlan"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Pro - $29/month"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "props": {
+    "name": {
+      "type": "string",
+      "description": "Group name - all radios in same group must share this"
+    },
+    "value": {
+      "type": "string",
+      "description": "Value of this specific radio option"
+    },
+    "modelValue": {
+      "type": "stateBinding",
+      "description": "State binding to selected value (e.g., '$.selectedOption')"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether radio is disabled"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this radio, links to label"
+    }
+  },
+  "slots": [],
+  "events": ["change"],
+  "variants": [
+    {
+      "name": "default",
+      "description": "Standard radio with blue accent",
+      "classes": "w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+    },
+    {
+      "name": "large",
+      "description": "Larger radio for touch interfaces",
+      "classes": "w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
+    }
+  ],
+  "automation": {
+    "interactive": true,
+    "action": "click",
+    "componentType": "radio",
+    "semanticRole": "Single-select radio button in a group",
+    "recognitionPattern": "Detected by <input type='radio'>, enhanced recognition in automation_agent.js v20",
+    "note": "Clicking a radio selects it and deselects others in the same name group. Automation reads 'checked' attribute for current selection. All radios in group share 'name' attribute."
+  }
+}

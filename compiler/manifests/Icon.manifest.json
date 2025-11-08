@@ -1,12 +1,33 @@
 {
   "componentName": "svg",
   "friendlyName": "Icon",
+  "description": "SVG icon component for displaying vector icons via SVG path data. Scalable, styleable, and accessible. Commonly used inline with text or as visual indicators.",
+  "useCase": "Use for UI icons (arrows, checkmarks, menu icons), social media icons, feature indicators, button icons, and decorative vector graphics. Pair with aria-label for accessibility.",
+  "examples": [
+    {
+      "scenario": "Checkmark icon",
+      "code": { "type": "Icon", "props": { "svgPath": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z", "class": "w-6 h-6 text-green-500" } }
+    },
+    {
+      "scenario": "Menu hamburger",
+      "code": { "type": "Icon", "props": { "svgPath": "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z", "class": "w-8 h-8 text-gray-700" } }
+    },
+    {
+      "scenario": "External link arrow",
+      "code": { "type": "Icon", "props": { "svgPath": "M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z", "viewBox": "0 0 24 24", "class": "w-4 h-4 inline ml-1" } }
+    }
+  ],
   "props": {
-    "svgPath": { "type": "string" },
-    "viewBox": { "type": "string", "default": "0 0 24 24" },
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "svgPath": { "type": "string", "description": "SVG <path> d attribute (path data commands)" },
+    "viewBox": { "type": "string", "default": "0 0 24 24", "description": "SVG viewBox for coordinate system" },
+    "style": { "type": "object", "description": "Inline CSS styles" },
+    "class": { "type": "string", "description": "CSS classes for size and color (w-6 h-6, text-blue-500)" },
+    "id": { "type": "string", "description": "Unique identifier" }
   },
-  "slots": []
+  "slots": [],
+  "automation": {
+    "visualElement": true,
+    "semanticRole": "Display vector icon as decorative or semantic indicator",
+    "note": "Icons are non-interactive by themselves. Wrap in Button or Link for clickable icons. Use aria-label on parent for screen readers."
+  }
 }

@@ -1,0 +1,77 @@
+{
+  "componentName": "select",
+  "friendlyName": "Select",
+  "description": "Dropdown select component for choosing one option from a list. Native HTML select element with v-model binding. Keyboard navigable and accessible.",
+  "useCase": "Use for dropdowns, filters, country selectors, category pickers, and any single-choice selection from predefined options. Prefer over custom dropdowns for accessibility.",
+  "examples": [
+    {
+      "scenario": "Country selector",
+      "code": {
+        "type": "Select",
+        "props": {
+          "id": "country-select",
+          "modelValue": "$.selectedCountry",
+          "options": [
+            { "value": "us", "label": "United States" },
+            { "value": "uk", "label": "United Kingdom" },
+            { "value": "ca", "label": "Canada" }
+          ],
+          "class": "border rounded px-3 py-2"
+        }
+      }
+    },
+    {
+      "scenario": "Sort filter",
+      "code": {
+        "type": "Select",
+        "props": {
+          "id": "sort-select",
+          "modelValue": "$.sortBy",
+          "placeholder": "Sort by...",
+          "options": [
+            { "value": "name", "label": "Name" },
+            { "value": "date", "label": "Date" },
+            { "value": "price", "label": "Price" }
+          ],
+          "class": "bg-white border-gray-300 rounded"
+        }
+      }
+    }
+  ],
+  "props": {
+    "options": {
+      "type": "array",
+      "description": "Array of {value, label} objects for <option> elements"
+    },
+    "modelValue": {
+      "type": "stateBinding",
+      "description": "v-model binding to state variable (e.g., '$.selectedValue')"
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Optional first option with empty value as placeholder"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    }
+  },
+  "slots": [],
+  "events": ["change"],
+  "automation": {
+    "interactive": true,
+    "action": "select",
+    "componentType": "select",
+    "semanticRole": "Dropdown selection with keyboard navigation",
+    "recognitionPattern": "Detected by <select> tag, enhanced recognition in automation_agent.js v20",
+    "note": "Supports automation actions: select(option_value), focus(). Native select element is keyboard accessible (arrow keys, type to search)."
+  }
+}

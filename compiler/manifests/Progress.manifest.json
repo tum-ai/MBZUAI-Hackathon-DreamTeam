@@ -1,0 +1,138 @@
+{
+  "componentName": "Progress",
+  "friendlyName": "Progress",
+  "description": "Progress bar component for showing completion percentage or loading state. Can be determinate (with value) or indeterminate (animated without value).",
+  "useCase": "Use for file uploads, form completion, loading indicators, skill levels, goal tracking, and any visual progress representation.",
+  "examples": [
+    {
+      "scenario": "File upload progress",
+      "code": {
+        "type": "Progress",
+        "props": {
+          "id": "upload-progress",
+          "value": "$.uploadProgress",
+          "max": 100,
+          "variant": "default",
+          "class": "w-full"
+        }
+      }
+    },
+    {
+      "scenario": "Loading spinner alternative",
+      "code": {
+        "type": "Progress",
+        "props": {
+          "id": "loading-bar",
+          "variant": "indeterminate",
+          "class": "w-64"
+        }
+      }
+    },
+    {
+      "scenario": "Skill level indicator",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "space-y-2"
+        },
+        "children": [
+          {
+            "type": "Text",
+            "props": {
+              "content": "JavaScript - 85%",
+              "class": "text-sm font-medium"
+            }
+          },
+          {
+            "type": "Progress",
+            "props": {
+              "value": 85,
+              "max": 100,
+              "variant": "success",
+              "class": "w-full h-2"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "description": "Current progress value (0 to max). Can be state binding like '$.progress'"
+    },
+    "max": {
+      "type": "number",
+      "default": 100,
+      "description": "Maximum value for progress calculation"
+    },
+    "variant": {
+      "type": "string",
+      "default": "default",
+      "description": "Visual style variant"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for sizing and styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    }
+  },
+  "slots": [],
+  "variants": [
+    {
+      "name": "default",
+      "description": "Blue progress bar",
+      "defaultClasses": "bg-gray-200 rounded-full h-2.5",
+      "barClasses": "bg-blue-600 h-full rounded-full transition-all duration-300"
+    },
+    {
+      "name": "success",
+      "description": "Green progress bar",
+      "defaultClasses": "bg-gray-200 rounded-full h-2.5",
+      "barClasses": "bg-green-500 h-full rounded-full transition-all duration-300"
+    },
+    {
+      "name": "warning",
+      "description": "Orange/yellow progress bar",
+      "defaultClasses": "bg-gray-200 rounded-full h-2.5",
+      "barClasses": "bg-yellow-500 h-full rounded-full transition-all duration-300"
+    },
+    {
+      "name": "error",
+      "description": "Red progress bar",
+      "defaultClasses": "bg-gray-200 rounded-full h-2.5",
+      "barClasses": "bg-red-500 h-full rounded-full transition-all duration-300"
+    },
+    {
+      "name": "indeterminate",
+      "description": "Animated loading bar without specific value",
+      "defaultClasses": "bg-gray-200 rounded-full h-2.5 overflow-hidden",
+      "barClasses": "bg-blue-600 h-full animate-indeterminate",
+      "note": "Ignores value prop, shows continuous animation"
+    }
+  ],
+  "animations": {
+    "indeterminate": {
+      "keyframes": {
+        "0%": { "transform": "translateX(-100%)", "width": "50%" },
+        "100%": { "transform": "translateX(200%)", "width": "50%" }
+      },
+      "duration": "1.5s",
+      "timing": "ease-in-out",
+      "iteration": "infinite"
+    }
+  },
+  "automation": {
+    "visualElement": true,
+    "dataElement": true,
+    "semanticRole": "Display progress percentage visually",
+    "note": "Progress bars are non-interactive read-only indicators. Automation can read aria-valuenow attribute to get current value."
+  }
+}

@@ -1,14 +1,41 @@
 {
   "componentName": "input",
   "friendlyName": "Textbox",
+  "description": "Form input component for text entry with v-model binding. Supports various input types (text, email, password, number, tel, url). Interactive and keyboard-accessible.",
+  "useCase": "Use for forms, search bars, login fields, contact forms, filters, and any user text input. Bind to state with modelValue for reactive data.",
+  "examples": [
+    {
+      "scenario": "Email input",
+      "code": { "type": "Textbox", "props": { "type": "email", "placeholder": "Enter your email", "modelValue": "$.email", "class": "border rounded px-4 py-2 w-full" } }
+    },
+    {
+      "scenario": "Search bar",
+      "code": { "type": "Textbox", "props": { "type": "text", "placeholder": "Search products...", "modelValue": "$.searchQuery", "class": "border-2 border-gray-300 rounded-full px-6 py-3" } }
+    },
+    {
+      "scenario": "Password field",
+      "code": { "type": "Textbox", "props": { "type": "password", "placeholder": "Password", "modelValue": "$.password", "class": "border border-gray-400 rounded px-3 py-2" } }
+    },
+    {
+      "scenario": "Number input",
+      "code": { "type": "Textbox", "props": { "type": "number", "placeholder": "Quantity", "modelValue": "$.quantity", "class": "w-20 text-center border rounded" } }
+    }
+  ],
   "props": {
-    "type": { "type": "string", "default": "text" },
-    "placeholder": { "type": "string" },
-    "modelValue": { "type": "stateBinding" },
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "type": { "type": "string", "default": "text", "description": "Input type: text, email, password, number, tel, url, search, etc." },
+    "placeholder": { "type": "string", "description": "Placeholder text shown when input is empty" },
+    "modelValue": { "type": "stateBinding", "description": "v-model binding to state variable (e.g., '$.email')" },
+    "style": { "type": "object", "description": "Inline CSS styles" },
+    "class": { "type": "string", "description": "CSS classes for styling and sizing" },
+    "id": { "type": "string", "description": "Unique identifier, also used for label association" }
   },
   "slots": [],
-  "events": ["input"]
+  "events": ["input"],
+  "automation": {
+    "interactive": true,
+    "action": "type",
+    "semanticRole": "Text input field with keyboard entry",
+    "recognitionPattern": "Detected by <input> tag, automatically recognized by automation_agent.js",
+    "note": "Supports automation actions: type(text), clear(), focus(). The 'input' event updates modelValue binding."
+  }
 }

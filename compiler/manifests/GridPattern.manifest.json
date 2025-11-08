@@ -1,0 +1,67 @@
+{
+  "componentName": "div",
+  "friendlyName": "GridPattern",
+  "description": "Animated grid background pattern. Creates a tech-modern aesthetic with optional animation. Perfect for hero sections and backgrounds.",
+  "useCase": "Use GridPattern for: hero section backgrounds, tech/modern themed pages, section separators, full-page backgrounds, creating depth in layouts",
+  "examples": [
+    "Hero section with animated grid background",
+    "Pricing section background",
+    "Features section with subtle grid",
+    "Landing page full-screen background"
+  ],
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "CSS styles - commonly position: absolute with inset: 0 to fill container"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "color": {
+      "type": "string",
+      "default": "#333333",
+      "description": "Grid line color (hex, rgb, or CSS color name)"
+    },
+    "spacing": {
+      "type": "string",
+      "default": "32px",
+      "description": "Space between grid lines"
+    },
+    "strokeWidth": {
+      "type": "string",
+      "default": "1px",
+      "description": "Width of grid lines"
+    },
+    "animated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable subtle pulse/fade animation"
+    },
+    "opacity": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Grid opacity (0-1)"
+    }
+  },
+  "slots": [],
+  "events": [],
+  "rendering": {
+    "type": "svg-pattern",
+    "note": "Renders as SVG pattern with defs and rect elements"
+  },
+  "bestPractices": [
+    "Use as background with position: absolute",
+    "Set lower opacity (0.3-0.5) for subtle effect",
+    "Place inside a position: relative container",
+    "Layer content above with higher z-index"
+  ],
+  "automation": {
+    "clickable": false,
+    "note": "Background element, not interactive"
+  }
+}

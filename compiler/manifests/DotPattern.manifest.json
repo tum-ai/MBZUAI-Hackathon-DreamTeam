@@ -1,0 +1,67 @@
+{
+  "componentName": "div",
+  "friendlyName": "DotPattern",
+  "description": "Animated dot matrix background pattern. Creates a modern, minimalist aesthetic. Alternative to GridPattern for softer visual effect.",
+  "useCase": "Use DotPattern for: hero backgrounds, modern landing pages, section backgrounds, tech-themed content, creating visual interest without distraction",
+  "examples": [
+    "Landing page hero with dot background",
+    "About section background",
+    "Testimonials section subtle background",
+    "Card hover effect background"
+  ],
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "CSS styles - typically position: absolute to fill container"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "color": {
+      "type": "string",
+      "default": "#888888",
+      "description": "Dot color"
+    },
+    "spacing": {
+      "type": "string",
+      "default": "24px",
+      "description": "Space between dots"
+    },
+    "size": {
+      "type": "string",
+      "default": "2px",
+      "description": "Dot radius"
+    },
+    "animated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable fade/pulse animation"
+    },
+    "opacity": {
+      "type": "number",
+      "default": 0.4,
+      "description": "Dot opacity (0-1)"
+    }
+  },
+  "slots": [],
+  "events": [],
+  "rendering": {
+    "type": "svg-pattern",
+    "note": "Renders as SVG pattern with circle elements"
+  },
+  "bestPractices": [
+    "Use subtle colors and low opacity for background effect",
+    "Smaller dots (1-3px) for modern minimal look",
+    "Larger spacing (30-50px) for cleaner appearance",
+    "Works well with gradient overlays"
+  ],
+  "automation": {
+    "clickable": false,
+    "note": "Background element, decorative only"
+  }
+}

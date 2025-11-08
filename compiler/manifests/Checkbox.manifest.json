@@ -1,0 +1,143 @@
+{
+  "componentName": "Checkbox",
+  "friendlyName": "Checkbox",
+  "description": "Checkbox input for multiple selections. Native HTML checkbox with custom styling and v-model binding. Can be used individually or in groups.",
+  "useCase": "Use for multi-select options, terms acceptance, preferences with multiple choices, filters, and any scenario where users can select multiple items independently.",
+  "examples": [
+    {
+      "scenario": "Terms and conditions",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "flex items-center gap-2"
+        },
+        "children": [
+          {
+            "type": "Checkbox",
+            "props": {
+              "id": "terms-checkbox",
+              "modelValue": "$.acceptedTerms"
+            }
+          },
+          {
+            "type": "Text",
+            "props": {
+              "as": "label",
+              "content": "I agree to the terms and conditions",
+              "class": "cursor-pointer"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Multi-select filter",
+      "code": {
+        "type": "Box",
+        "props": {
+          "class": "space-y-2"
+        },
+        "children": [
+          {
+            "type": "Text",
+            "props": {
+              "content": "Categories",
+              "class": "font-semibold mb-2"
+            }
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Checkbox",
+                "props": {
+                  "id": "cat-tech",
+                  "modelValue": "$.filters.technology"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Technology"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "class": "flex items-center gap-2"
+            },
+            "children": [
+              {
+                "type": "Checkbox",
+                "props": {
+                  "id": "cat-design",
+                  "modelValue": "$.filters.design"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "content": "Design"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "props": {
+    "modelValue": {
+      "type": "stateBinding",
+      "description": "Boolean state binding (e.g., '$.isChecked')"
+    },
+    "value": {
+      "type": "string",
+      "description": "Optional value for checkbox (used in groups/arrays)"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether checkbox is disabled"
+    },
+    "style": {
+      "type": "object",
+      "description": "Inline CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS classes for styling"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier, links to label"
+    }
+  },
+  "slots": [],
+  "events": ["change"],
+  "variants": [
+    {
+      "name": "default",
+      "description": "Standard checkbox with blue accent",
+      "classes": "w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+    },
+    {
+      "name": "large",
+      "description": "Larger checkbox for touch interfaces",
+      "classes": "w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+    }
+  ],
+  "automation": {
+    "interactive": true,
+    "action": "click",
+    "componentType": "checkbox",
+    "semanticRole": "Multi-select checkbox input",
+    "recognitionPattern": "Detected by <input type='checkbox'>, enhanced recognition in automation_agent.js v20",
+    "note": "Checkboxes can be clicked to toggle state. Automation reads 'checked' attribute for current state. Group checkboxes share name but have unique IDs."
+  }
+}

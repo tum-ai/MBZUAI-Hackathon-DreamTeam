@@ -1,11 +1,33 @@
 {
   "componentName": "ul",
   "friendlyName": "List",
+  "description": "Unordered list component for displaying collections of items. Each item gets automatic semantic ID generation for targeting. Supports nested children in each list item.",
+  "useCase": "Use for feature lists, bullet points, navigation menus, item collections, step-by-step instructions, and any vertical or horizontal list of elements.",
+  "examples": [
+    {
+      "scenario": "Feature list",
+      "code": { "type": "List", "props": { "id": "features", "class": "space-y-2" }, "items": [{ "children": [{ "type": "Text", "props": { "content": "✓ Unlimited storage" } }] }, { "children": [{ "type": "Text", "props": { "content": "✓ 24/7 support" } }] }, { "children": [{ "type": "Text", "props": { "content": "✓ Advanced analytics" } }] }] }
+    },
+    {
+      "scenario": "Navigation menu",
+      "code": { "type": "List", "props": { "id": "nav-menu", "class": "flex gap-6" }, "items": [{ "children": [{ "type": "Link", "props": { "href": "/home", "content": "Home" } }] }, { "children": [{ "type": "Link", "props": { "href": "/about", "content": "About" } }] }] }
+    },
+    {
+      "scenario": "Icon list",
+      "code": { "type": "List", "props": { "id": "benefits", "class": "grid grid-cols-2 gap-4" }, "items": [{ "children": [{ "type": "Box", "props": { "class": "flex items-start gap-3" }, "children": [{ "type": "Icon", "props": { "name": "check" } }, { "type": "Text", "props": { "content": "Fast delivery" } }] }] }] }
+    }
+  ],
   "props": {
-    "items": { "type": "array" },
-    "style": { "type": "object" },
-    "class": { "type": "string" },
-    "id": { "type": "string" }
+    "items": { "type": "array", "description": "Array of list items, each with 'children' array of components" },
+    "style": { "type": "object", "description": "Inline CSS styles for the list container" },
+    "class": { "type": "string", "description": "CSS classes for layout (flex, grid, space-y, etc.)" },
+    "id": { "type": "string", "description": "List ID, used to generate item IDs like 'list-id.item-0', 'list-id.item-1'" }
   },
-  "slots": []
+  "slots": [],
+  "automation": {
+    "container": true,
+    "semanticRole": "Collection of list items with auto-generated IDs for each item",
+    "idPattern": "List items get IDs: '{list-id}.item-{index}' (e.g., 'nav-menu.item-0', 'nav-menu.item-1')",
+    "note": "List items themselves are non-interactive, but can contain interactive children (Links, Buttons). Each <li> element automatically receives data-nav-id attribute."
+  }
 }
