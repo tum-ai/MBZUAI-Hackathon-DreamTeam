@@ -2,20 +2,24 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar'
 import GlassCard from '../components/GlassCard'
-import VoiceControl from '../components/VoiceControl'
 import './TemplateSelection.css'
 
 function TemplateSelection() {
   const navigate = useNavigate()
   const [selectedOption, setSelectedOption] = useState(null)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [inspectingOption, setInspectingOption] = useState(null)
 
   const options = [
-    { id: 'A', label: 'Option A' },
-    { id: 'B', label: 'Option B' },
-    { id: 'C', label: 'Option C' },
-    { id: 'D', label: 'Option D' }
+    { id: 'A' },
+    { id: 'B' },
+    { id: 'C' },
+    { id: 'D' }
   ]
+
+  const handleInspect = (optionId) => {
+    setInspectingOption(optionId)
+  }
 
   const handleSelect = (optionId) => {
     setSelectedOption(optionId)
@@ -29,13 +33,8 @@ function TemplateSelection() {
     }, 400)
   }
 
-  const handleVoiceStart = () => {
-    console.log('Voice recording started')
-    // TODO: Integrate voice command parsing (e.g., "select the one in the middle")
-  }
-
-  const handleVoiceStop = () => {
-    console.log('Voice recording stopped')
+  const handleCloseInspection = () => {
+    setInspectingOption(null)
   }
 
   return (
@@ -63,46 +62,78 @@ function TemplateSelection() {
               <GlassCard
                 hoverable={true}
                 className="template-selection__card"
-                onClick={() => handleSelect(option.id)}
               >
-                <div className="template-selection__iframe-wrapper">
-                  <iframe
-                    src="http://localhost:5174"
-                    className="template-selection__iframe"
-                    title={option.label}
-                    sandbox="allow-same-origin allow-scripts"
-                  />
-                </div>
-                <div className="template-selection__card-footer">
-                  <span className="template-selection__card-label">
-                    {option.label}
-                  </span>
-                  <button 
-                    className="template-selection__select-btn"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleSelect(option.id)
-                    }}
-                  >
-                    Select
-                  </button>
-                </div>
+                <iframe
+                  src="http://localhost:5174"
+                  className="template-selection__iframe"
+                  title={`Design Option ${option.id}`}
+                  sandbox="allow-same-origin allow-scripts"
+                />
+                <div 
+                  className="template-selection__overlay-left"
+                  onClick={() => handleInspect(option.id)}
+                  aria-label={`Inspect design option ${option.id}`}
+                />
+                <div 
+                  className="template-selection__overlay-right"
+                  onClick={() => handleSelect(option.id)}
+                  aria-label={`Select design option ${option.id}`}
+                />
               </GlassCard>
             </div>
           ))}
         </div>
-
-        <div className="template-selection__voice-hint">
-          <p className="template-selection__hint-text">
-            Say: "select the one in the middle" or "choose option B"
-          </p>
-          <VoiceControl
-            onStart={handleVoiceStart}
-            onStop={handleVoiceStop}
-            label="Voice Control"
-          />
-        </div>
       </div>
+
+      {/* Inspection Modal */}
+      {inspectingOption && (
+        <div className="inspection-modal">
+          <div className="inspection-modal__backdrop" onClick={handleCloseInspection} />
+          <div className="inspection-modal__content">
+            <iframe
+              src="http://localhost:5174"
+              className="inspection-modal__iframe"
+              title={`Inspect Design Option ${inspectingOption}`}
+              sandbox="allow-same-origin allow-scripts"
+            />
+            
+            {/* Floating close button */}
+            <button 
+              className="inspection-modal__close"
+              onClick={handleCloseInspection}
+              aria-label="Close inspection"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M15 5L5 15M5 5L15 15"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+
+            {/* Floating footer buttons */}
+            <div className="inspection-modal__footer">
+              <button 
+                className="inspection-modal__btn inspection-modal__btn--secondary"
+                onClick={handleCloseInspection}
+              >
+                Back to Options
+              </button>
+              <button 
+                className="inspection-modal__btn inspection-modal__btn--primary"
+                onClick={() => {
+                  handleCloseInspection()
+                  handleSelect(inspectingOption)
+                }}
+              >
+                Select This Design
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
