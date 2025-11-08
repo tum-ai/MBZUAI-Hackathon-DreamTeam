@@ -56,13 +56,26 @@ function VoiceAssistantOverlay() {
   return (
     <div className="voice-assistant-overlay">
       <div className="voice-assistant-overlay__panel">
-        <div
-          ref={orbRef}
-          className={`voice-assistant-overlay__orb ${
-            isSpeaking ? 'voice-assistant-overlay__orb--active' : ''
-          }`}
-          aria-hidden="true"
-        />
+        <div className="voice-assistant-overlay__header">
+          <div className="voice-assistant-overlay__mic">
+            <VoiceControl
+              onStart={() => startListening({ autoRestart: true })}
+              onStop={stopListening}
+              isRecording={isListening}
+              wakeActive={isWakeActive}
+              interimText={interimText}
+              disabled={disabled}
+            />
+          </div>
+          <div
+            ref={orbRef}
+            className={`voice-assistant-overlay__orb ${
+              isSpeaking ? 'voice-assistant-overlay__orb--active' : ''
+            }`}
+            aria-hidden="true"
+          />
+        </div>
+
         <div className="voice-assistant-overlay__tts-controls">
           <input
             type="text"
@@ -81,25 +94,18 @@ function VoiceAssistantOverlay() {
             Speak
           </button>
         </div>
+
+        {error && (
+          <div className="voice-assistant-overlay__error" role="status">
+            Voice control unavailable
+          </div>
+        )}
         {ttsError && (
           <div className="voice-assistant-overlay__tts-error" role="alert">
             {ttsError.message || 'TTS failed'}
           </div>
         )}
       </div>
-      <VoiceControl
-        onStart={() => startListening({ autoRestart: true })}
-        onStop={stopListening}
-        isRecording={isListening}
-        wakeActive={isWakeActive}
-        interimText={interimText}
-        disabled={disabled}
-      />
-      {error && (
-        <div className="voice-assistant-overlay__error" role="status">
-          Voice control unavailable
-        </div>
-      )}
     </div>
   );
 }

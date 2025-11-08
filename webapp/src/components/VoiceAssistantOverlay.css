@@ -25,20 +25,35 @@
   border-radius: var(--radius-large);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  min-width: 320px;
+}
+
+.voice-assistant-overlay__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.voice-assistant-overlay__mic {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .voice-assistant-overlay__orb {
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(10, 10, 10, 0.35);
   overflow: hidden;
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.92);
   transition: opacity var(--duration-normal) var(--ease-out),
     transform var(--duration-normal) var(--ease-out);
   pointer-events: none;
+  align-self: center;
 }
 
 .voice-assistant-overlay__orb--active {
@@ -48,8 +63,10 @@
 
 .voice-assistant-overlay__tts-controls {
   display: flex;
+  flex-direction: column;
   gap: var(--space-2);
   width: 100%;
+  margin-top: var(--space-2);
 }
 
 .voice-assistant-overlay__tts-input {
@@ -81,6 +98,7 @@
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out);
+  width: 100%;
 }
 
 .voice-assistant-overlay__tts-button:disabled {
