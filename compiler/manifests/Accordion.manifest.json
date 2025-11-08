@@ -1,0 +1,51 @@
+{
+  "componentName": "div",
+  "friendlyName": "Accordion",
+  "description": "Collapsible content sections",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "Accordion header text"
+    },
+    "isOpen": {
+      "type": "stateBinding",
+      "description": "State binding for open/closed state"
+    },
+    "icon": {
+      "type": "string",
+      "enum": ["chevron", "plus", "arrow"],
+      "default": "chevron",
+      "description": "Icon style for expand/collapse"
+    },
+    "animationDuration": {
+      "type": "string",
+      "default": "0.3s",
+      "description": "Animation duration"
+    }
+  },
+  "slots": ["default"],
+  "events": ["click"],
+  "composition": {
+    "template": "header + content container",
+    "requiredChildren": []
+  },
+  "animations": {
+    "expand-collapse": {
+      "description": "Smoothly expands/collapses content",
+      "props": ["animationDuration", "isOpen"]
+    }
+  }
+}

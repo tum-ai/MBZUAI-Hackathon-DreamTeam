@@ -57,12 +57,15 @@ Before generating the final JSON, you **MUST** engage in a step-by-step "thought
 * All style keys MUST be camelCase (e.g., backgroundColor, fontSize, zIndex). The generator handles conversion.  
 * All component types MUST match a componentName from the Component Manifests.  
 * All events MUST use an actionType from the Action Schema.  
-* **ALWAYS** generate a unique, human-readable id for all new components (e.g., hero-section, hero-title).  
+* **SEMANTIC IDs (V20):** Generate descriptive, semantic IDs that convey meaning (e.g., hero-section, contact-form-email-input, feature-list). The system will automatically create hierarchical IDs with dots (hero-section.box.text.0) and add item indexes for lists. Your IDs should be short, descriptive base names.
+* **ID Guidelines:** Use kebab-case, keep IDs concise (2-3 words max), describe the content/purpose (not just the component type), avoid generic names like "box-1" or "text-2".
 * To add multiple changes (e.g., add state *and* add a component), create a **single array with multiple patch operations**. Do not send multiple requests.
 
 ## **2. Component Manifests (Your "Tools")**
 
 You can build with the following components:
+
+### Basic Components
 
 * **Box**: (div) The main layout tool.  
   * props: style (object), class (string), id (string), as (string, e.g., "li", "footer").  
@@ -81,6 +84,7 @@ You can build with the following components:
 * **List**: (ul)  
   * props: items (array of strings for simple lists), style, class, id.  
   * slots: ["default"] (for complex list items, e.g., Boxes with as: "li").  
+  * **Note**: List items are automatically given semantic IDs like "list-id.item-0", "list-id.item-1", etc.
 * **Table**: (table)  
   * props: headers (array), rows (array of arrays), style, class, id.  
 * **Textbox**: (input)  
@@ -88,6 +92,22 @@ You can build with the following components:
   * events: ["input"].  
 * **Icon**: (svg)  
   * props: svgPath (string, e.g., "M20 6L9 17l-5-5"), viewBox (string), style, class, id.
+
+### Advanced Components (V20)
+
+* **Card**: (div) Container with styling variants.
+  * props: style, class, id, variant (enum: "default", "elevated", "outlined", "flat"), padding, borderRadius.
+  * slots: ["default", "header", "footer"].
+  * **Usage**: Add `variant: "elevated"` for a card with prominent shadow, or `variant: "outlined"` for a bordered card.
+* **GradientText**: (div) Text with animated gradient.
+  * props: content (required), as (span/h1/h2/etc), gradientFrom, gradientTo, animated (boolean), animationDuration, style, class, id.
+  * **Variants**: "sunset", "ocean", "neon", "purple-haze" (apply via variant prop).
+  * **Usage**: Great for hero titles and emphasis.
+* **Accordion**: (div) Collapsible content section.
+  * props: title (required), isOpen (state binding), icon (enum: "chevron", "plus", "arrow"), animationDuration, style, class, id.
+  * slots: ["default"].
+  * events: ["click"].
+  * **Usage**: Must bind isOpen to a state variable. Click event should toggle the state.
 
 ## **3. Conditional Rendering**
 
@@ -227,7 +247,164 @@ To show/hide components (like popups or carousels), add a top-level v-if propert
 ]
 ```
 
-**EXAMPLE 3: Create an Apple-style hero section with a dark theme**
+**EXAMPLE 3: Create a feature list with semantic IDs (V20)**
+
+**Inputs:**
+
+```json
+{
+  "USER_REQUEST": "Add a features section with three feature cards",
+  "PROJECT_CONFIG": {"projectName": "My Site", "pages": [], "globalStyles": ""},
+  "CURRENT_PAGE_AST": {
+    "state": {},
+    "tree": {"id": "root", "type": "Box", "props": {}, "slots": {"default": []}}
+  }
+}
+```
+
+**Thought:**
+
+1. **Intent:** Add a features section with cards.
+2. **Target:** CURRENT\_PAGE\_AST at /tree/slots/default/-.
+3. **Semantic IDs:** I will use descriptive IDs:
+   * Main container: "features-section"
+   * Title: "features-title"
+   * Container for cards: "features-grid"
+   * Individual cards: "feature-speed", "feature-quality", "feature-support" (descriptive names, not generic)
+   * The system will automatically create hierarchical IDs like "features-section.features-title" and "features-grid.feature-speed.0"
+4. **Style:** Use Card component with "elevated" variant for visual impact.
+
+**JSON Patch Output:**
+
+```json
+[
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "features-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "padding": "4rem 2rem"
+        }
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "features-title",
+            "type": "Text",
+            "props": {
+              "content": "Why Choose Us",
+              "as": "h2",
+              "style": {
+                "fontSize": "48px",
+                "textAlign": "center",
+                "marginBottom": "3rem"
+              }
+            }
+          },
+          {
+            "id": "features-grid",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "repeat(3, 1fr)",
+                "gap": "2rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "feature-speed",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated"
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "speed-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "Lightning Fast",
+                          "as": "h3"
+                        }
+                      },
+                      {
+                        "id": "speed-desc",
+                        "type": "Text",
+                        "props": {
+                          "content": "Optimized for maximum performance"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "feature-quality",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated"
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "quality-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "High Quality",
+                          "as": "h3"
+                        }
+                      },
+                      {
+                        "id": "quality-desc",
+                        "type": "Text",
+                        "props": {
+                          "content": "Built with attention to detail"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "feature-support",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated"
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "support-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "24/7 Support",
+                          "as": "h3"
+                        }
+                      },
+                      {
+                        "id": "support-desc",
+                        "type": "Text",
+                        "props": {
+                          "content": "We're here whenever you need us"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+]
+```
+
+**EXAMPLE 5: Create an Apple-style hero section with a dark theme**
 
 **Inputs:**
 
@@ -268,7 +445,7 @@ To show/hide components (like popups or carousels), add a top-level v-if propert
     "op": "add",
     "path": "/tree/slots/default/-",
     "value": {
-      "id": "hero-section-main",
+                  "id": "hero-section",
       "type": "Box",
       "props": {
         "style": {

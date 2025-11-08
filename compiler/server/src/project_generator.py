@@ -148,6 +148,7 @@ class ProjectGenerator:
         V11: This is now a "dumb" shell. It only contains the
         router-view and the global styles. All navs are
         now controlled by the page ASTs.
+        V20: Added animations for advanced components.
         """
         print("Generating root App.vue...")
         
@@ -159,12 +160,25 @@ class ProjectGenerator:
   <router-view/>
 </template>"""
 
+        # V20: Added animations for GradientText and other advanced components
+        animations = """
+/* --- V20: Animations for Advanced Components --- */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* --- End Animations --- */
+"""
+
         # V11: Only global_styles are injected. No default CSS.
         style = f"""
 <style>
 /* --- Global Styles from project.json --- */
 {global_styles}
 /* --- End Global Styles --- */
+
+{animations}
 </style>
 """
         self._write_file(self.output_dir / 'src' / 'App.vue', f"{template}\n\n{style}\n")
