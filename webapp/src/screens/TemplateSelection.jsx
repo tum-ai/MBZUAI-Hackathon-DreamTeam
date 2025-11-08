@@ -9,6 +9,8 @@ function TemplateSelection() {
   const [selectedOption, setSelectedOption] = useState(null)
   const [isAnimating, setIsAnimating] = useState(false)
   const [inspectingOption, setInspectingOption] = useState(null)
+  const [editMode, setEditMode] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState('connected')
 
   const options = [
     { id: 'A' },
@@ -17,24 +19,23 @@ function TemplateSelection() {
     { id: 'D' }
   ]
 
-  const handleInspect = (optionId) => {
+  const handleOpenModal = (optionId) => {
     setInspectingOption(optionId)
+    setEditMode(false)
   }
 
-  const handleSelect = (optionId) => {
-    setSelectedOption(optionId)
-    setIsAnimating(true)
-    
-    // Animate and navigate to editor
-    setTimeout(() => {
-      navigate(`/editor/${optionId.toLowerCase()}`, { 
-        state: { selectedOption: optionId }
-      })
-    }, 400)
+  const handleSelectDesign = () => {
+    // Transition from inspection to edit mode
+    setEditMode(true)
+    // Simulate connection status changes for demo
+    setTimeout(() => setConnectionStatus('updating'), 2000)
+    setTimeout(() => setConnectionStatus('connected'), 4000)
   }
 
-  const handleCloseInspection = () => {
+  const handleCloseModal = () => {
     setInspectingOption(null)
+    setEditMode(false)
+    setConnectionStatus('connected')
   }
 
   return (
@@ -71,13 +72,13 @@ function TemplateSelection() {
                 />
                 <div 
                   className="template-selection__overlay-left"
-                  onClick={() => handleInspect(option.id)}
-                  aria-label={`Inspect design option ${option.id}`}
+                  onClick={() => handleOpenModal(option.id)}
+                  aria-label={`Open design option ${option.id}`}
                 />
                 <div 
                   className="template-selection__overlay-right"
-                  onClick={() => handleSelect(option.id)}
-                  aria-label={`Select design option ${option.id}`}
+                  onClick={() => handleOpenModal(option.id)}
+                  aria-label={`Open design option ${option.id}`}
                 />
               </GlassCard>
             </div>
@@ -85,23 +86,27 @@ function TemplateSelection() {
         </div>
       </div>
 
-      {/* Inspection Modal */}
+      {/* Inspection/Edit Modal */}
       {inspectingOption && (
         <div className="inspection-modal">
-          <div className="inspection-modal__backdrop" onClick={handleCloseInspection} />
+          <div 
+            className="inspection-modal__backdrop" 
+            onClick={editMode ? null : handleCloseModal}
+            style={{ cursor: editMode ? 'default' : 'pointer' }}
+          />
           <div className="inspection-modal__content">
             <iframe
               src="http://localhost:5174"
               className="inspection-modal__iframe"
-              title={`Inspect Design Option ${inspectingOption}`}
+              title={`${editMode ? 'Editing' : 'Inspecting'} Design Option ${inspectingOption}`}
               sandbox="allow-same-origin allow-scripts"
             />
             
             {/* Floating close button */}
             <button 
               className="inspection-modal__close"
-              onClick={handleCloseInspection}
-              aria-label="Close inspection"
+              onClick={handleCloseModal}
+              aria-label={editMode ? 'Close editor' : 'Close inspection'}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path
@@ -113,24 +118,33 @@ function TemplateSelection() {
               </svg>
             </button>
 
-            {/* Floating footer buttons */}
-            <div className="inspection-modal__footer">
-              <button 
-                className="inspection-modal__btn inspection-modal__btn--secondary"
-                onClick={handleCloseInspection}
-              >
-                Back to Options
-              </button>
-              <button 
-                className="inspection-modal__btn inspection-modal__btn--primary"
-                onClick={() => {
-                  handleCloseInspection()
-                  handleSelect(inspectingOption)
-                }}
-              >
-                Select This Design
-              </button>
-            </div>
+            {/* Status indicator - only in edit mode */}
+            {editMode && (
+              <div className="inspection-modal__status">
+                <div className={`status-dot status-dot--${connectionStatus}`} />
+                <span className="status-label">
+                  {connectionStatus === 'connected' ? 'Connected' : 'Updating'}
+                </span>
+              </div>
+            )}
+
+            {/* Floating footer buttons - only in inspection mode */}
+            {!editMode && (
+              <div className="inspection-modal__footer">
+                <button 
+                  className="inspection-modal__btn inspection-modal__btn--secondary"
+                  onClick={handleCloseModal}
+                >
+                  Back to Options
+                </button>
+                <button 
+                  className="inspection-modal__btn inspection-modal__btn--primary"
+                  onClick={handleSelectDesign}
+                >
+                  Select This Design
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

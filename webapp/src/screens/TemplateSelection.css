@@ -225,6 +225,53 @@
   transform: scale(0.98);
 }
 
+/* Floating status indicator - only in edit mode */
+.inspection-modal__status {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 10px var(--space-2);
+  background: var(--glass-bg-medium);
+  backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-medium);
+  z-index: var(--z-elevated);
+  animation: slideUp var(--duration-slow) var(--ease-out);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--connected {
+  background-color: var(--status-connected);
+}
+
+.status-dot--updating {
+  background-color: var(--status-updating);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-dot--error {
+  background-color: var(--status-error);
+}
+
+.status-label {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
 /* Floating footer with glass buttons */
 .inspection-modal__footer {
   position: absolute;
