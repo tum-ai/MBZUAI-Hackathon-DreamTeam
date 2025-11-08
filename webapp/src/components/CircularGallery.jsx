@@ -540,6 +540,14 @@ class App {
   }
 }
 
+// Helper function to convert text to kebab-case for data-nav-id
+function toKebabCase(text) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
 export default function CircularGallery({
   items,
   bend = 3,
@@ -551,12 +559,167 @@ export default function CircularGallery({
   onImageClick
 }) {
   const containerRef = useRef(null);
+  const appRef = useRef(null);
+
+  // Default items for the gallery
+  const defaultItems = [
+    { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
+    { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
+    { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
+    { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
+    { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
+    { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
+    { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
+    { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
+    { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
+    { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
+    { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
+    { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' }
+  ];
+
+  const galleryItems = items && items.length ? items : defaultItems;
+
+  // Handler for clicking on a specific image by title
+  const handleImageNavigation = (imageData) => {
+    // Store current scroll position to prevent reset
+    const currentScrollTarget = appRef.current?.scroll?.target;
+    
+    // Find the media object that's closest to center (the one being clicked)
+    if (appRef.current?.medias && containerRef.current) {
+      let closestMedia = null;
+      let minDistance = Infinity;
+      
+      appRef.current.medias.forEach(media => {
+        const distance = Math.abs(media.plane.position.y);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestMedia = media;
+        }
+      });
+      
+      if (closestMedia && closestMedia.plane) {
+        // Create a temporary highlight overlay
+        const overlay = document.createElement('div');
+        const galleryRect = containerRef.current.getBoundingClientRect();
+        
+        // Calculate the position and size based on the plane
+        const planeScale = closestMedia.plane.scale;
+        const viewport = appRef.current.viewport;
+        
+        // Approximate size in pixels (this is a rough conversion from WebGL units)
+        const imageHeight = (planeScale.y / viewport.height) * galleryRect.height * 0.4;
+        const imageWidth = imageHeight * (planeScale.x / planeScale.y);
+        
+        overlay.style.position = 'absolute';
+        overlay.style.top = '50%';
+        overlay.style.left = '50%';
+        overlay.style.transform = 'translate(-50%, -50%)';
+        overlay.style.width = `${imageWidth}px`;
+        overlay.style.height = `${imageHeight}px`;
+        overlay.style.border = '3px solid #3B82F6';
+        overlay.style.borderRadius = '8px';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.zIndex = '1000';
+        overlay.style.transition = 'opacity 0.2s ease';
+        
+        containerRef.current.parentElement.style.position = 'relative';
+        containerRef.current.parentElement.appendChild(overlay);
+        
+        // Remove overlay after 800ms
+        setTimeout(() => {
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.remove();
+          }, 200);
+        }, 800);
+      }
+    }
+    
+    if (onImageClick) {
+      onImageClick(imageData);
+    }
+    
+    // Restore scroll position after a brief delay to prevent reset
+    if (currentScrollTarget !== undefined && appRef.current?.scroll) {
+      setTimeout(() => {
+        if (appRef.current?.scroll) {
+          appRef.current.scroll.target = currentScrollTarget;
+        }
+      }, 100);
+    }
+  };
+
+  // Scroll the gallery wheel
+  const scrollGallery = (direction) => {
+    if (appRef.current && appRef.current.scroll) {
+      const scrollAmount = 4.4; // Small scroll amount - adjust as needed
+      if (direction === 'down' || direction === 'next') {
+        appRef.current.scroll.target += scrollAmount;
+      } else if (direction === 'up' || direction === 'previous') {
+        appRef.current.scroll.target -= scrollAmount;
+      }
+      
+      // Note: The gallery has snap-to-grid behavior (onCheck() debounced 200ms)
+      // Wait >200ms between scrolls to prevent position reset
+    }
+  };
+
   useEffect(() => {
     const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, onImageClick });
+    appRef.current = app;
     return () => {
       app.destroy();
     };
   }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, onImageClick]);
-  return <div className="circular-gallery" ref={containerRef} />;
+
+  return (
+    <>
+      <div className="circular-gallery" ref={containerRef} />
+      {/* Hidden buttons for voice navigation with data-nav-id */}
+      {/* These are completely removed from layout flow but accessible to the action executor */}
+      <div style={{ 
+        position: 'fixed',
+        top: '-10000px',
+        left: '-10000px',
+        width: '1px',
+        height: '1px',
+        overflow: 'hidden',
+        opacity: 0,
+        pointerEvents: 'none',
+        zIndex: -1
+      }}>
+        {/* Scroll control buttons */}
+        <button
+          data-nav-id="gallery-scroll-next"
+          onClick={() => scrollGallery('next')}
+          aria-label="Scroll gallery to next image"
+          tabIndex={-1}
+        >
+          Next Image
+        </button>
+        <button
+          data-nav-id="gallery-scroll-previous"
+          onClick={() => scrollGallery('previous')}
+          aria-label="Scroll gallery to previous image"
+          tabIndex={-1}
+        >
+          Previous Image
+        </button>
+        
+        {/* Image selection buttons */}
+        {galleryItems.map((item, index) => (
+          <button
+            key={index}
+            data-nav-id={`gallery-${toKebabCase(item.text)}`}
+            onClick={() => handleImageNavigation(item)}
+            aria-label={`Select ${item.text}`}
+            tabIndex={-1}
+          >
+            {item.text}
+          </button>
+        ))}
+      </div>
+    </>
+  );
 }
 

@@ -19,7 +19,7 @@ function TopBar({ title = 'Voice-First Platform', showBack = false, children }) 
     <div className="top-bar">
       <div className="top-bar__left">
         {showBack && (
-          <button className="top-bar__back" onClick={handleBack} aria-label="Go back">
+          <button className="top-bar__back" onClick={handleBack} aria-label="Go back" data-nav-id="topbar-back-btn">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
                 d="M12.5 15L7.5 10L12.5 5"

@@ -33,7 +33,7 @@ function CreateProject() {
           <p className="create-project__subtitle">
             Start by describing what you want to build.
           </p>
-          <button className="create-project__cta" onClick={handleCreate}>
+          <button className="create-project__cta" onClick={handleCreate} data-nav-id="create-project-cta">
             Get Started
           </button>
         </div>
