@@ -89,6 +89,18 @@ function TemplateSelection() {
               className={`template-selection__option ${
                 selectedOption === option.id ? 'template-selection__option--selected' : ''
               }`}
+              data-nav-id={`template-option-${option.id.toLowerCase()}`}
+              onClick={() => handleOpenModal(option.id)}
+              style={{ cursor: 'pointer', borderRadius: '16px' }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Inspect design option ${option.id}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenModal(option.id);
+                }
+              }}
             >
               <GlassCard
                 hoverable={true}
@@ -99,16 +111,7 @@ function TemplateSelection() {
                   className="template-selection__iframe"
                   title={`Design Option ${option.id}`}
                   sandbox="allow-same-origin allow-scripts"
-                />
-                <div 
-                  className="template-selection__overlay-left"
-                  onClick={() => handleOpenModal(option.id)}
-                  aria-label={`Open design option ${option.id}`}
-                />
-                <div 
-                  className="template-selection__overlay-right"
-                  onClick={() => handleOpenModal(option.id)}
-                  aria-label={`Open design option ${option.id}`}
+                  style={{ pointerEvents: 'none' }}
                 />
               </GlassCard>
             </div>
@@ -140,6 +143,7 @@ function TemplateSelection() {
               className="inspection-modal__close"
               onClick={handleCloseModal}
               aria-label={editMode ? 'Close editor' : 'Close inspection'}
+              data-nav-id="template-modal-close"
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path
@@ -161,6 +165,24 @@ function TemplateSelection() {
               </div>
             )}
 
+            {/* Invisible button to toggle gallery for voice navigation */}
+            {editMode && (
+              <button
+                data-nav-id="toggle-gallery"
+                onClick={() => setShowGallery(!showGallery)}
+                style={{
+                  position: 'absolute',
+                  top: '-9999px',
+                  left: '-9999px',
+                  opacity: 0,
+                  pointerEvents: 'none'
+                }}
+                aria-label="Toggle image gallery"
+              >
+                Toggle Gallery
+              </button>
+            )}
+
             {/* Floating footer buttons - only in inspection mode */}
             {!editMode && (
               <div className="inspection-modal__footer">
@@ -173,6 +195,7 @@ function TemplateSelection() {
                 <button 
                   className="inspection-modal__btn inspection-modal__btn--primary"
                   onClick={handleSelectDesign}
+                  data-nav-id="template-select-design"
                 >
                   Select This Design
                 </button>
@@ -210,6 +233,7 @@ function TemplateSelection() {
                     className="enlarged-image__close"
                     onClick={handleCloseEnlargedImage}
                     aria-label="Close enlarged view"
+                    data-nav-id="gallery-close-enlarged"
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path
