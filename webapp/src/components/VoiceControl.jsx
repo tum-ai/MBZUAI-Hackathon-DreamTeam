@@ -1,8 +1,15 @@
-import { useState } from 'react'
 import './VoiceControl.css'
 
-function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to speak' }) {
+function VoiceControl({
+  onStart,
+  onStop,
+  isRecording = false,
+  wakeActive = false,
+  interimText = '',
+  disabled = false
+}) {
   const handleClick = () => {
+    if (disabled) return
     if (isRecording) {
       onStop?.()
     } else {
@@ -10,12 +17,17 @@ function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to sp
     }
   }
 
+  const ariaLabel = isRecording ? 'Stop recording' : 'Start recording'
+
   return (
-    <div className="voice-control">
+    <div className={`voice-control ${wakeActive ? 'voice-control--wake-armed' : ''}`}>
       <button
-        className={`voice-control__button ${isRecording ? 'voice-control__button--recording' : ''}`}
+        className={`voice-control__button ${
+          isRecording ? 'voice-control__button--recording' : ''
+        }`}
         onClick={handleClick}
-        aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+        aria-label={ariaLabel}
+        disabled={disabled}
       >
         <svg
           className="voice-control__icon"
@@ -47,10 +59,14 @@ function VoiceControl({ onStart, onStop, isRecording = false, label = 'Tap to sp
             strokeLinejoin="round"
           />
         </svg>
-        <span className="voice-control__label">{label}</span>
       </button>
       {isRecording && (
         <div className="voice-control__pulse" aria-hidden="true" />
+      )}
+      {isRecording && interimText && (
+        <div className="voice-control__interim" aria-live="polite">
+          {interimText}
+        </div>
       )}
     </div>
   )
