@@ -172,23 +172,50 @@ class Media {
         }
         
         void main() {
+          vec2 p = vUv - 0.5;
+          
+          // Outer container with proper rounded corners
+          float outerSize = 0.49;
+          float outerD = roundedBoxSDF(p, vec2(outerSize - uBorderRadius), uBorderRadius);
+          float edgeSmooth = 0.002;
+          float outerAlpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, outerD);
+          
+          // Inner area for image with padding (matching enlarged view: 16px padding)
+          // 16px relative to typical 200-250px image size = ~0.08 in UV space
+          float innerPadding = 0.08;
+          float innerSize = outerSize - innerPadding;
+          float innerRadius = uBorderRadius * 0.8;
+          float innerD = roundedBoxSDF(p, vec2(innerSize - innerRadius), innerRadius);
+          float imageAlpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, innerD);
+          
+          // Border frame (area between outer and inner)
+          float borderMask = smoothstep(-edgeSmooth, edgeSmooth, innerD);
+          
+          // Calculate UV for the image within the padded area
+          float scale = innerSize / outerSize;
+          vec2 imageUV = (p / scale) + 0.5;
+          
+          // Apply image sizing ratio
           vec2 ratio = vec2(
             min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
             min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
           );
           vec2 uv = vec2(
-            vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-            vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+            imageUV.x * ratio.x + (1.0 - ratio.x) * 0.5,
+            imageUV.y * ratio.y + (1.0 - ratio.y) * 0.5
           );
-          vec4 color = texture2D(tMap, uv);
           
-          float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
+          vec4 imageColor = texture2D(tMap, uv);
           
-          // Smooth antialiasing for edges
-          float edgeSmooth = 0.002;
-          float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
+          // Milk glass border color - matching enlarged view (18% opacity white)
+          vec3 borderColor = vec3(1.0, 1.0, 1.0);
           
-          gl_FragColor = vec4(color.rgb, alpha);
+          // Combine: border frame + image
+          vec3 finalColor = mix(imageColor.rgb, borderColor, borderMask);
+          // Border opacity: 0.18 to match --glass-bg-medium
+          float finalAlpha = outerAlpha * mix(imageAlpha, 0.18, borderMask);
+          
+          gl_FragColor = vec4(finalColor, finalAlpha);
         }
       `,
       uniforms: {
@@ -197,7 +224,7 @@ class Media {
         uImageSizes: { value: [0, 0] },
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
-        uBorderRadius: { value: this.borderRadius }
+        uBorderRadius: { value: 0.15 }
       },
       transparent: true
     });
@@ -211,76 +238,12 @@ class Media {
   }
 
   createMesh() {
-    // Create milk glass border background
-    this.createBorder();
-    
     this.plane = new Mesh(this.gl, {
       geometry: this.geometry,
       program: this.program
     });
     this.plane.rotation.z = 0; // No rotation - natural orientation
     this.plane.setParent(this.scene);
-  }
-
-  createBorder() {
-    // Create a slightly larger plane for the milk glass border
-    const borderGeometry = new Plane(this.gl);
-    const borderProgram = new Program(this.gl, {
-      vertex: `
-        attribute vec3 position;
-        attribute vec2 uv;
-        uniform mat4 modelViewMatrix;
-        uniform mat4 projectionMatrix;
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragment: `
-        precision highp float;
-        uniform float uBorderRadius;
-        varying vec2 vUv;
-        
-        float roundedBoxSDF(vec2 p, vec2 b, float r) {
-          vec2 d = abs(p) - b;
-          return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
-        }
-        
-        void main() {
-          // Milk glass color - slightly off-white for better visibility
-          vec3 glassColor = vec3(0.95, 0.95, 0.95);
-          
-          // Border with minimal gap
-          vec2 p = vUv - 0.5;
-          float outerD = roundedBoxSDF(p, vec2(0.49), uBorderRadius);
-          
-          // Smooth edge
-          float edgeSmooth = 0.003;
-          float outerAlpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, outerD);
-          
-          // Create border frame effect - very close to the image
-          float innerD = roundedBoxSDF(p, vec2(0.46), uBorderRadius);
-          float borderMask = smoothstep(-edgeSmooth, edgeSmooth, innerD);
-          
-          // Very strong opacity for visibility
-          float finalAlpha = outerAlpha * borderMask * 0.9;
-          
-          gl_FragColor = vec4(glassColor, finalAlpha);
-        }
-      `,
-      uniforms: {
-        uBorderRadius: { value: 0.08 }
-      },
-      transparent: true,
-      depthTest: false,
-      depthWrite: false
-    });
-    
-    this.borderPlane = new Mesh(this.gl, { geometry: borderGeometry, program: borderProgram });
-    this.borderPlane.position.z = -0.001; // Very slightly behind the main image
-    this.borderPlane.renderOrder = -1; // Render before main image
-    this.borderPlane.setParent(this.scene);
   }
 
   createTitle() {
@@ -317,12 +280,6 @@ class Media {
       }
     }
     
-    // Update border plane to match main plane position and rotation
-    if (this.borderPlane) {
-      this.borderPlane.position.copy(this.plane.position);
-      this.borderPlane.rotation.copy(this.plane.rotation);
-      this.borderPlane.position.z = this.plane.position.z - 0.001;
-    }
     this.speed = scroll.current - scroll.last;
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
@@ -353,13 +310,6 @@ class Media {
     this.plane.scale.y = (this.viewport.height * (250 * this.scale)) / this.screen.height;
     this.plane.scale.x = (this.viewport.width * (200 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-    
-    // Update border plane scale to be slightly larger
-    if (this.borderPlane) {
-      const borderPadding = 0.25; // 25% larger for border
-      this.borderPlane.scale.x = this.plane.scale.x * (1 + borderPadding);
-      this.borderPlane.scale.y = this.plane.scale.y * (1 + borderPadding);
-    }
     
     this.padding = 1.5;
     this.width = this.plane.scale.x + this.padding;
