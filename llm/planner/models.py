@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
+from typing import List, Optional
 
 
 class StepType(str, Enum):
@@ -19,3 +20,42 @@ class DecideResponse(BaseModel):
     intent: str
     context: str
 
+
+class TaskItem(BaseModel):
+    """Individual task in the queue."""
+    text: str
+    step_type: str
+    explanation: str
+    status: str
+    queued_at: Optional[str] = None
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
+
+# {
+#   "text": "click submit button",
+#   "step_type": "act",
+#   "explanation": "User wants to click the submit button",
+#   "status": "completed",
+#   "queued_at": "2024-01-15T10:00:00",
+#   "started_at": "2024-01-15T10:00:01",
+#   "completed_at": "2024-01-15T10:00:02"
+# }
+
+
+class QueueStatus(BaseModel):
+    """Status of a session's task queue."""
+    sid: str
+    pending: List[TaskItem]
+    processing: List[TaskItem]
+    completed: List[TaskItem]
+
+
+# {
+#   "sid": "session-123",
+#   "pending": [],
+#   "processing": [],
+#   "completed": [
+#     {"text": "scroll down", "status": "completed", ...},
+#     {"text": "click submit", "status": "completed", ...}
+#   ]
+# }

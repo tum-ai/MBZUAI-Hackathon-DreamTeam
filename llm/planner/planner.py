@@ -1,41 +1,85 @@
+from typing import List
 from .models import DecideRequest, DecideResponse, StepType
-from .llm_client import classify_intent
+from .llm_client import split_tasks
 from .session_manager import (
     get_previous_context,
     add_prompt_to_session,
     generate_step_id
 )
+from .queue_manager import get_queue_manager
 
 
-def process_user_request(request: DecideRequest) -> DecideResponse:
+async def process_single_task(task: dict, sid: str, previous_context: str) -> DecideResponse:
     """
-    Process user request through the planner agent.
+    Process a single task and return DecideResponse.
     
-    Steps:
-    1. Get previous context from session
-    2. Call LLM to classify intent and enrich with explanation
-    3. Generate step ID
-    4. Save current prompt to session
-    5. Return structured response
+    Args:
+        task: Dict with 'text', 'step_type', 'explanation'
+        sid: Session ID
+        previous_context: Context from previous prompts
     """
-    previous_context = get_previous_context(request.sid)
+    step_id = generate_step_id(sid)
     
-    llm_result = classify_intent(request.text, previous_context)
+    intent = f"{task['text']} | {task['explanation']}"
     
-    step_id = generate_step_id(request.sid)
+    # Use previous context or build from recent prompts
+    context = previous_context
     
-    intent = f"{request.text} | {llm_result['explanation']}"
+    # Add this task text to session history
+    add_prompt_to_session(sid, task['text'])
     
-    context = llm_result.get('context_summary', '') or previous_context
-    
-    add_prompt_to_session(request.sid, request.text)
+    # Update previous context for next task
+    updated_context = get_previous_context(sid)
     
     response = DecideResponse(
         step_id=step_id,
-        step_type=StepType(llm_result['step_type']),
+        step_type=StepType(task['step_type']),
         intent=intent,
         context=context
     )
     
     return response
+
+
+async def process_user_request(request: DecideRequest) -> List[DecideResponse]:
+    """
+    Process user request through the planner agent with queue support.
+    
+    Steps:
+    1. Get previous context from session
+    2. Split request into multiple tasks using LLM
+    3. Enqueue all tasks
+    4. Process tasks sequentially
+    5. Return list of structured responses
+    """
+    previous_context = get_previous_context(request.sid)
+    
+    #  split tasks called for all the requests, also if there is one step
+    # Split the request into tasks (returns dict with tasks and context_summary)
+    # handles both cases: one step and multiple steps
+    split_result = split_tasks(request.text, previous_context)
+    tasks = split_result["tasks"]
+    context_summary = split_result.get("context_summary", "")
+    
+    # Use context_summary if available, otherwise use previous_context
+    # effective_context = context_summary if context_summary else previous_context
+    
+    # Get queue manager
+    queue_manager = get_queue_manager()
+    
+    # Enqueue all tasks
+    await queue_manager.enqueue_tasks(request.sid, tasks)
+    
+    # sequentially process
+    async def processor(task):
+        # Get updated context for this task
+        current_context = get_previous_context(request.sid)
+        
+        if task == tasks[0] and context_summary:
+            return await process_single_task(task, request.sid, context_summary)
+        return await process_single_task(task, request.sid, current_context)
+    
+    responses = await queue_manager.process_all_tasks(request.sid, processor)
+    
+    return responses
 
