@@ -40,13 +40,15 @@ This test suite validates the planner agent's ability to:
 
 ### Prerequisites
 
-1. **Planner server must be running:**
+1. **Unified server must be running:**
 
 ```bash
 cd /Users/georgychomakhashvili/MBZUAI-Hackathon-DreamTeam
 source llm/venv/bin/activate
-python -m uvicorn llm.planner.server:app --host 0.0.0.0 --port 8000
+python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
 ```
+
+**Note:** Tests now use the unified server at `llm/server.py` which provides both `/decide` and `/clarify` endpoints.
 
 2. **Dependencies installed:**
 
@@ -316,11 +318,13 @@ This design lets you:
 ❌ Error: Planner server not running at http://localhost:8000
 ```
 
-**Solution**: Start the server first
+**Solution**: Start the unified server first
 ```bash
 source llm/venv/bin/activate
-python -m uvicorn llm.planner.server:app --host 0.0.0.0 --port 8000
+python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
 ```
+
+**Important:** Make sure to use `llm.server:app` (not `llm.planner.server:app`) as the old planner-only server has been replaced by the unified server.
 
 ### Import Errors
 

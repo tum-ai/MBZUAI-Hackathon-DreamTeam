@@ -23,10 +23,12 @@ K2_API_KEY=your_k2_api_key
 
 ```bash
 source llm/venv/bin/activate
-python -m uvicorn llm.planner.server:app --host 0.0.0.0 --port 8000
+python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
 ```
 
 Server: http://localhost:8000
+
+**Note:** The planner now uses the unified server at `llm/server.py` which provides both `/decide` (planner) and `/clarify` (clarifier) endpoints.
 
 ## API
 
@@ -140,11 +142,11 @@ Flow Overview (concise)
 - If false: `context_summary` is set to `""`
 
 4) Files/functions used
-- `llm/server.py`: `decide()`
-- `llm/planner.py`: `process_user_request()`
-- `llm/llm_client.py`: `classify_intent()`
-- `llm/session_manager.py`: `get_previous_context()`, `add_prompt_to_session()`, `generate_step_id()`
-- `llm/models.py`: `DecideRequest`, `DecideResponse`, `StepType`
+- `llm/server.py`: `decide()` endpoint (unified server with `/decide` and `/clarify`)
+- `llm/planner/planner.py`: `process_user_request()`
+- `llm/planner/llm_client.py`: `classify_intent()`
+- `llm/planner/session_manager.py`: `get_previous_context()`, `add_prompt_to_session()`, `generate_step_id()`
+- `llm/planner/models.py`: `DecideRequest`, `DecideResponse`, `StepType`
 
 Example response
 ```json
@@ -155,3 +157,17 @@ Example response
   "context": "Previous short context or summarized previous context"
 }
 ```
+
+
+python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
+
+# Start unified server (from project root)
+python -m uvicorn llm.server:app --host 0.0.0.0 --port 8000
+
+# Run tests
+./llm/venv/bin/python llm/planner/tests/runner.py
+
+Call /decide (Planner)
+curl -X POST http://localhost:8000/decide \  -H "Content-Type: application/json" \  -d '{"sid": "session-123", "text": "Make the button bigger"}'
+Call /clarify (Clarifier)
+curl -X POST http://localhost:8000/clarify \  -H "Content-Type: application/json" \  -d '{    "session_id": "session-123",    "step_id": "uuid",    "intent": "Change that | Ambiguous...",    "context": "Previous actions..."  }'

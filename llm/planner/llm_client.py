@@ -19,7 +19,8 @@ def get_k2_client():
     return OpenAI(
         base_url=BASE_URL,
         api_key=api_key,
-        timeout=1200
+        timeout=1200.0,
+        max_retries=2
     )
 
 
