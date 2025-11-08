@@ -1,0 +1,97 @@
+{
+  "componentName": "div",
+  "friendlyName": "ProfileCard",
+  "description": "Profile card with avatar, name, bio, and social links",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "description": "Person's name"
+    },
+    "title": {
+      "type": "string",
+      "description": "Job title or role"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Short biography"
+    },
+    "avatarUrl": {
+      "type": "string",
+      "description": "URL to avatar image"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "minimal", "detailed", "glass"],
+      "default": "default",
+      "description": "Card style variant"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "16px",
+      "description": "Corner radius"
+    }
+  },
+  "slots": ["socials", "actions"],
+  "events": ["click"],
+  "variants": {
+    "default": {
+      "description": "Standard profile card",
+      "props": {
+        "style": {
+          "background": "#1a1a1a",
+          "borderRadius": "16px",
+          "padding": "2rem",
+          "boxShadow": "0 4px 16px rgba(0, 0, 0, 0.3)"
+        }
+      }
+    },
+    "minimal": {
+      "description": "Clean, minimalist design",
+      "props": {
+        "style": {
+          "background": "transparent",
+          "border": "1px solid #333",
+          "borderRadius": "12px",
+          "padding": "1.5rem"
+        }
+      }
+    },
+    "detailed": {
+      "description": "Rich card with more information",
+      "props": {
+        "style": {
+          "background": "linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)",
+          "borderRadius": "20px",
+          "padding": "2.5rem",
+          "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.4)"
+        }
+      }
+    },
+    "glass": {
+      "description": "Glassmorphism style card",
+      "props": {
+        "style": {
+          "background": "rgba(255, 255, 255, 0.05)",
+          "backdropFilter": "blur(10px)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+          "borderRadius": "20px",
+          "padding": "2rem",
+          "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.4)"
+        }
+      }
+    }
+  }
+}

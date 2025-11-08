@@ -1,0 +1,99 @@
+{
+  "componentName": "div",
+  "friendlyName": "CardSwap",
+  "description": "Card that swaps between front and back content with flip animation",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "flipped": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether card is flipped"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["hover", "click", "manual"],
+      "default": "hover",
+      "description": "What triggers the flip"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "3d", "slide", "fade"],
+      "default": "default",
+      "description": "Animation style"
+    },
+    "duration": {
+      "type": "string",
+      "default": "0.6s",
+      "description": "Flip animation duration"
+    },
+    "width": {
+      "type": "string",
+      "default": "300px",
+      "description": "Card width"
+    },
+    "height": {
+      "type": "string",
+      "default": "400px",
+      "description": "Card height"
+    }
+  },
+  "slots": ["front", "back"],
+  "events": ["flip", "unflip"],
+  "variants": {
+    "default": {
+      "description": "3D flip animation",
+      "props": {
+        "duration": "0.6s",
+        "style": {
+          "transformStyle": "preserve-3d",
+          "perspective": "1000px"
+        }
+      }
+    },
+    "3d": {
+      "description": "Enhanced 3D perspective flip",
+      "props": {
+        "duration": "0.8s",
+        "style": {
+          "transformStyle": "preserve-3d",
+          "perspective": "1500px"
+        }
+      }
+    },
+    "slide": {
+      "description": "Slide transition instead of flip",
+      "props": {
+        "duration": "0.4s",
+        "style": {
+          "overflow": "hidden"
+        }
+      }
+    },
+    "fade": {
+      "description": "Cross-fade between sides",
+      "props": {
+        "duration": "0.5s",
+        "style": {
+          "position": "relative"
+        }
+      }
+    }
+  },
+  "animations": {
+    "flip": {
+      "description": "Flips card to show back",
+      "props": ["duration", "variant"]
+    }
+  }
+}

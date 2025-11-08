@@ -1,0 +1,1095 @@
+{
+  "state": {
+    "currentStep": {
+      "type": "number",
+      "defaultValue": 0
+    },
+    "cardFlipped": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "activeNav": {
+      "type": "string",
+      "defaultValue": "home"
+    }
+  },
+  "tree": {
+    "id": "page-root",
+    "type": "Box",
+    "props": {
+      "style": {
+        "minHeight": "100vh",
+        "position": "relative",
+        "overflow": "hidden"
+      }
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "hero-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "display": "flex",
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "padding": "4rem 2rem"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "hero-background",
+                "type": "Ribbons",
+                "props": {
+                  "variant": "diagonal",
+                  "colors": ["#667eea", "#764ba2", "#f093fb", "#4facfe"],
+                  "ribbonCount": 6,
+                  "opacity": 0.4,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "hero-veil",
+                "type": "DarkVeil",
+                "props": {
+                  "variant": "center-focus",
+                  "opacity": 0.6,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "1"
+                  }
+                }
+              },
+              {
+                "id": "hero-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "textAlign": "center",
+                    "maxWidth": "900px"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "hero-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Welcome to Vue Bits Demo",
+                        "as": "h1",
+                        "variant": "sunset",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "72px",
+                          "fontWeight": "bold",
+                          "marginBottom": "2rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "hero-subtitle",
+                      "type": "BlurText",
+                      "props": {
+                        "content": "Experience the magic of modern UI components",
+                        "as": "h2",
+                        "variant": "slow",
+                        "delay": "0.3s",
+                        "style": {
+                          "fontSize": "28px",
+                          "color": "#e0e0e0",
+                          "marginBottom": "3rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "hero-description",
+                      "type": "GradualBlur",
+                      "props": {
+                        "content": "Build stunning, animated interfaces with ease. Explore our collection of pre-built components designed for modern web applications.",
+                        "as": "p",
+                        "variant": "fade-blur",
+                        "direction": "bottom",
+                        "style": {
+                          "fontSize": "18px",
+                          "color": "#c0c0c0",
+                          "lineHeight": "1.8",
+                          "maxWidth": "700px",
+                          "margin": "0 auto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "features-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "background": "#0a0a0a"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "features-background",
+                "type": "ColorBends",
+                "props": {
+                  "variant": "subtle",
+                  "colors": ["#667eea", "#764ba2", "#f093fb"],
+                  "opacity": 0.3,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "features-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1200px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "features-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Powerful Features",
+                        "as": "h2",
+                        "variant": "ocean",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "56px",
+                          "fontWeight": "bold",
+                          "textAlign": "center",
+                          "marginBottom": "4rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "features-bento",
+                      "type": "MagicBento",
+                      "props": {
+                        "variant": "hover-lift",
+                        "columns": 3,
+                        "gap": "1.5rem",
+                        "style": {
+                          "gridTemplateColumns": "repeat(auto-fit, minmax(300px, 1fr))"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feature-card-1",
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "style": {
+                                "height": "100%"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "feature-1-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "⚡",
+                                    "style": {
+                                      "fontSize": "48px",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-1-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Lightning Fast",
+                                    "as": "h3",
+                                    "style": {
+                                      "fontSize": "24px",
+                                      "fontWeight": "bold",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-1-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Optimized for performance with minimal overhead",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.6"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "feature-card-2",
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "style": {
+                                "height": "100%"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "feature-2-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "🎨",
+                                    "style": {
+                                      "fontSize": "48px",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-2-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Beautiful Animations",
+                                    "as": "h3",
+                                    "style": {
+                                      "fontSize": "24px",
+                                      "fontWeight": "bold",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-2-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Smooth, eye-catching effects that delight users",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.6"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "feature-card-3",
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "style": {
+                                "height": "100%"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "feature-3-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "🔧",
+                                    "style": {
+                                      "fontSize": "48px",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-3-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Easy to Customize",
+                                    "as": "h3",
+                                    "style": {
+                                      "fontSize": "24px",
+                                      "fontWeight": "bold",
+                                      "marginBottom": "1rem"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "feature-3-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Flexible props and variants for any design need",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.6"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "team-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "background": "#050505"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "team-background",
+                "type": "Plasma",
+                "props": {
+                  "variant": "cosmic",
+                  "intensity": "medium",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0",
+                    "opacity": "0.4"
+                  }
+                }
+              },
+              {
+                "id": "team-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1200px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "team-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Meet Our Team",
+                        "as": "h2",
+                        "variant": "purple-haze",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "56px",
+                          "fontWeight": "bold",
+                          "textAlign": "center",
+                          "marginBottom": "4rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "team-grid",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "repeat(auto-fit, minmax(280px, 1fr))",
+                          "gap": "2rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "profile-1",
+                            "type": "ProfileCard",
+                            "props": {
+                              "variant": "glass",
+                              "name": "Sarah Chen",
+                              "title": "Lead Designer",
+                              "bio": "Creating beautiful experiences for the modern web"
+                            }
+                          },
+                          {
+                            "id": "profile-2",
+                            "type": "ProfileCard",
+                            "props": {
+                              "variant": "glass",
+                              "name": "Alex Kumar",
+                              "title": "Senior Developer",
+                              "bio": "Building scalable and performant applications"
+                            }
+                          },
+                          {
+                            "id": "profile-3",
+                            "type": "ProfileCard",
+                            "props": {
+                              "variant": "glass",
+                              "name": "Maya Rodriguez",
+                              "title": "UX Researcher",
+                              "bio": "Understanding users to create better products"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "process-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "background": "#0a0a0a"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "process-background",
+                "type": "Squares",
+                "props": {
+                  "variant": "wave",
+                  "color": "#3b82f6",
+                  "squareSize": "50px",
+                  "gap": "15px",
+                  "opacity": 0.15,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "process-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1000px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "process-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Our Process",
+                        "as": "h2",
+                        "variant": "neon",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "56px",
+                          "fontWeight": "bold",
+                          "textAlign": "center",
+                          "marginBottom": "4rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "process-stepper",
+                      "type": "Stepper",
+                      "props": {
+                        "variant": "vertical",
+                        "currentStep": {
+                          "type": "stateBinding",
+                          "stateKey": "currentStep"
+                        },
+                        "steps": [
+                          {
+                            "title": "Discovery",
+                            "description": "Understanding your needs and requirements",
+                            "icon": "🔍"
+                          },
+                          {
+                            "title": "Design",
+                            "description": "Creating beautiful and functional interfaces",
+                            "icon": "✏️"
+                          },
+                          {
+                            "title": "Development",
+                            "description": "Building robust and scalable solutions",
+                            "icon": "💻"
+                          },
+                          {
+                            "title": "Launch",
+                            "description": "Deploying and monitoring your success",
+                            "icon": "🚀"
+                          }
+                        ],
+                        "completedColor": "#10b981",
+                        "activeColor": "#3b82f6",
+                        "style": {
+                          "padding": "2rem",
+                          "background": "rgba(26, 26, 26, 0.5)",
+                          "borderRadius": "16px",
+                          "backdropFilter": "blur(10px)"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "showcase-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "background": "#050505"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "showcase-background",
+                "type": "ColorBends",
+                "props": {
+                  "variant": "vibrant",
+                  "colors": ["#f857a6", "#ff5858", "#4facfe", "#00f2fe"],
+                  "speed": "12s",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "showcase-veil",
+                "type": "DarkVeil",
+                "props": {
+                  "variant": "subtle",
+                  "opacity": 0.7,
+                  "blur": true,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "1"
+                  }
+                }
+              },
+              {
+                "id": "showcase-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1200px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "showcase-title",
+                      "type": "BlurText",
+                      "props": {
+                        "content": "Interactive Components",
+                        "as": "h2",
+                        "variant": "slow",
+                        "style": {
+                          "fontSize": "56px",
+                          "fontWeight": "bold",
+                          "textAlign": "center",
+                          "marginBottom": "4rem",
+                          "color": "#ffffff"
+                        }
+                      }
+                    },
+                    {
+                      "id": "showcase-cards",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "flex",
+                          "justifyContent": "center",
+                          "gap": "3rem",
+                          "flexWrap": "wrap"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "flip-card-1",
+                            "type": "CardSwap",
+                            "props": {
+                              "variant": "3d",
+                              "trigger": "hover",
+                              "width": "320px",
+                              "height": "400px"
+                            },
+                            "slots": {
+                              "front": [
+                                {
+                                  "id": "front-content-1",
+                                  "type": "Box",
+                                  "props": {
+                                    "style": {
+                                      "height": "100%",
+                                      "display": "flex",
+                                      "flexDirection": "column",
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "color": "white"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "front-title-1",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Hover Me!",
+                                          "as": "h3",
+                                          "style": {
+                                            "fontSize": "32px",
+                                            "fontWeight": "bold"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ],
+                              "back": [
+                                {
+                                  "id": "back-content-1",
+                                  "type": "Box",
+                                  "props": {
+                                    "style": {
+                                      "height": "100%",
+                                      "display": "flex",
+                                      "flexDirection": "column",
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "background": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "color": "white"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "back-title-1",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Surprise! 🎉",
+                                          "as": "h3",
+                                          "style": {
+                                            "fontSize": "28px",
+                                            "fontWeight": "bold",
+                                            "marginBottom": "1rem"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "back-desc-1",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Interactive card flips with 3D effects",
+                                          "style": {
+                                            "fontSize": "16px",
+                                            "textAlign": "center"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "flip-card-2",
+                            "type": "CardSwap",
+                            "props": {
+                              "variant": "3d",
+                              "trigger": "hover",
+                              "width": "320px",
+                              "height": "400px"
+                            },
+                            "slots": {
+                              "front": [
+                                {
+                                  "id": "front-content-2",
+                                  "type": "Box",
+                                  "props": {
+                                    "style": {
+                                      "height": "100%",
+                                      "display": "flex",
+                                      "flexDirection": "column",
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "background": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "color": "white"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "front-title-2",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Try Me Too!",
+                                          "as": "h3",
+                                          "style": {
+                                            "fontSize": "32px",
+                                            "fontWeight": "bold"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ],
+                              "back": [
+                                {
+                                  "id": "back-content-2",
+                                  "type": "Box",
+                                  "props": {
+                                    "style": {
+                                      "height": "100%",
+                                      "display": "flex",
+                                      "flexDirection": "column",
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "background": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "color": "#333"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "back-title-2",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Amazing! ✨",
+                                          "as": "h3",
+                                          "style": {
+                                            "fontSize": "28px",
+                                            "fontWeight": "bold",
+                                            "marginBottom": "1rem"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "back-desc-2",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Perfect for product showcases and portfolios",
+                                          "style": {
+                                            "fontSize": "16px",
+                                            "textAlign": "center"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "navigation-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "background": "#0a0a0a"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "nav-background",
+                "type": "Ribbons",
+                "props": {
+                  "variant": "slow",
+                  "colors": ["#43e97b", "#38f9d7", "#667eea"],
+                  "ribbonCount": 4,
+                  "opacity": 0.2,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "nav-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1000px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "nav-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Navigation Styles",
+                        "as": "h2",
+                        "variant": "ocean",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "56px",
+                          "fontWeight": "bold",
+                          "textAlign": "center",
+                          "marginBottom": "4rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "card-navigation",
+                      "type": "CardNav",
+                      "props": {
+                        "variant": "grid",
+                        "cardStyle": "elevated",
+                        "items": [
+                          {
+                            "label": "Home",
+                            "icon": "🏠",
+                            "href": "#home"
+                          },
+                          {
+                            "label": "Features",
+                            "icon": "✨",
+                            "href": "#features"
+                          },
+                          {
+                            "label": "Team",
+                            "icon": "👥",
+                            "href": "#team"
+                          },
+                          {
+                            "label": "Contact",
+                            "icon": "📧",
+                            "href": "#contact"
+                          }
+                        ],
+                        "style": {
+                          "marginBottom": "3rem"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "80vh",
+              "display": "flex",
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "padding": "6rem 2rem",
+              "background": "#000000"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "cta-background",
+                "type": "Plasma",
+                "props": {
+                  "variant": "electric",
+                  "speed": "8s",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0",
+                    "opacity": "0.6"
+                  }
+                }
+              },
+              {
+                "id": "cta-veil",
+                "type": "DarkVeil",
+                "props": {
+                  "variant": "strong",
+                  "opacity": 0.5,
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "1"
+                  }
+                }
+              },
+              {
+                "id": "cta-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "textAlign": "center",
+                    "maxWidth": "800px"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "cta-title",
+                      "type": "GradientText",
+                      "props": {
+                        "content": "Ready to Get Started?",
+                        "as": "h2",
+                        "variant": "sunset",
+                        "animated": true,
+                        "style": {
+                          "fontSize": "64px",
+                          "fontWeight": "bold",
+                          "marginBottom": "2rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "cta-description",
+                      "type": "BlurText",
+                      "props": {
+                        "content": "Join thousands of developers building amazing experiences",
+                        "as": "p",
+                        "variant": "subtle",
+                        "style": {
+                          "fontSize": "24px",
+                          "color": "#e0e0e0",
+                          "marginBottom": "3rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "cta-button",
+                      "type": "Button",
+                      "props": {
+                        "text": "Get Started Now →",
+                        "style": {
+                          "padding": "1.25rem 3rem",
+                          "fontSize": "20px",
+                          "fontWeight": "bold",
+                          "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          "color": "white",
+                          "border": "none",
+                          "borderRadius": "50px",
+                          "cursor": "pointer",
+                          "boxShadow": "0 10px 30px rgba(102, 126, 234, 0.4)",
+                          "transition": "all 0.3s ease"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

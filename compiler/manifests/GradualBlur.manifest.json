@@ -1,0 +1,72 @@
+{
+  "componentName": "div",
+  "friendlyName": "GradualBlur",
+  "description": "Text or content with gradual blur effect from top to bottom or side to side",
+  "props": {
+    "content": {
+      "type": "string",
+      "description": "Text content to display"
+    },
+    "as": {
+      "type": "string",
+      "default": "div",
+      "enum": ["span", "h1", "h2", "h3", "h4", "h5", "h6", "p", "div"],
+      "description": "HTML tag to render as"
+    },
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["bottom", "top", "left", "right"],
+      "default": "bottom",
+      "description": "Direction of blur gradient"
+    },
+    "intensity": {
+      "type": "string",
+      "default": "medium",
+      "enum": ["light", "medium", "heavy"],
+      "description": "Blur intensity"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "fade-blur", "edge-blur"],
+      "default": "default",
+      "description": "Visual style variant"
+    }
+  },
+  "slots": ["default"],
+  "events": [],
+  "variants": {
+    "default": {
+      "description": "Standard gradual blur",
+      "props": {
+        "direction": "bottom",
+        "intensity": "medium"
+      }
+    },
+    "fade-blur": {
+      "description": "Blur with fade-out effect",
+      "props": {
+        "direction": "bottom",
+        "intensity": "heavy"
+      }
+    },
+    "edge-blur": {
+      "description": "Blur on edges only",
+      "props": {
+        "direction": "bottom",
+        "intensity": "light"
+      }
+    }
+  }
+}

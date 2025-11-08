@@ -503,6 +503,470 @@ class VueGenerator:
             header += f'{indent}</div>'
             
             return header
+        
+        # V21: Render BlurText with animation
+        if node_type == 'BlurText':
+            duration = node.get('props', {}).get('duration', '1s')
+            delay = node.get('props', {}).get('delay', '0s')
+            blur_amount = node.get('props', {}).get('blurAmount', '10px')
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            blur_style = f"animation: blur-in {duration} {delay} forwards; opacity: 0"
+            combined_style = f"{existing_style}; {blur_style}"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            if content:
+                return f"{indent}<{tag} {props_str}>{content}</{tag}>"
+        
+        # V21: Render GradualBlur with gradient mask
+        if node_type == 'GradualBlur':
+            direction = node.get('props', {}).get('direction', 'bottom')
+            intensity = node.get('props', {}).get('intensity', 'medium')
+            
+            # Map intensity to blur values
+            blur_map = {'light': '3px', 'medium': '6px', 'heavy': '10px'}
+            blur_val = blur_map.get(intensity, '6px')
+            
+            # Create gradient mask based on direction
+            mask_gradient = {
+                'bottom': 'linear-gradient(180deg, transparent 0%, black 100%)',
+                'top': 'linear-gradient(0deg, transparent 0%, black 100%)',
+                'left': 'linear-gradient(90deg, transparent 0%, black 100%)',
+                'right': 'linear-gradient(270deg, transparent 0%, black 100%)'
+            }
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            mask = mask_gradient.get(direction, mask_gradient['bottom'])
+            blur_style = f"mask-image: {mask}; -webkit-mask-image: {mask}"
+            combined_style = f"{existing_style}; {blur_style}"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            if content:
+                return f"{indent}<{tag} {props_str}>{content}</{tag}>"
+            else:
+                return f"{indent}<{tag} {props_str}>\n{children_str}{indent}</{tag}>"
+        
+        # V21: Render Ribbons background
+        if node_type == 'Ribbons':
+            colors = node.get('props', {}).get('colors', ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731'])
+            ribbon_count = node.get('props', {}).get('ribbonCount', 5)
+            speed = node.get('props', {}).get('speed', '20s')
+            opacity = node.get('props', {}).get('opacity', 0.3)
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            base_style = f"{existing_style}; overflow: hidden; position: relative"
+            props_map['style'] = f'"{base_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            # Generate ribbon elements
+            ribbons_html = ""
+            for i in range(ribbon_count):
+                color = colors[i % len(colors)]
+                delay = f"{i * 0.5}s"
+                height = "200px"
+                top = f"{i * 15}%"
+                
+                ribbon_style = f"position: absolute; width: 200%; height: {height}; background: {color}; opacity: {opacity}; top: {top}; left: -50%; transform: rotate(-15deg); animation: ribbon-flow {speed} {delay} infinite linear"
+                ribbons_html += f'{indent}  <div style="{ribbon_style}"></div>\n'
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<{tag} {props_str}>\n{ribbons_html}{children_str}{indent}</{tag}>"
+        
+        # V21: Render ColorBends background
+        if node_type == 'ColorBends':
+            colors = node.get('props', {}).get('colors', ['#667eea', '#764ba2', '#f093fb', '#4facfe'])
+            speed = node.get('props', {}).get('speed', '15s')
+            blur = node.get('props', {}).get('blur', '60px')
+            opacity = node.get('props', {}).get('opacity', 0.6)
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            base_style = f"{existing_style}; position: relative; overflow: hidden"
+            props_map['style'] = f'"{base_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            # Generate color orbs
+            orbs_html = ""
+            for i, color in enumerate(colors):
+                size = "400px"
+                anim_delay = f"{i * 2}s"
+                
+                orb_style = f"position: absolute; width: {size}; height: {size}; background: {color}; opacity: {opacity}; border-radius: 50%; filter: blur({blur}); animation: color-flow {speed} {anim_delay} infinite ease-in-out"
+                orbs_html += f'{indent}  <div style="{orb_style}"></div>\n'
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<{tag} {props_str}>\n{orbs_html}{children_str}{indent}</{tag}>"
+        
+        # V21: Render Plasma background
+        if node_type == 'Plasma':
+            colors = node.get('props', {}).get('colors', ['#ff00ff', '#00ffff', '#ffff00'])
+            speed = node.get('props', {}).get('speed', '10s')
+            blur = node.get('props', {}).get('blur', '40px')
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            base_style = f"{existing_style}; position: relative; overflow: hidden"
+            props_map['style'] = f'"{base_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            # Generate plasma orbs with more dynamic movement
+            plasma_html = ""
+            positions = ['0%, 0%', '100%, 0%', '0%, 100%', '100%, 100%', '50%, 50%']
+            
+            for i, color in enumerate(colors):
+                pos = positions[i % len(positions)]
+                
+                plasma_style = f"position: absolute; width: 300px; height: 300px; background: {color}; opacity: 0.6; border-radius: 50%; filter: blur({blur}); mix-blend-mode: screen; animation: plasma-flow {speed} {i}s infinite ease-in-out; top: {pos.split(',')[0]}; left: {pos.split(',')[1]}"
+                plasma_html += f'{indent}  <div style="{plasma_style}"></div>\n'
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<{tag} {props_str}>\n{plasma_html}{children_str}{indent}</{tag}>"
+        
+        # V21: Render Squares background
+        if node_type == 'Squares':
+            square_size = node.get('props', {}).get('squareSize', '40px')
+            gap = node.get('props', {}).get('gap', '10px')
+            color = node.get('props', {}).get('color', '#3b82f6')
+            opacity = node.get('props', {}).get('opacity', 0.2)
+            speed = node.get('props', {}).get('speed', '2s')
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            
+            # Create grid pattern with CSS
+            grid_style = f"background-image: linear-gradient({color} 2px, transparent 2px), linear-gradient(90deg, {color} 2px, transparent 2px); background-size: {square_size} {square_size}; opacity: {opacity}; animation: square-animation {speed} infinite ease-in-out"
+            combined_style = f"{existing_style}; {grid_style}"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<{tag} {props_str}>\n{children_str}{indent}</{tag}>"
+        
+        # V21: Render DarkVeil overlay
+        if node_type == 'DarkVeil':
+            opacity = node.get('props', {}).get('opacity', 0.5)
+            direction = node.get('props', {}).get('direction', 'bottom')
+            color = node.get('props', {}).get('color', '#000000')
+            blur = node.get('props', {}).get('blur', False)
+            
+            # Create gradient based on direction
+            gradients = {
+                'top': f'linear-gradient(180deg, {color} 0%, transparent 100%)',
+                'bottom': f'linear-gradient(0deg, {color} 0%, transparent 100%)',
+                'left': f'linear-gradient(90deg, {color} 0%, transparent 100%)',
+                'right': f'linear-gradient(270deg, {color} 0%, transparent 100%)',
+                'radial': f'radial-gradient(circle, transparent 0%, {color} 100%)'
+            }
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            gradient = gradients.get(direction, gradients['bottom'])
+            veil_style = f"background: {gradient}; opacity: {opacity}; pointer-events: none"
+            
+            if blur:
+                veil_style += "; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px)"
+            
+            combined_style = f"{existing_style}; {veil_style}"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<{tag} {props_str}>\n{children_str}{indent}</{tag}>"
+        
+        # V21: Render ProfileCard
+        if node_type == 'ProfileCard':
+            name = node.get('props', {}).get('name', 'Name')
+            title = node.get('props', {}).get('title', '')
+            bio = node.get('props', {}).get('bio', '')
+            avatar_url = node.get('props', {}).get('avatarUrl', '')
+            variant = node.get('props', {}).get('variant', 'default')
+            border_radius = node.get('props', {}).get('borderRadius', '16px')
+            
+            # Apply variant styling
+            variant_styles = {
+                'default': f'background: #1a1a1a; border-radius: {border_radius}; padding: 2rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3)',
+                'minimal': f'background: transparent; border: 1px solid #333; border-radius: 12px; padding: 1.5rem',
+                'detailed': f'background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border-radius: 20px; padding: 2.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4)',
+                'glass': f'background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4)'
+            }
+            
+            # Merge variant style with existing style
+            existing_style = props_map.get('style', '""').strip('"')
+            variant_style = variant_styles.get(variant, variant_styles['default'])
+            if existing_style:
+                combined_style = f"{variant_style}; {existing_style}"
+            else:
+                combined_style = variant_style
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            # Build profile card HTML
+            card_html = f'{indent}<{tag} {props_str}>\n'
+            
+            if avatar_url:
+                card_html += f'{indent}  <div style="text-align: center; margin-bottom: 1.5rem;">\n'
+                card_html += f'{indent}    <img src="{avatar_url}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;" />\n'
+                card_html += f'{indent}  </div>\n'
+            
+            card_html += f'{indent}  <div style="text-align: center;">\n'
+            card_html += f'{indent}    <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 0.5rem;">{name}</h3>\n'
+            
+            if title:
+                card_html += f'{indent}    <p style="color: #888; margin-bottom: 1rem;">{title}</p>\n'
+            
+            if bio:
+                card_html += f'{indent}    <p style="color: #aaa; line-height: 1.6;">{bio}</p>\n'
+            
+            card_html += f'{indent}  </div>\n'
+            
+            # Add slots for socials and actions
+            if 'slots' in node and 'socials' in node['slots']:
+                card_html += f'{indent}  <div style="margin-top: 1.5rem;">\n'
+                for idx, child_node in enumerate(node['slots']['socials']):
+                    card_html += self._generate_node(child_node, f"{semantic_id}.socials", idx) + "\n"
+                card_html += f'{indent}  </div>\n'
+            
+            if 'slots' in node and 'actions' in node['slots']:
+                card_html += f'{indent}  <div style="margin-top: 1rem;">\n'
+                for idx, child_node in enumerate(node['slots']['actions']):
+                    card_html += self._generate_node(child_node, f"{semantic_id}.actions", idx) + "\n"
+                card_html += f'{indent}  </div>\n'
+            
+            card_html += f'{indent}</{tag}>'
+            
+            return card_html
+        
+        # V21: Render Stepper
+        if node_type == 'Stepper':
+            steps = node.get('props', {}).get('steps', [])
+            current_step = node.get('props', {}).get('currentStep', 0)
+            show_icons = node.get('props', {}).get('showIcons', True)
+            completed_color = node.get('props', {}).get('completedColor', '#10b981')
+            active_color = node.get('props', {}).get('activeColor', '#3b82f6')
+            
+            # Handle state binding for currentStep
+            if isinstance(current_step, dict) and current_step.get('type') == 'stateBinding':
+                current_step_var = current_step.get('stateKey')
+                # Use v-for with condition in template
+                props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+                
+                stepper_html = f'{indent}<{tag} {props_str}>\n'
+                
+                for idx, step in enumerate(steps):
+                    step_title = step.get('title', f'Step {idx + 1}')
+                    step_desc = step.get('description', '')
+                    step_icon = step.get('icon', '•')
+                    
+                    # Determine step state styling dynamically
+                    step_html = f'{indent}  <div data-component-id="{semantic_id}.step-{idx}" style="display: flex; align-items: center; gap: 1rem; padding: 1rem;">\n'
+                    
+                    # Circle indicator
+                    step_html += f'{indent}    <div :style="{{width: \'40px\', height: \'40px\', borderRadius: \'50%\', display: \'flex\', alignItems: \'center\', justifyContent: \'center\', fontWeight: \'bold\', background: {current_step_var}.value > {idx} ? \'{completed_color}\' : {current_step_var}.value === {idx} ? \'{active_color}\' : \'#333\', color: \'white\'}}">\n'
+                    
+                    if show_icons:
+                        step_html += f'{indent}      <span>{step_icon}</span>\n'
+                    else:
+                        step_html += f'{indent}      <span>{idx + 1}</span>\n'
+                    
+                    step_html += f'{indent}    </div>\n'
+                    
+                    # Step content
+                    step_html += f'{indent}    <div style="flex: 1;">\n'
+                    step_html += f'{indent}      <div style="font-weight: 600; font-size: 16px;">{step_title}</div>\n'
+                    
+                    if step_desc:
+                        step_html += f'{indent}      <div style="color: #888; font-size: 14px; margin-top: 0.25rem;">{step_desc}</div>\n'
+                    
+                    step_html += f'{indent}    </div>\n'
+                    step_html += f'{indent}  </div>\n'
+                    
+                    stepper_html += step_html
+                
+                # Add slot content
+                if 'slots' in node and 'default' in node['slots']:
+                    for idx, child_node in enumerate(node['slots']['default']):
+                        stepper_html += self._generate_node(child_node, semantic_id, idx) + "\n"
+                
+                stepper_html += f'{indent}</{tag}>'
+                
+                return stepper_html
+            
+            # Static version (no state binding)
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            stepper_html = f'{indent}<{tag} {props_str}>\n'
+            
+            for idx, step in enumerate(steps):
+                step_title = step.get('title', f'Step {idx + 1}')
+                step_desc = step.get('description', '')
+                step_icon = step.get('icon', '•')
+                
+                is_completed = idx < current_step
+                is_active = idx == current_step
+                
+                bg_color = completed_color if is_completed else (active_color if is_active else '#333')
+                
+                step_html = f'{indent}  <div data-component-id="{semantic_id}.step-{idx}" style="display: flex; align-items: center; gap: 1rem; padding: 1rem;">\n'
+                step_html += f'{indent}    <div style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: {bg_color}; color: white;">\n'
+                
+                if show_icons:
+                    step_html += f'{indent}      <span>{step_icon}</span>\n'
+                else:
+                    step_html += f'{indent}      <span>{idx + 1}</span>\n'
+                
+                step_html += f'{indent}    </div>\n'
+                step_html += f'{indent}    <div style="flex: 1;">\n'
+                step_html += f'{indent}      <div style="font-weight: 600; font-size: 16px;">{step_title}</div>\n'
+                
+                if step_desc:
+                    step_html += f'{indent}      <div style="color: #888; font-size: 14px; margin-top: 0.25rem;">{step_desc}</div>\n'
+                
+                step_html += f'{indent}    </div>\n'
+                step_html += f'{indent}  </div>\n'
+                
+                stepper_html += step_html
+            
+            stepper_html += f'{indent}</{tag}>'
+            
+            return stepper_html
+        
+        # V21: Render CardSwap (flip card)
+        if node_type == 'CardSwap':
+            width = node.get('props', {}).get('width', '300px')
+            height = node.get('props', {}).get('height', '400px')
+            duration = node.get('props', {}).get('duration', '0.6s')
+            trigger = node.get('props', {}).get('trigger', 'hover')
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            # Clean up style - avoid leading semicolon
+            container_style = f"width: {width}; height: {height}; perspective: 1000px"
+            if existing_style:
+                container_style = f"{existing_style}; {container_style}"
+            props_map['style'] = f'"{container_style}"'
+            
+            # Add hover class if trigger is hover
+            if trigger == 'hover':
+                existing_class = props_map.get('class', '""').strip('"')
+                props_map['class'] = f'"{existing_class} card-swap-hover"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            # Build flip card structure
+            card_html = f'{indent}<{tag} {props_str}>\n'
+            card_html += f'{indent}  <div class="card-swap-inner" style="position: relative; width: 100%; height: 100%; transition: transform {duration}; transform-style: preserve-3d;">\n'
+            
+            # Front side
+            card_html += f'{indent}    <div class="card-swap-front" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden;">\n'
+            if 'slots' in node and 'front' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['front']):
+                    card_html += self._generate_node(child_node, f"{semantic_id}.front", idx) + "\n"
+            card_html += f'{indent}    </div>\n'
+            
+            # Back side
+            card_html += f'{indent}    <div class="card-swap-back" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg);">\n'
+            if 'slots' in node and 'back' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['back']):
+                    card_html += self._generate_node(child_node, f"{semantic_id}.back", idx) + "\n"
+            card_html += f'{indent}    </div>\n'
+            
+            card_html += f'{indent}  </div>\n'
+            card_html += f'{indent}</{tag}>'
+            
+            return card_html
+        
+        # V21: Render CardNav
+        if node_type == 'CardNav':
+            items = node.get('props', {}).get('items', [])
+            card_style_variant = node.get('props', {}).get('cardStyle', 'elevated')
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            nav_html = f'{indent}<{tag} {props_str}>\n'
+            
+            for idx, item in enumerate(items):
+                label = item.get('label', 'Nav Item')
+                icon = item.get('icon', '')
+                href = item.get('href', '#')
+                
+                # Apply card styling based on variant
+                card_styles = {
+                    'elevated': 'background: #1a1a1a; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); transition: transform 0.2s',
+                    'flat': 'background: #1a1a1a; padding: 1.5rem; border-radius: 12px',
+                    'outlined': 'background: transparent; border: 1px solid #333; padding: 1.5rem; border-radius: 12px',
+                    'glass': 'background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px'
+                }
+                
+                card_style = card_styles.get(card_style_variant, card_styles['elevated'])
+                
+                nav_html += f'{indent}  <a href="{href}" data-component-id="{semantic_id}.item-{idx}" style="{card_style}; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">\n'
+                
+                if icon:
+                    nav_html += f'{indent}    <span style="font-size: 24px;">{icon}</span>\n'
+                
+                nav_html += f'{indent}    <span style="font-weight: 600;">{label}</span>\n'
+                nav_html += f'{indent}  </a>\n'
+            
+            # Add slot content
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    nav_html += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            nav_html += f'{indent}</{tag}>'
+            
+            return nav_html
+        
+        # V21: Render MagicBento (grid with hover effects)
+        if node_type == 'MagicBento':
+            columns = node.get('props', {}).get('columns', 3)
+            gap = node.get('props', {}).get('gap', '1rem')
+            glow_color = node.get('props', {}).get('glowColor', '#3b82f6')
+            
+            existing_style = props_map.get('style', '""').strip('"')
+            grid_style = f"display: grid; grid-template-columns: repeat({columns}, 1fr); gap: {gap}"
+            combined_style = f"{existing_style}; {grid_style}"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            bento_html = f'{indent}<{tag} {props_str} class="magic-bento">\n'
+            
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    bento_html += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            bento_html += f'{indent}</{tag}>'
+            
+            return bento_html
 
         # --- Handle Children (Slots) ---
         children_str = ""

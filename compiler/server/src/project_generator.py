@@ -161,12 +161,92 @@ class ProjectGenerator:
 </template>"""
 
         # V20: Added animations for GradientText and other advanced components
+        # V21: Added animations for all new Vue Bits components
         animations = """
-/* --- V20: Animations for Advanced Components --- */
+/* --- V20/V21: Animations for Advanced Components --- */
 @keyframes gradient-shift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+@keyframes blur-in {
+  0% {
+    filter: blur(10px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ribbon-flow {
+  0% {
+    transform: translateX(-50%) rotate(-15deg);
+  }
+  100% {
+    transform: translateX(50%) rotate(-15deg);
+  }
+}
+
+@keyframes color-flow {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  25% {
+    transform: translate(-25%, 25%) scale(1.2);
+  }
+  50% {
+    transform: translate(25%, -25%) scale(0.8);
+  }
+  75% {
+    transform: translate(-25%, -25%) scale(1.1);
+  }
+}
+
+@keyframes plasma-flow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translate(-30%, 30%) scale(1.3);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translate(30%, -30%) scale(0.9);
+    opacity: 0.5;
+  }
+}
+
+@keyframes square-animation {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* CardSwap hover effect */
+.card-swap-hover:hover .card-swap-inner {
+  transform: rotateY(180deg);
+}
+
+/* MagicBento hover effects */
+.magic-bento > * {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Navigation link hover effects */
+a[href^="#/"]:hover {
+  color: #667eea !important;
+}
+
+.magic-bento > *:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 /* --- End Animations --- */
 """

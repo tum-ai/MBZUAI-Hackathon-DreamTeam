@@ -1,0 +1,89 @@
+{
+  "componentName": "div",
+  "friendlyName": "BlurText",
+  "description": "Text with blur-in animation effect, reveals text with motion blur",
+  "props": {
+    "content": {
+      "type": "string",
+      "required": true,
+      "description": "Text content to display"
+    },
+    "as": {
+      "type": "string",
+      "default": "p",
+      "enum": ["span", "h1", "h2", "h3", "h4", "h5", "h6", "p", "div"],
+      "description": "HTML tag to render as"
+    },
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "delay": {
+      "type": "string",
+      "default": "0s",
+      "description": "Animation delay"
+    },
+    "duration": {
+      "type": "string",
+      "default": "1s",
+      "description": "Animation duration"
+    },
+    "blurAmount": {
+      "type": "string",
+      "default": "10px",
+      "description": "Initial blur intensity"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "fast", "slow", "subtle"],
+      "default": "default",
+      "description": "Animation speed variant"
+    }
+  },
+  "slots": [],
+  "events": [],
+  "variants": {
+    "default": {
+      "description": "Standard blur-in animation",
+      "props": {
+        "duration": "1s",
+        "blurAmount": "10px"
+      }
+    },
+    "fast": {
+      "description": "Quick blur-in effect",
+      "props": {
+        "duration": "0.5s",
+        "blurAmount": "8px"
+      }
+    },
+    "slow": {
+      "description": "Slow, dramatic blur-in",
+      "props": {
+        "duration": "2s",
+        "blurAmount": "15px"
+      }
+    },
+    "subtle": {
+      "description": "Minimal blur effect",
+      "props": {
+        "duration": "0.8s",
+        "blurAmount": "5px"
+      }
+    }
+  },
+  "animations": {
+    "blur-in": {
+      "description": "Animates from blurred to clear text",
+      "props": ["duration", "delay", "blurAmount"]
+    }
+  }
+}

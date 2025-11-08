@@ -1,0 +1,668 @@
+{
+  "state": {},
+  "tree": {
+    "id": "contact-root",
+    "type": "Box",
+    "props": {
+      "style": {
+        "minHeight": "100vh",
+        "position": "relative",
+        "overflow": "hidden",
+        "background": "#000"
+      }
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "navbar",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "fixed",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "zIndex": "1000",
+              "background": "rgba(10, 10, 10, 0.8)",
+              "backdropFilter": "blur(10px)",
+              "borderBottom": "1px solid rgba(255, 255, 255, 0.1)",
+              "padding": "1rem 2rem"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "nav-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "maxWidth": "1400px",
+                    "margin": "0 auto",
+                    "display": "flex",
+                    "justifyContent": "space-between",
+                    "alignItems": "center"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "logo",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/",
+                        "style": {
+                          "fontSize": "24px",
+                          "fontWeight": "700",
+                          "color": "#fff",
+                          "textDecoration": "none"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "logo-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Vue Bits"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-links",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "flex",
+                          "gap": "2rem",
+                          "alignItems": "center"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-link-home",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-home-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Home"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-about",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/about",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-about-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "About"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-services",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/services",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-services-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Services"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-contact",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/contact",
+                              "style": {
+                                "color": "#fff",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-contact-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Contact"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "contact-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "paddingTop": "calc(6rem + 80px)"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "contact-colorbends",
+                "type": "ColorBends",
+                "props": {
+                  "colors": ["#f857a6", "#ff5858", "#4facfe", "#00f2fe"],
+                  "speed": "15s",
+                  "blur": 70,
+                  "opacity": 0.5,
+                  "variant": "slow",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "contact-darkveil",
+                "type": "DarkVeil",
+                "props": {
+                  "opacity": 0.75,
+                  "direction": "radial",
+                  "blur": true,
+                  "variant": "center-focus",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "1"
+                  }
+                }
+              },
+              {
+                "id": "contact-content-wrapper",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1400px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "contact-header",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "textAlign": "center",
+                          "marginBottom": "5rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "contact-title",
+                            "type": "GradientText",
+                            "props": {
+                              "content": "Let's Build Something Amazing",
+                              "animated": true,
+                              "style": {
+                                "fontSize": "64px",
+                                "fontWeight": "700",
+                                "marginBottom": "1.5rem"
+                              }
+                            }
+                          },
+                          {
+                            "id": "contact-subtitle",
+                            "type": "BlurText",
+                            "props": {
+                              "content": "Get in touch with us today",
+                              "duration": "1s",
+                              "delay": "0.3s",
+                              "variant": "subtle",
+                              "style": {
+                                "fontSize": "24px",
+                                "color": "#d0d0d0"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "contact-layout",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "1fr 1fr",
+                          "gap": "4rem",
+                          "alignItems": "center"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "contact-info",
+                            "type": "Box",
+                            "props": {
+                              "style": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "gap": "2rem"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "info-card-1",
+                                  "type": "Card",
+                                  "props": {
+                                    "style": {
+                                      "background": "rgba(26, 26, 26, 0.7)",
+                                      "backdropFilter": "blur(10px)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                      "display": "flex",
+                                      "alignItems": "center",
+                                      "gap": "1.5rem"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "info-1-icon",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "📧",
+                                          "style": {
+                                            "fontSize": "48px"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "info-1-details",
+                                        "type": "Box",
+                                        "props": {
+                                          "style": {
+                                            "display": "flex",
+                                            "flexDirection": "column",
+                                            "gap": "0.5rem"
+                                          }
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "id": "info-1-label",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "Email Us",
+                                                "style": {
+                                                  "fontSize": "18px",
+                                                  "fontWeight": "600",
+                                                  "color": "#fff"
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "id": "info-1-value",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "hello@vuebits.com",
+                                                "style": {
+                                                  "fontSize": "16px",
+                                                  "color": "#b0b0b0"
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "id": "info-card-2",
+                                  "type": "Card",
+                                  "props": {
+                                    "style": {
+                                      "background": "rgba(26, 26, 26, 0.7)",
+                                      "backdropFilter": "blur(10px)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                      "display": "flex",
+                                      "alignItems": "center",
+                                      "gap": "1.5rem"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "info-2-icon",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "💬",
+                                          "style": {
+                                            "fontSize": "48px"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "info-2-details",
+                                        "type": "Box",
+                                        "props": {
+                                          "style": {
+                                            "display": "flex",
+                                            "flexDirection": "column",
+                                            "gap": "0.5rem"
+                                          }
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "id": "info-2-label",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "Live Chat",
+                                                "style": {
+                                                  "fontSize": "18px",
+                                                  "fontWeight": "600",
+                                                  "color": "#fff"
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "id": "info-2-value",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "Available 24/7",
+                                                "style": {
+                                                  "fontSize": "16px",
+                                                  "color": "#b0b0b0"
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "id": "info-card-3",
+                                  "type": "Card",
+                                  "props": {
+                                    "style": {
+                                      "background": "rgba(26, 26, 26, 0.7)",
+                                      "backdropFilter": "blur(10px)",
+                                      "borderRadius": "16px",
+                                      "padding": "2rem",
+                                      "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                      "display": "flex",
+                                      "alignItems": "center",
+                                      "gap": "1.5rem"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "info-3-icon",
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "📍",
+                                          "style": {
+                                            "fontSize": "48px"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "info-3-details",
+                                        "type": "Box",
+                                        "props": {
+                                          "style": {
+                                            "display": "flex",
+                                            "flexDirection": "column",
+                                            "gap": "0.5rem"
+                                          }
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "id": "info-3-label",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "Visit Us",
+                                                "style": {
+                                                  "fontSize": "18px",
+                                                  "fontWeight": "600",
+                                                  "color": "#fff"
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "id": "info-3-value",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "San Francisco, CA",
+                                                "style": {
+                                                  "fontSize": "16px",
+                                                  "color": "#b0b0b0"
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "contact-form-card",
+                            "type": "Card",
+                            "props": {
+                              "style": {
+                                "background": "rgba(26, 26, 26, 0.7)",
+                                "backdropFilter": "blur(10px)",
+                                "borderRadius": "20px",
+                                "padding": "3rem",
+                                "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                "boxShadow": "0 20px 60px rgba(0, 0, 0, 0.5)"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "form-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Send us a message",
+                                    "style": {
+                                      "fontSize": "28px",
+                                      "fontWeight": "700",
+                                      "marginBottom": "2rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "form-fields",
+                                  "type": "Box",
+                                  "props": {
+                                    "style": {
+                                      "display": "flex",
+                                      "flexDirection": "column",
+                                      "gap": "1.5rem"
+                                    }
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "id": "field-name",
+                                        "type": "Textbox",
+                                        "props": {
+                                          "placeholder": "Your Name",
+                                          "style": {
+                                            "width": "100%",
+                                            "padding": "1rem",
+                                            "fontSize": "16px",
+                                            "background": "rgba(255, 255, 255, 0.05)",
+                                            "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                            "borderRadius": "12px",
+                                            "color": "#fff"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "field-email",
+                                        "type": "Textbox",
+                                        "props": {
+                                          "placeholder": "Your Email",
+                                          "style": {
+                                            "width": "100%",
+                                            "padding": "1rem",
+                                            "fontSize": "16px",
+                                            "background": "rgba(255, 255, 255, 0.05)",
+                                            "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                            "borderRadius": "12px",
+                                            "color": "#fff"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "field-message",
+                                        "type": "Textbox",
+                                        "props": {
+                                          "placeholder": "Your Message",
+                                          "multiline": true,
+                                          "style": {
+                                            "width": "100%",
+                                            "padding": "1rem",
+                                            "fontSize": "16px",
+                                            "background": "rgba(255, 255, 255, 0.05)",
+                                            "border": "1px solid rgba(255, 255, 255, 0.1)",
+                                            "borderRadius": "12px",
+                                            "color": "#fff",
+                                            "minHeight": "120px",
+                                            "resize": "vertical"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "id": "submit-button",
+                                        "type": "Button",
+                                        "props": {
+                                          "style": {
+                                            "width": "100%",
+                                            "padding": "1.25rem",
+                                            "fontSize": "18px",
+                                            "fontWeight": "600",
+                                            "background": "linear-gradient(135deg, #f857a6 0%, #ff5858 100%)",
+                                            "color": "white",
+                                            "border": "none",
+                                            "borderRadius": "12px",
+                                            "cursor": "pointer",
+                                            "boxShadow": "0 10px 30px rgba(248, 87, 166, 0.4)",
+                                            "transition": "all 0.3s ease"
+                                          }
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "id": "submit-text",
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "Send Message"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

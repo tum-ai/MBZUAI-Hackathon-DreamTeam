@@ -1,0 +1,95 @@
+{
+  "componentName": "div",
+  "friendlyName": "ColorBends",
+  "description": "Animated background with flowing color gradients and bends",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "colors": {
+      "type": "array",
+      "default": ["#667eea", "#764ba2", "#f093fb", "#4facfe"],
+      "description": "Array of colors for gradient bends"
+    },
+    "speed": {
+      "type": "string",
+      "default": "15s",
+      "description": "Animation speed"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "fast", "slow", "subtle", "vibrant"],
+      "default": "default",
+      "description": "Animation intensity variant"
+    },
+    "blur": {
+      "type": "string",
+      "default": "60px",
+      "description": "Blur amount for smooth color transitions"
+    },
+    "opacity": {
+      "type": "number",
+      "default": 0.6,
+      "description": "Background opacity (0-1)"
+    }
+  },
+  "slots": ["default"],
+  "events": [],
+  "variants": {
+    "default": {
+      "description": "Standard flowing color bends",
+      "props": {
+        "speed": "15s",
+        "blur": "60px",
+        "opacity": 0.6
+      }
+    },
+    "fast": {
+      "description": "Quick, energetic color flow",
+      "props": {
+        "speed": "8s",
+        "blur": "50px",
+        "opacity": 0.7
+      }
+    },
+    "slow": {
+      "description": "Slow, calming color transitions",
+      "props": {
+        "speed": "30s",
+        "blur": "80px",
+        "opacity": 0.5
+      }
+    },
+    "subtle": {
+      "description": "Gentle, understated effect",
+      "props": {
+        "speed": "20s",
+        "blur": "100px",
+        "opacity": 0.3
+      }
+    },
+    "vibrant": {
+      "description": "Bold, intense colors",
+      "props": {
+        "speed": "12s",
+        "blur": "40px",
+        "opacity": 0.8
+      }
+    }
+  },
+  "animations": {
+    "color-flow": {
+      "description": "Animates color gradients with morphing effect",
+      "props": ["speed", "colors", "blur"]
+    }
+  }
+}

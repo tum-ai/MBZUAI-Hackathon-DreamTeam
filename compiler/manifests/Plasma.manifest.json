@@ -1,0 +1,96 @@
+{
+  "componentName": "div",
+  "friendlyName": "Plasma",
+  "description": "Animated plasma effect background with organic flowing patterns",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "colors": {
+      "type": "array",
+      "default": ["#ff00ff", "#00ffff", "#ffff00"],
+      "description": "Array of plasma colors"
+    },
+    "speed": {
+      "type": "string",
+      "default": "10s",
+      "description": "Animation speed"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "electric", "cosmic", "fire", "ocean"],
+      "default": "default",
+      "description": "Color theme variant"
+    },
+    "intensity": {
+      "type": "string",
+      "default": "medium",
+      "enum": ["low", "medium", "high"],
+      "description": "Effect intensity"
+    },
+    "blur": {
+      "type": "string",
+      "default": "40px",
+      "description": "Blur amount for plasma effect"
+    }
+  },
+  "slots": ["default"],
+  "events": [],
+  "variants": {
+    "default": {
+      "description": "Standard plasma effect",
+      "props": {
+        "colors": ["#ff00ff", "#00ffff", "#ffff00"],
+        "speed": "10s",
+        "blur": "40px"
+      }
+    },
+    "electric": {
+      "description": "Electric blue and purple plasma",
+      "props": {
+        "colors": ["#667eea", "#764ba2", "#00d4ff"],
+        "speed": "8s",
+        "blur": "35px"
+      }
+    },
+    "cosmic": {
+      "description": "Deep space colors",
+      "props": {
+        "colors": ["#5f0a87", "#a4508b", "#00d4ff", "#ff00ff"],
+        "speed": "15s",
+        "blur": "50px"
+      }
+    },
+    "fire": {
+      "description": "Fiery orange and red plasma",
+      "props": {
+        "colors": ["#ff0000", "#ff6600", "#ffaa00"],
+        "speed": "7s",
+        "blur": "30px"
+      }
+    },
+    "ocean": {
+      "description": "Cool ocean blues and greens",
+      "props": {
+        "colors": ["#00c9ff", "#0099ff", "#00ff88"],
+        "speed": "12s",
+        "blur": "45px"
+      }
+    }
+  },
+  "animations": {
+    "plasma-flow": {
+      "description": "Creates organic flowing plasma patterns",
+      "props": ["speed", "colors", "blur", "intensity"]
+    }
+  }
+}

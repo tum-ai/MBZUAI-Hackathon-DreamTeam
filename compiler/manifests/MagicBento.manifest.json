@@ -1,0 +1,89 @@
+{
+  "componentName": "div",
+  "friendlyName": "MagicBento",
+  "description": "Bento grid layout with animated tiles and hover effects",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3,
+      "description": "Number of columns in grid"
+    },
+    "gap": {
+      "type": "string",
+      "default": "1rem",
+      "description": "Gap between grid items"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "hover-lift", "glow", "tilt"],
+      "default": "default",
+      "description": "Interaction style variant"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "12px",
+      "description": "Corner radius of tiles"
+    },
+    "glowColor": {
+      "type": "string",
+      "default": "#3b82f6",
+      "description": "Glow color for hover effects"
+    }
+  },
+  "slots": ["default"],
+  "events": ["click"],
+  "variants": {
+    "default": {
+      "description": "Standard bento grid with subtle hover",
+      "props": {
+        "style": {
+          "display": "grid",
+          "gap": "1rem"
+        }
+      }
+    },
+    "hover-lift": {
+      "description": "Tiles lift on hover",
+      "props": {
+        "style": {
+          "display": "grid",
+          "gap": "1.5rem"
+        }
+      }
+    },
+    "glow": {
+      "description": "Tiles glow on hover",
+      "props": {
+        "style": {
+          "display": "grid",
+          "gap": "1rem"
+        }
+      }
+    },
+    "tilt": {
+      "description": "3D tilt effect on hover",
+      "props": {
+        "style": {
+          "display": "grid",
+          "gap": "1.5rem"
+        }
+      }
+    }
+  },
+  "composition": {
+    "template": "grid with dynamic children",
+    "requiredChildren": []
+  }
+}

@@ -1,0 +1,569 @@
+{
+  "state": {},
+  "tree": {
+    "id": "services-root",
+    "type": "Box",
+    "props": {
+      "style": {
+        "minHeight": "100vh",
+        "position": "relative",
+        "overflow": "hidden"
+      }
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "navbar",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "fixed",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "zIndex": "1000",
+              "background": "rgba(10, 10, 10, 0.8)",
+              "backdropFilter": "blur(10px)",
+              "borderBottom": "1px solid rgba(255, 255, 255, 0.1)",
+              "padding": "1rem 2rem"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "nav-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "maxWidth": "1400px",
+                    "margin": "0 auto",
+                    "display": "flex",
+                    "justifyContent": "space-between",
+                    "alignItems": "center"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "logo",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/",
+                        "style": {
+                          "fontSize": "24px",
+                          "fontWeight": "700",
+                          "color": "#fff",
+                          "textDecoration": "none"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "logo-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Vue Bits"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-links",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "flex",
+                          "gap": "2rem",
+                          "alignItems": "center"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-link-home",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-home-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Home"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-about",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/about",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-about-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "About"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-services",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/services",
+                              "style": {
+                                "color": "#fff",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-services-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Services"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "nav-link-contact",
+                            "type": "Link",
+                            "props": {
+                              "href": "#/contact",
+                              "style": {
+                                "color": "#b0b0b0",
+                                "textDecoration": "none",
+                                "fontSize": "16px",
+                                "fontWeight": "500",
+                                "transition": "color 0.3s"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "nav-link-contact-text",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Contact"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "services-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "relative",
+              "minHeight": "100vh",
+              "padding": "6rem 2rem",
+              "paddingTop": "calc(6rem + 80px)"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "services-squares",
+                "type": "Squares",
+                "props": {
+                  "squareSize": "60px",
+                  "gap": "20px",
+                  "color": "#667eea",
+                  "opacity": 0.2,
+                  "speed": "3s",
+                  "variant": "wave",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "zIndex": "0"
+                  }
+                }
+              },
+              {
+                "id": "services-content",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "zIndex": "10",
+                    "maxWidth": "1400px",
+                    "margin": "0 auto"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "services-title",
+                      "type": "BlurText",
+                      "props": {
+                        "content": "What We Offer",
+                        "duration": "1s",
+                        "delay": "0s",
+                        "variant": "default",
+                        "style": {
+                          "fontSize": "64px",
+                          "fontWeight": "700",
+                          "textAlign": "center",
+                          "marginBottom": "2rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "services-subtitle",
+                      "type": "GradualBlur",
+                      "props": {
+                        "direction": "bottom",
+                        "intensity": 0.8,
+                        "variant": "fade-blur",
+                        "style": {
+                          "fontSize": "20px",
+                          "textAlign": "center",
+                          "color": "#c0c0c0",
+                          "marginBottom": "5rem",
+                          "maxWidth": "700px",
+                          "marginLeft": "auto",
+                          "marginRight": "auto"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "services-subtitle-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Comprehensive solutions tailored to your needs. From design to deployment, we've got you covered."
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "services-nav",
+                      "type": "CardNav",
+                      "props": {
+                        "items": [
+                          {
+                            "label": "Web Design",
+                            "icon": "🎨",
+                            "href": "#design"
+                          },
+                          {
+                            "label": "Development",
+                            "icon": "💻",
+                            "href": "#dev"
+                          },
+                          {
+                            "label": "UI/UX",
+                            "icon": "✨",
+                            "href": "#ux"
+                          },
+                          {
+                            "label": "Consulting",
+                            "icon": "💡",
+                            "href": "#consulting"
+                          },
+                          {
+                            "label": "Support",
+                            "icon": "🛠️",
+                            "href": "#support"
+                          },
+                          {
+                            "label": "Training",
+                            "icon": "📚",
+                            "href": "#training"
+                          }
+                        ],
+                        "cardStyle": "elevated",
+                        "gap": "1.5rem",
+                        "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "repeat(auto-fit, minmax(200px, 1fr))",
+                          "gap": "1.5rem",
+                          "marginBottom": "5rem"
+                        }
+                      }
+                    },
+                    {
+                      "id": "services-details",
+                      "type": "Box",
+                      "props": {
+                        "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "repeat(2, 1fr)",
+                          "gap": "3rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "service-card-1",
+                            "type": "Box",
+                            "props": {
+                              "style": {
+                                "background": "linear-gradient(135deg, #667eea20 0%, #764ba220 100%)",
+                                "borderRadius": "20px",
+                                "padding": "3rem",
+                                "border": "1px solid rgba(102, 126, 234, 0.3)",
+                                "backdropFilter": "blur(10px)"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "service-1-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "🚀",
+                                    "style": {
+                                      "fontSize": "56px",
+                                      "marginBottom": "1.5rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-1-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Fast Deployment",
+                                    "style": {
+                                      "fontSize": "28px",
+                                      "fontWeight": "700",
+                                      "marginBottom": "1rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-1-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Get your projects live quickly with our streamlined deployment process. We handle CI/CD, hosting, and monitoring.",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.8",
+                                      "fontSize": "16px"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "service-card-2",
+                            "type": "Box",
+                            "props": {
+                              "style": {
+                                "background": "linear-gradient(135deg, #f093fb20 0%, #f5576c20 100%)",
+                                "borderRadius": "20px",
+                                "padding": "3rem",
+                                "border": "1px solid rgba(240, 147, 251, 0.3)",
+                                "backdropFilter": "blur(10px)"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "service-2-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "🎯",
+                                    "style": {
+                                      "fontSize": "56px",
+                                      "marginBottom": "1.5rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-2-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Custom Solutions",
+                                    "style": {
+                                      "fontSize": "28px",
+                                      "fontWeight": "700",
+                                      "marginBottom": "1rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-2-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Tailored development that fits your unique needs. We build custom components, integrations, and workflows.",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.8",
+                                      "fontSize": "16px"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "service-card-3",
+                            "type": "Box",
+                            "props": {
+                              "style": {
+                                "background": "linear-gradient(135deg, #4facfe20 0%, #00f2fe20 100%)",
+                                "borderRadius": "20px",
+                                "padding": "3rem",
+                                "border": "1px solid rgba(79, 172, 254, 0.3)",
+                                "backdropFilter": "blur(10px)"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "service-3-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "📊",
+                                    "style": {
+                                      "fontSize": "56px",
+                                      "marginBottom": "1.5rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-3-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Analytics & Insights",
+                                    "style": {
+                                      "fontSize": "28px",
+                                      "fontWeight": "700",
+                                      "marginBottom": "1rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-3-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Understand your users with comprehensive analytics. Track engagement, performance, and user behavior.",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.8",
+                                      "fontSize": "16px"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "id": "service-card-4",
+                            "type": "Box",
+                            "props": {
+                              "style": {
+                                "background": "linear-gradient(135deg, #43e97b20 0%, #38f9d720 100%)",
+                                "borderRadius": "20px",
+                                "padding": "3rem",
+                                "border": "1px solid rgba(67, 233, 123, 0.3)",
+                                "backdropFilter": "blur(10px)"
+                              }
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "id": "service-4-icon",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "🔒",
+                                    "style": {
+                                      "fontSize": "56px",
+                                      "marginBottom": "1.5rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-4-title",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Security First",
+                                    "style": {
+                                      "fontSize": "28px",
+                                      "fontWeight": "700",
+                                      "marginBottom": "1rem",
+                                      "display": "block"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "service-4-desc",
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Enterprise-grade security practices. Regular audits, encryption, and compliance with industry standards.",
+                                    "style": {
+                                      "color": "#b0b0b0",
+                                      "lineHeight": "1.8",
+                                      "fontSize": "16px"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

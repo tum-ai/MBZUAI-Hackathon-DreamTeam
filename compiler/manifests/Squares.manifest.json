@@ -1,0 +1,95 @@
+{
+  "componentName": "div",
+  "friendlyName": "Squares",
+  "description": "Animated grid of squares background with various animation patterns",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "squareSize": {
+      "type": "string",
+      "default": "40px",
+      "description": "Size of each square"
+    },
+    "gap": {
+      "type": "string",
+      "default": "10px",
+      "description": "Gap between squares"
+    },
+    "color": {
+      "type": "string",
+      "default": "#3b82f6",
+      "description": "Square color"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "wave", "pulse", "random", "fade"],
+      "default": "default",
+      "description": "Animation pattern"
+    },
+    "speed": {
+      "type": "string",
+      "default": "2s",
+      "description": "Animation speed"
+    },
+    "opacity": {
+      "type": "number",
+      "default": 0.2,
+      "description": "Square opacity (0-1)"
+    }
+  },
+  "slots": ["default"],
+  "events": [],
+  "variants": {
+    "default": {
+      "description": "Standard animated squares grid",
+      "props": {
+        "speed": "2s",
+        "opacity": 0.2
+      }
+    },
+    "wave": {
+      "description": "Wave pattern animation",
+      "props": {
+        "speed": "3s",
+        "opacity": 0.3
+      }
+    },
+    "pulse": {
+      "description": "Pulsing squares effect",
+      "props": {
+        "speed": "1.5s",
+        "opacity": 0.25
+      }
+    },
+    "random": {
+      "description": "Random square animations",
+      "props": {
+        "speed": "2s",
+        "opacity": 0.15
+      }
+    },
+    "fade": {
+      "description": "Fading in and out pattern",
+      "props": {
+        "speed": "4s",
+        "opacity": 0.2
+      }
+    }
+  },
+  "animations": {
+    "square-animation": {
+      "description": "Animates squares in various patterns",
+      "props": ["speed", "variant"]
+    }
+  }
+}

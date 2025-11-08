@@ -1,0 +1,106 @@
+{
+  "componentName": "div",
+  "friendlyName": "Stepper",
+  "description": "Step-by-step wizard component for multi-step forms or processes",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "currentStep": {
+      "type": "number",
+      "default": 0,
+      "description": "Current active step (0-indexed)"
+    },
+    "steps": {
+      "type": "array",
+      "required": true,
+      "description": "Array of step objects [{title, description, icon}]"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "horizontal", "vertical", "numbered", "dots"],
+      "default": "horizontal",
+      "description": "Layout and style variant"
+    },
+    "showIcons": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show step icons"
+    },
+    "completedColor": {
+      "type": "string",
+      "default": "#10b981",
+      "description": "Color for completed steps"
+    },
+    "activeColor": {
+      "type": "string",
+      "default": "#3b82f6",
+      "description": "Color for active step"
+    }
+  },
+  "slots": ["default"],
+  "events": ["step-change", "complete"],
+  "variants": {
+    "default": {
+      "description": "Horizontal stepper with lines",
+      "props": {
+        "style": {
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "1rem"
+        }
+      }
+    },
+    "horizontal": {
+      "description": "Horizontal layout with connecting lines",
+      "props": {
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "alignItems": "center",
+          "justifyContent": "space-between"
+        }
+      }
+    },
+    "vertical": {
+      "description": "Vertical timeline-style stepper",
+      "props": {
+        "style": {
+          "display": "flex",
+          "flexDirection": "column",
+          "gap": "2rem"
+        }
+      }
+    },
+    "numbered": {
+      "description": "Simple numbered steps",
+      "props": {
+        "showIcons": false,
+        "style": {
+          "display": "flex",
+          "gap": "1rem"
+        }
+      }
+    },
+    "dots": {
+      "description": "Minimal dot indicators",
+      "props": {
+        "showIcons": false,
+        "style": {
+          "display": "flex",
+          "gap": "0.5rem",
+          "justifyContent": "center"
+        }
+      }
+    }
+  }
+}
