@@ -15,6 +15,10 @@
       "type": "string",
       "description": "Button label text (alternative to using slot)"
     },
+    "label": { 
+      "type": "string",
+      "description": "Button label text (alias for text)"
+    },
     "style": { 
       "type": "object",
       "description": "CSS styles - commonly used for colors, padding, borders, shadows"

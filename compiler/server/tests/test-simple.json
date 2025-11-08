@@ -1,0 +1,151 @@
+{
+  "state": {
+    "email": "",
+    "country": "",
+    "notifications": false
+  },
+  "tree": {
+    "type": "Box",
+    "props": {
+      "id": "demo-page",
+      "class": "min-h-screen bg-gray-100 p-8"
+    },
+    "slots": {
+      "default": [
+        {
+          "type": "Box",
+          "props": {
+            "class": "max-w-4xl mx-auto space-y-6"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "GradientText",
+                "props": {
+                  "content": "Component Library Test",
+                  "variant": "sunset",
+                  "as": "h1",
+                  "class": "text-4xl font-bold text-center mb-8"
+                }
+              },
+              {
+                "type": "Card",
+                "props": {
+                  "id": "test-card",
+                  "variant": "elevated",
+                  "class": "p-6"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "as": "h2",
+                        "content": "Form Components",
+                        "class": "text-2xl font-bold mb-4"
+                      }
+                    },
+                    {
+                      "type": "Textbox",
+                      "props": {
+                        "id": "email-field",
+                        "type": "email",
+                        "placeholder": "your@email.com",
+                        "modelValue": "$.email",
+                        "class": "w-full border p-2 rounded mb-4"
+                      }
+                    },
+                    {
+                      "type": "Select",
+                      "props": {
+                        "id": "country-field",
+                        "modelValue": "$.country",
+                        "placeholder": "Select country",
+                        "options": [
+                          { "value": "us", "label": "United States" },
+                          { "value": "uk", "label": "United Kingdom" }
+                        ],
+                        "class": "w-full border p-2 rounded mb-4"
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "flex items-center gap-4"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Text",
+                            "props": {
+                              "content": "Enable notifications"
+                            }
+                          },
+                          {
+                            "type": "Toggle",
+                            "props": {
+                              "id": "notif-toggle",
+                              "modelValue": "$.notifications"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "label": "Submit",
+                        "variant": "primary",
+                        "onClick": "handleSubmit",
+                        "class": "mt-4"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Card",
+                "props": {
+                  "variant": "bordered",
+                  "class": "p-6"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "as": "h2",
+                        "content": "Progress & Badges",
+                        "class": "text-2xl font-bold mb-4"
+                      }
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "text": "New",
+                        "variant": "success"
+                      }
+                    },
+                    {
+                      "type": "Progress",
+                      "props": {
+                        "id": "demo-progress",
+                        "value": 65,
+                        "max": 100,
+                        "variant": "success",
+                        "class": "mt-4"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "functions": {
+    "handleSubmit": "console.log('Form submitted!', this.email, this.country)"
+  }
+}

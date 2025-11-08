@@ -1,0 +1,821 @@
+{
+  "tree": {
+    "type": "Box",
+    "props": {
+      "id": "main-container",
+      "class": "min-h-screen bg-gray-50 py-12 px-4"
+    },
+    "slots": {
+      "default": [
+          {
+            "type": "Box",
+            "props": {
+              "id": "hero-section",
+              "class": "max-w-6xl mx-auto mb-16"
+            },
+            "children": [
+              {
+                "type": "GradientText",
+                "props": {
+                  "content": "VueBits Component Showcase",
+                  "variant": "sunset",
+                  "class": "text-5xl font-bold text-center mb-4"
+                }
+              },
+              {
+                "type": "Text",
+                "props": {
+                  "as": "p",
+                  "content": "A comprehensive demo of all 22 components with semantic IDs and automation support",
+                  "class": "text-center text-gray-600 text-lg"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Box",
+            "props": {
+              "id": "tabs-demo",
+              "class": "max-w-6xl mx-auto mb-12"
+            },
+            "children": [
+              {
+                "type": "Tabs",
+                "props": {
+                  "id": "main-tabs",
+                  "variant": "underline",
+                  "tabs": [
+                    { "id": "basics", "label": "Basic Components" },
+                    { "id": "forms", "label": "Form Components" },
+                    { "id": "advanced", "label": "Advanced Components" }
+                  ],
+                  "activeTab": "$.activeTab"
+                },
+                "panels": [
+                  {
+                    "id": "basics",
+                    "children": [
+                      {
+                        "type": "Box",
+                        "props": {
+                          "id": "basics-grid",
+                          "class": "grid grid-cols-1 md:grid-cols-2 gap-6 p-6"
+                        },
+                        "children": [
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "card-demo",
+                              "variant": "elevated",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Box",
+                                "props": {
+                                  "class": "flex items-start gap-3 mb-4"
+                                },
+                                "children": [
+                                  {
+                                    "type": "Icon",
+                                    "props": {
+                                      "svgPath": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z",
+                                      "class": "w-6 h-6 text-green-500"
+                                    }
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {
+                                      "class": "flex-1"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "h3",
+                                          "content": "Card Component",
+                                          "class": "text-xl font-semibold mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Elevated card variant with icon and badge",
+                                          "class": "text-gray-600 mb-3"
+                                        }
+                                      },
+                                      {
+                                        "type": "Badge",
+                                        "props": {
+                                          "text": "New Feature",
+                                          "variant": "success"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Button",
+                                "props": {
+                                  "label": "Learn More",
+                                  "variant": "primary",
+                                  "onClick": "handleCardClick"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "progress-card",
+                              "variant": "bordered",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h3",
+                                  "content": "Progress Indicators",
+                                  "class": "text-xl font-semibold mb-4"
+                                }
+                              },
+                              {
+                                "type": "Box",
+                                "props": {
+                                  "class": "space-y-4"
+                                },
+                                "children": [
+                                  {
+                                    "type": "Box",
+                                    "props": {},
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Upload Progress - 75%",
+                                          "class": "text-sm mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Progress",
+                                        "props": {
+                                          "id": "upload-progress",
+                                          "value": 75,
+                                          "max": 100,
+                                          "variant": "default"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {},
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Skill Level - JavaScript",
+                                          "class": "text-sm mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Progress",
+                                        "props": {
+                                          "id": "skill-progress",
+                                          "value": 85,
+                                          "max": 100,
+                                          "variant": "success"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "image-card",
+                              "variant": "default",
+                              "class": "overflow-hidden"
+                            },
+                            "children": [
+                              {
+                                "type": "Image",
+                                "props": {
+                                  "src": "https://via.placeholder.com/400x200",
+                                  "alt": "Demo image",
+                                  "class": "w-full h-48 object-cover"
+                                }
+                              },
+                              {
+                                "type": "Box",
+                                "props": {
+                                  "class": "p-4"
+                                },
+                                "children": [
+                                  {
+                                    "type": "Text",
+                                    "props": {
+                                      "as": "h3",
+                                      "content": "Image Card",
+                                      "class": "font-semibold mb-2"
+                                    }
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "props": {
+                                      "content": "Card with image, text, and link",
+                                      "class": "text-sm text-gray-600 mb-3"
+                                    }
+                                  },
+                                  {
+                                    "type": "Link",
+                                    "props": {
+                                      "href": "#",
+                                      "target": "_self",
+                                      "class": "text-blue-600 hover:underline inline-flex items-center gap-1"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "View Details"
+                                        }
+                                      },
+                                      {
+                                        "type": "Icon",
+                                        "props": {
+                                          "svgPath": "M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z",
+                                          "class": "w-4 h-4"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "list-card",
+                              "variant": "bordered",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h3",
+                                  "content": "Feature List",
+                                  "class": "text-xl font-semibold mb-4"
+                                }
+                              },
+                              {
+                                "type": "List",
+                                "props": {
+                                  "id": "features-list",
+                                  "class": "space-y-2",
+                                  "items": [
+                                    {
+                                      "children": [
+                                        {
+                                          "type": "Text",
+                                          "props": {
+                                            "content": "✓ Semantic hierarchical IDs"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "children": [
+                                        {
+                                          "type": "Text",
+                                          "props": {
+                                            "content": "✓ 22 pre-built components"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "children": [
+                                        {
+                                          "type": "Text",
+                                          "props": {
+                                            "content": "✓ Automation support"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "children": [
+                                        {
+                                          "type": "Text",
+                                          "props": {
+                                            "content": "✓ Vue 3 + Vite powered"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "forms",
+                    "children": [
+                      {
+                        "type": "Box",
+                        "props": {
+                          "id": "forms-container",
+                          "class": "max-w-2xl mx-auto p-6"
+                        },
+                        "children": [
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "contact-form",
+                              "variant": "elevated",
+                              "class": "p-8"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h2",
+                                  "content": "Contact Form Demo",
+                                  "class": "text-2xl font-bold mb-6"
+                                }
+                              },
+                              {
+                                "type": "Box",
+                                "props": {
+                                  "class": "space-y-4"
+                                },
+                                "children": [
+                                  {
+                                    "type": "Box",
+                                    "props": {},
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "label",
+                                          "content": "Email Address",
+                                          "class": "block text-sm font-medium mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Textbox",
+                                        "props": {
+                                          "id": "email-input",
+                                          "type": "email",
+                                          "placeholder": "your@email.com",
+                                          "modelValue": "$.email",
+                                          "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {},
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "label",
+                                          "content": "Country",
+                                          "class": "block text-sm font-medium mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Select",
+                                        "props": {
+                                          "id": "country-select",
+                                          "modelValue": "$.country",
+                                          "placeholder": "Select country...",
+                                          "options": [
+                                            { "value": "us", "label": "United States" },
+                                            { "value": "uk", "label": "United Kingdom" },
+                                            { "value": "ca", "label": "Canada" },
+                                            { "value": "ae", "label": "UAE" }
+                                          ],
+                                          "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {
+                                      "class": "space-y-3"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "label",
+                                          "content": "Interests (select all that apply)",
+                                          "class": "block text-sm font-medium mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-2"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "Checkbox",
+                                            "props": {
+                                              "id": "interest-tech",
+                                              "modelValue": "$.interests.tech"
+                                            }
+                                          },
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Technology"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-2"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "Checkbox",
+                                            "props": {
+                                              "id": "interest-design",
+                                              "modelValue": "$.interests.design"
+                                            }
+                                          },
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Design"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-2"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "Checkbox",
+                                            "props": {
+                                              "id": "interest-business",
+                                              "modelValue": "$.interests.business"
+                                            }
+                                          },
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Business"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {
+                                      "class": "space-y-2"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "label",
+                                          "content": "Subscription Plan",
+                                          "class": "block text-sm font-medium mb-2"
+                                        }
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-2"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "Radio",
+                                            "props": {
+                                              "id": "plan-free",
+                                              "name": "plan",
+                                              "value": "free",
+                                              "modelValue": "$.plan"
+                                            }
+                                          },
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Free - $0/month"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-2"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "Radio",
+                                            "props": {
+                                              "id": "plan-pro",
+                                              "name": "plan",
+                                              "value": "pro",
+                                              "modelValue": "$.plan"
+                                            }
+                                          },
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Pro - $29/month"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {
+                                      "class": "flex justify-between items-center"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Enable Notifications"
+                                        }
+                                      },
+                                      {
+                                        "type": "Toggle",
+                                        "props": {
+                                          "id": "notifications-toggle",
+                                          "modelValue": "$.notifications",
+                                          "variant": "success"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Box",
+                                    "props": {
+                                      "class": "flex gap-3 pt-4"
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "Button",
+                                        "props": {
+                                          "label": "Submit",
+                                          "variant": "primary",
+                                          "onClick": "handleSubmit",
+                                          "class": "flex-1"
+                                        }
+                                      },
+                                      {
+                                        "type": "Button",
+                                        "props": {
+                                          "label": "Reset",
+                                          "variant": "outline",
+                                          "onClick": "handleReset"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "advanced",
+                    "children": [
+                      {
+                        "type": "Box",
+                        "props": {
+                          "id": "advanced-container",
+                          "class": "p-6 space-y-8"
+                        },
+                        "children": [
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "accordion-demo",
+                              "variant": "bordered",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h2",
+                                  "content": "Accordion Component",
+                                  "class": "text-2xl font-bold mb-4"
+                                }
+                              },
+                              {
+                                "type": "Accordion",
+                                "props": {
+                                  "id": "faq-accordion",
+                                  "variant": "default"
+                                },
+                                "items": [
+                                  {
+                                    "id": "faq-1",
+                                    "title": "What is this project?",
+                                    "content": "This is a comprehensive Vue.js component library with 22 pre-built components, semantic ID generation, and full automation support."
+                                  },
+                                  {
+                                    "id": "faq-2",
+                                    "title": "How does semantic ID work?",
+                                    "content": "Every component gets a hierarchical ID like 'hero-section.box.content.0.button' that describes its position and purpose in the component tree."
+                                  },
+                                  {
+                                    "id": "faq-3",
+                                    "title": "What automation features are included?",
+                                    "content": "The automation_agent.js recognizes all interactive elements including buttons, links, forms, accordions, tabs, and custom components for testing and automation."
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "table-demo",
+                              "variant": "elevated",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h2",
+                                  "content": "Pricing Comparison",
+                                  "class": "text-2xl font-bold mb-4"
+                                }
+                              },
+                              {
+                                "type": "Table",
+                                "props": {
+                                  "id": "pricing-table",
+                                  "headers": ["Feature", "Basic", "Pro", "Enterprise"],
+                                  "rows": [
+                                    ["Users", "5", "25", "Unlimited"],
+                                    ["Storage", "10 GB", "100 GB", "1 TB"],
+                                    ["Support", "Email", "Priority", "24/7 Phone"],
+                                    ["Components", "10", "22", "22 + Custom"]
+                                  ],
+                                  "class": "w-full border-collapse"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "button-variants",
+                              "variant": "default",
+                              "class": "p-6"
+                            },
+                            "children": [
+                              {
+                                "type": "Text",
+                                "props": {
+                                  "as": "h2",
+                                  "content": "Button Variants",
+                                  "class": "text-2xl font-bold mb-4"
+                                }
+                              },
+                              {
+                                "type": "Box",
+                                "props": {
+                                  "class": "flex flex-wrap gap-3"
+                                },
+                                "children": [
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Primary",
+                                      "variant": "primary",
+                                      "onClick": "handleClick"
+                                    }
+                                  },
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Secondary",
+                                      "variant": "secondary",
+                                      "onClick": "handleClick"
+                                    }
+                                  },
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Success",
+                                      "variant": "success",
+                                      "onClick": "handleClick"
+                                    }
+                                  },
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Danger",
+                                      "variant": "danger",
+                                      "onClick": "handleClick"
+                                    }
+                                  },
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Outline",
+                                      "variant": "outline",
+                                      "onClick": "handleClick"
+                                    }
+                                  },
+                                  {
+                                    "type": "Button",
+                                    "props": {
+                                      "label": "Ghost",
+                                      "variant": "ghost",
+                                      "onClick": "handleClick"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Box",
+                            "props": {
+                              "class": "text-center py-8"
+                            },
+                            "children": [
+                              {
+                                "type": "Button",
+                                "props": {
+                                  "label": "Open Dialog Demo",
+                                  "variant": "primary",
+                                  "onClick": "openDialog"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ,
+  "state": {
+    "activeTab": "basics",
+    "email": "",
+    "country": "",
+    "interests": {
+      "tech": false,
+      "design": false,
+      "business": false
+    },
+    "plan": "free",
+    "notifications": false,
+    "showDialog": false
+  },
+  "functions": {
+    "handleCardClick": "console.log('Card clicked')",
+    "handleSubmit": "console.log('Form submitted:', { email: this.email, country: this.country })",
+    "handleReset": "this.email = ''; this.country = ''; this.interests = { tech: false, design: false, business: false }; this.plan = 'free'; this.notifications = false",
+    "handleClick": "console.log('Button clicked')",
+    "openDialog": "this.showDialog = true",
+    "closeDialog": "this.showDialog = false"
+  }
+}

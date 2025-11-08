@@ -1,0 +1,1483 @@
+{
+  "state": {
+    "activeTab": "features",
+    "selectedColor": "midnight",
+    "selectedStorage": "256gb",
+    "quantity": 1,
+    "cartItems": 0,
+    "showCart": false,
+    "email": "",
+    "currentFeature": 0,
+    "compareModel": "pro-max",
+    "mobileMenuOpen": false
+  },
+  "tree": {
+    "type": "Box",
+    "props": {
+      "id": "app-root",
+      "class": "min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white"
+    },
+    "slots": {
+      "default": [
+        {
+          "type": "Box",
+          "props": {
+            "id": "hero-section",
+            "class": "relative min-h-screen flex items-center justify-center overflow-hidden"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "id": "background-pattern",
+                  "class": "absolute inset-0 opacity-20"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "GridPattern",
+                      "props": {
+                        "id": "hero-grid",
+                        "size": 50,
+                        "opacity": 0.3,
+                        "color": "#3b82f6"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Box",
+                "props": {
+                  "id": "nav-bar",
+                  "class": "absolute top-0 left-0 right-0 z-50 px-8 py-6"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "max-w-7xl mx-auto flex items-center justify-between"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "GradientText",
+                            "props": {
+                              "content": "NEXUS",
+                              "variant": "ocean",
+                              "as": "h1",
+                              "class": "text-3xl font-bold tracking-wider"
+                            }
+                          },
+                          {
+                            "type": "Box",
+                            "props": {
+                              "class": "flex items-center gap-8"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Link",
+                                  "props": {
+                                    "href": "#features",
+                                    "target": "_self",
+                                    "class": "text-gray-300 hover:text-white transition-colors"
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Features"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Link",
+                                  "props": {
+                                    "href": "#compare",
+                                    "target": "_self",
+                                    "class": "text-gray-300 hover:text-white transition-colors"
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Compare"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Link",
+                                  "props": {
+                                    "href": "#specs",
+                                    "target": "_self",
+                                    "class": "text-gray-300 hover:text-white transition-colors"
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "content": "Specs"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Button",
+                                  "props": {
+                                    "label": "Buy Now",
+                                    "variant": "primary",
+                                    "onClick": "scrollToBuy",
+                                    "class": "bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full"
+                                  }
+                                },
+                                {
+                                  "type": "Button",
+                                  "props": {
+                                    "label": "\u00f0\u0178\u203a\u2019 Cart (0)",
+                                    "variant": "ghost",
+                                    "onClick": "toggleCart",
+                                    "class": "relative"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Box",
+                "props": {
+                  "id": "hero-content",
+                  "class": "relative z-10 text-center px-4 max-w-6xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "text": "NEW LAUNCH 2024",
+                        "variant": "success",
+                        "class": "mb-6 inline-block"
+                      }
+                    },
+                    {
+                      "type": "GradientText",
+                      "props": {
+                        "content": "NEXUS QUANTUM",
+                        "variant": "sunset",
+                        "as": "h1",
+                        "class": "text-7xl md:text-9xl font-black mb-6 tracking-tight"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "as": "p",
+                        "content": "The most powerful smartphone ever created. Experience quantum leap performance.",
+                        "class": "text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "flex items-center justify-center gap-6 mb-16"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Button",
+                            "props": {
+                              "label": "Pre-Order Now - $1,299",
+                              "variant": "primary",
+                              "onClick": "scrollToBuy",
+                              "class": "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 text-xl rounded-full shadow-2xl shadow-blue-500/50"
+                            }
+                          },
+                          {
+                            "type": "Button",
+                            "props": {
+                              "label": "Watch Video",
+                              "variant": "outline",
+                              "onClick": "playVideo",
+                              "class": "border-2 border-white/30 hover:border-white px-8 py-4 text-xl rounded-full"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "class": "bg-white/5 backdrop-blur-lg border border-white/10 p-6 text-center"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "6.8\"",
+                                    "class": "text-3xl font-bold text-blue-400 mb-2"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "ProMotion XDR",
+                                    "class": "text-sm text-gray-400"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "class": "bg-white/5 backdrop-blur-lg border border-white/10 p-6 text-center"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "200MP",
+                                    "class": "text-3xl font-bold text-purple-400 mb-2"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "AI Camera Pro",
+                                    "class": "text-sm text-gray-400"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "variant": "elevated",
+                              "class": "bg-white/5 backdrop-blur-lg border border-white/10 p-6 text-center"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "5000mAh",
+                                    "class": "text-3xl font-bold text-green-400 mb-2"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "All-Day Battery",
+                                    "class": "text-sm text-gray-400"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "features-section",
+            "class": "py-32 px-8 bg-black/50"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-7xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "text-center mb-20"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "GradientText",
+                            "props": {
+                              "content": "Revolutionary Features",
+                              "variant": "ocean",
+                              "as": "h2",
+                              "class": "text-6xl font-bold mb-6"
+                            }
+                          },
+                          {
+                            "type": "Text",
+                            "props": {
+                              "as": "p",
+                              "content": "Powered by next-generation AI and quantum processors",
+                              "class": "text-xl text-gray-400"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-camera",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-lg border border-purple-500/20 p-8 hover:border-purple-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00f0\u0178\u201c\u00b8 AI Camera Pro",
+                                    "class": "text-2xl font-bold mb-4 text-purple-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "200MP main sensor with AI-powered computational photography. Night mode 2.0 captures stunning details even in complete darkness.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "List",
+                                  "props": {
+                                    "id": "camera-features",
+                                    "class": "space-y-2 text-sm text-gray-400",
+                                    "items": [
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "\u00e2\u0153\u201c 8K Video Recording @ 60fps"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "\u00e2\u0153\u201c 100x Hybrid Zoom"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "\u00e2\u0153\u201c Pro RAW & ProRes Support"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-display",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-blue-900/30 to-cyan-900/30 backdrop-blur-lg border border-blue-500/20 p-8 hover:border-blue-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00f0\u0178\u201c\u00b1 ProMotion XDR Display",
+                                    "class": "text-2xl font-bold mb-4 text-blue-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "6.8-inch LTPO AMOLED with adaptive 1-120Hz refresh rate. HDR10+ certified with 2000 nits peak brightness.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "Progress",
+                                  "props": {
+                                    "id": "brightness-indicator",
+                                    "value": 95,
+                                    "max": 100,
+                                    "variant": "success",
+                                    "class": "mb-2"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "95% Display Quality Score",
+                                    "class": "text-xs text-gray-500"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-performance",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-green-900/30 to-emerald-900/30 backdrop-blur-lg border border-green-500/20 p-8 hover:border-green-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00e2\u0161\u00a1 Quantum Chip X1",
+                                    "class": "text-2xl font-bold mb-4 text-green-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "3nm process technology with 24-core GPU. 50% faster than previous generation with 40% better power efficiency.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "Badge",
+                                  "props": {
+                                    "text": "Fastest Mobile Chip",
+                                    "variant": "success"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-battery",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-yellow-900/30 to-orange-900/30 backdrop-blur-lg border border-yellow-500/20 p-8 hover:border-yellow-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00f0\u0178\u201d\u2039 All-Day Power",
+                                    "class": "text-2xl font-bold mb-4 text-yellow-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "5000mAh battery with 65W fast charging. 0 to 50% in just 15 minutes. Wireless and reverse charging supported.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "Progress",
+                                  "props": {
+                                    "id": "battery-indicator",
+                                    "value": 100,
+                                    "max": 100,
+                                    "variant": "warning",
+                                    "class": "mb-2"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Up to 28 hours video playback",
+                                    "class": "text-xs text-gray-500"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-security",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-red-900/30 to-pink-900/30 backdrop-blur-lg border border-red-500/20 p-8 hover:border-red-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00f0\u0178\u201d\u2019 Military-Grade Security",
+                                    "class": "text-2xl font-bold mb-4 text-red-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Ultrasonic fingerprint, 3D face unlock, and secure enclave. Your data protected by quantum encryption.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "Badge",
+                                  "props": {
+                                    "text": "Certified Secure",
+                                    "variant": "error"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Card",
+                            "props": {
+                              "id": "feature-5g",
+                              "variant": "elevated",
+                              "class": "bg-gradient-to-br from-indigo-900/30 to-violet-900/30 backdrop-blur-lg border border-indigo-500/20 p-8 hover:border-indigo-500/50 transition-all"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h3",
+                                    "content": "\u00f0\u0178\u201c\u00a1 5G Ultra",
+                                    "class": "text-2xl font-bold mb-4 text-indigo-400"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "mmWave and Sub-6 GHz support. Download speeds up to 10Gbps. Future-proof connectivity for years to come.",
+                                    "class": "text-gray-300 mb-6"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "Download 4K movie in 30 seconds",
+                                    "class": "text-sm text-indigo-300"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "compare-section",
+            "class": "py-32 px-8 bg-gradient-to-b from-black/50 to-gray-900/50"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-7xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "text-center mb-16"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "GradientText",
+                            "props": {
+                              "content": "Compare Models",
+                              "variant": "sunset",
+                              "as": "h2",
+                              "class": "text-6xl font-bold mb-6"
+                            }
+                          },
+                          {
+                            "type": "Text",
+                            "props": {
+                              "content": "Find the perfect Nexus for you",
+                              "class": "text-xl text-gray-400"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Card",
+                      "props": {
+                        "variant": "elevated",
+                        "class": "bg-white/5 backdrop-blur-xl border border-white/10 p-8"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Table",
+                            "props": {
+                              "id": "comparison-table",
+                              "headers": [
+                                "Feature",
+                                "Quantum",
+                                "Quantum Pro",
+                                "Quantum Pro Max"
+                              ],
+                              "rows": [
+                                [
+                                  "Display",
+                                  "6.1\" OLED",
+                                  "6.5\" ProMotion",
+                                  "6.8\" ProMotion XDR"
+                                ],
+                                [
+                                  "Camera",
+                                  "48MP Dual",
+                                  "108MP Triple",
+                                  "200MP Quad + LiDAR"
+                                ],
+                                [
+                                  "Chip",
+                                  "Quantum X1",
+                                  "Quantum X1 Pro",
+                                  "Quantum X1 Ultra"
+                                ],
+                                [
+                                  "Battery",
+                                  "4000mAh",
+                                  "4500mAh",
+                                  "5000mAh"
+                                ],
+                                [
+                                  "Storage",
+                                  "128GB - 512GB",
+                                  "256GB - 1TB",
+                                  "512GB - 2TB"
+                                ],
+                                [
+                                  "Price",
+                                  "$999",
+                                  "$1,199",
+                                  "$1,299"
+                                ]
+                              ],
+                              "class": "w-full text-left"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "specs-section",
+            "class": "py-32 px-8 bg-black/50"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-5xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "text-center mb-16"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "GradientText",
+                            "props": {
+                              "content": "Technical Specifications",
+                              "variant": "ocean",
+                              "as": "h2",
+                              "class": "text-6xl font-bold mb-6"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Accordion",
+                      "props": {
+                        "id": "specs-accordion",
+                        "variant": "default"
+                      },
+                      "items": [
+                        {
+                          "id": "spec-display",
+                          "title": "Display & Design",
+                          "content": "6.8-inch LTPO AMOLED, 2K+ resolution (1440 x 3200), 120Hz adaptive refresh rate, HDR10+, Corning Gorilla Glass Victus 2, Titanium frame, IP68 water & dust resistant"
+                        },
+                        {
+                          "id": "spec-camera",
+                          "title": "Camera System",
+                          "content": "200MP main (f/1.5, OIS), 50MP ultra-wide (f/2.2, 120\u00c2\u00b0), 12MP telephoto 3x (f/2.8, OIS), 10MP periscope 10x (f/4.9, OIS), LiDAR scanner, 40MP front camera"
+                        },
+                        {
+                          "id": "spec-performance",
+                          "title": "Performance",
+                          "content": "Quantum X1 Ultra chip (3nm), 24-core GPU, 16-core Neural Engine, 12GB/16GB RAM, 512GB/1TB/2TB storage options, Vapor chamber cooling"
+                        },
+                        {
+                          "id": "spec-battery",
+                          "title": "Battery & Charging",
+                          "content": "5000mAh battery, 65W wired fast charging, 30W wireless charging, 10W reverse wireless charging, USB-C 3.2 Gen 2"
+                        },
+                        {
+                          "id": "spec-connectivity",
+                          "title": "Connectivity",
+                          "content": "5G (mmWave + Sub-6), Wi-Fi 7, Bluetooth 5.4, Ultra Wideband (UWB), NFC, Dual SIM (nano + eSIM)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "buy-section",
+            "class": "py-32 px-8 bg-gradient-to-b from-gray-900/50 to-black"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-4xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "text-center mb-16"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "GradientText",
+                            "props": {
+                              "content": "Configure Your Nexus",
+                              "variant": "sunset",
+                              "as": "h2",
+                              "class": "text-6xl font-bold mb-6"
+                            }
+                          },
+                          {
+                            "type": "Text",
+                            "props": {
+                              "content": "Customize and order your perfect device",
+                              "class": "text-xl text-gray-400"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Card",
+                      "props": {
+                        "variant": "elevated",
+                        "class": "bg-white/5 backdrop-blur-xl border border-white/10 p-12"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Box",
+                            "props": {
+                              "class": "space-y-10"
+                            },
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Box",
+                                  "props": {},
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "h3",
+                                          "content": "Choose Color",
+                                          "class": "text-2xl font-bold mb-4"
+                                        }
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex gap-4"
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "type": "Box",
+                                              "props": {
+                                                "class": "flex items-center gap-2"
+                                              },
+                                              "slots": {
+                                                "default": [
+                                                  {
+                                                    "type": "Radio",
+                                                    "props": {
+                                                      "id": "color-midnight",
+                                                      "name": "color",
+                                                      "value": "midnight",
+                                                      "modelValue": "$.selectedColor"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "Text",
+                                                    "props": {
+                                                      "content": "Midnight Black"
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "type": "Box",
+                                              "props": {
+                                                "class": "flex items-center gap-2"
+                                              },
+                                              "slots": {
+                                                "default": [
+                                                  {
+                                                    "type": "Radio",
+                                                    "props": {
+                                                      "id": "color-silver",
+                                                      "name": "color",
+                                                      "value": "silver",
+                                                      "modelValue": "$.selectedColor"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "Text",
+                                                    "props": {
+                                                      "content": "Starlight Silver"
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "type": "Box",
+                                              "props": {
+                                                "class": "flex items-center gap-2"
+                                              },
+                                              "slots": {
+                                                "default": [
+                                                  {
+                                                    "type": "Radio",
+                                                    "props": {
+                                                      "id": "color-aurora",
+                                                      "name": "color",
+                                                      "value": "aurora",
+                                                      "modelValue": "$.selectedColor"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "Text",
+                                                    "props": {
+                                                      "content": "Aurora Blue"
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Box",
+                                  "props": {},
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "h3",
+                                          "content": "Storage Capacity",
+                                          "class": "text-2xl font-bold mb-4"
+                                        }
+                                      },
+                                      {
+                                        "type": "Select",
+                                        "props": {
+                                          "id": "storage-select",
+                                          "modelValue": "$.selectedStorage",
+                                          "options": [
+                                            {
+                                              "value": "256gb",
+                                              "label": "256GB - $1,299"
+                                            },
+                                            {
+                                              "value": "512gb",
+                                              "label": "512GB - $1,499"
+                                            },
+                                            {
+                                              "value": "1tb",
+                                              "label": "1TB - $1,799"
+                                            },
+                                            {
+                                              "value": "2tb",
+                                              "label": "2TB - $2,299"
+                                            }
+                                          ],
+                                          "class": "w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Box",
+                                  "props": {},
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Text",
+                                        "props": {
+                                          "as": "h3",
+                                          "content": "Quantity",
+                                          "class": "text-2xl font-bold mb-4"
+                                        }
+                                      },
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex items-center gap-4"
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "type": "Button",
+                                              "props": {
+                                                "label": "-",
+                                                "variant": "outline",
+                                                "onClick": "decreaseQuantity",
+                                                "class": "w-12 h-12 border-2 border-white/30 rounded-lg"
+                                              }
+                                            },
+                                            {
+                                              "type": "Text",
+                                              "props": {
+                                                "content": "1",
+                                                "class": "text-2xl font-bold w-12 text-center"
+                                              }
+                                            },
+                                            {
+                                              "type": "Button",
+                                              "props": {
+                                                "label": "+",
+                                                "variant": "outline",
+                                                "onClick": "increaseQuantity",
+                                                "class": "w-12 h-12 border-2 border-white/30 rounded-lg"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Box",
+                                  "props": {
+                                    "class": "border-t border-white/10 pt-8"
+                                  },
+                                  "slots": {
+                                    "default": [
+                                      {
+                                        "type": "Box",
+                                        "props": {
+                                          "class": "flex justify-between items-center mb-6"
+                                        },
+                                        "slots": {
+                                          "default": [
+                                            {
+                                              "type": "Text",
+                                              "props": {
+                                                "as": "h3",
+                                                "content": "Total",
+                                                "class": "text-3xl font-bold"
+                                              }
+                                            },
+                                            {
+                                              "type": "GradientText",
+                                              "props": {
+                                                "content": "$1,299",
+                                                "variant": "sunset",
+                                                "as": "span",
+                                                "class": "text-4xl font-black"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Button",
+                                        "props": {
+                                          "label": "Add to Cart",
+                                          "variant": "primary",
+                                          "onClick": "addToCart",
+                                          "class": "w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 text-xl rounded-xl shadow-2xl"
+                                        }
+                                      },
+                                      {
+                                        "type": "Button",
+                                        "props": {
+                                          "label": "Buy Now",
+                                          "variant": "outline",
+                                          "onClick": "buyNow",
+                                          "class": "w-full mt-4 border-2 border-white/30 py-4 text-xl rounded-xl"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "newsletter-section",
+            "class": "py-20 px-8 bg-gradient-to-r from-blue-900/30 to-purple-900/30"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-4xl mx-auto text-center"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "as": "h3",
+                        "content": "Stay Updated",
+                        "class": "text-4xl font-bold mb-4"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "content": "Get exclusive offers and early access to new products",
+                        "class": "text-gray-400 mb-8"
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "flex gap-4 max-w-md mx-auto"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Textbox",
+                            "props": {
+                              "id": "newsletter-email",
+                              "type": "email",
+                              "placeholder": "Enter your email",
+                              "modelValue": "$.email",
+                              "class": "flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-3"
+                            }
+                          },
+                          {
+                            "type": "Button",
+                            "props": {
+                              "label": "Subscribe",
+                              "variant": "primary",
+                              "onClick": "subscribe",
+                              "class": "bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Box",
+          "props": {
+            "id": "footer",
+            "class": "py-16 px-8 bg-black border-t border-white/10"
+          },
+          "slots": {
+            "default": [
+              {
+                "type": "Box",
+                "props": {
+                  "class": "max-w-7xl mx-auto"
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "grid grid-cols-1 md:grid-cols-4 gap-8 mb-12"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Box",
+                            "props": {},
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "GradientText",
+                                  "props": {
+                                    "content": "NEXUS",
+                                    "variant": "ocean",
+                                    "as": "h4",
+                                    "class": "text-2xl font-bold mb-4"
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "content": "The future of mobile technology",
+                                    "class": "text-gray-400"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Box",
+                            "props": {},
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h5",
+                                    "content": "Products",
+                                    "class": "font-bold mb-4"
+                                  }
+                                },
+                                {
+                                  "type": "List",
+                                  "props": {
+                                    "id": "footer-products",
+                                    "class": "space-y-2 text-gray-400",
+                                    "items": [
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Link",
+                                            "props": {
+                                              "href": "#",
+                                              "target": "_self",
+                                              "class": "hover:text-white"
+                                            },
+                                            "slots": {
+                                              "default": [
+                                                {
+                                                  "type": "Text",
+                                                  "props": {
+                                                    "content": "Quantum"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Link",
+                                            "props": {
+                                              "href": "#",
+                                              "target": "_self",
+                                              "class": "hover:text-white"
+                                            },
+                                            "slots": {
+                                              "default": [
+                                                {
+                                                  "type": "Text",
+                                                  "props": {
+                                                    "content": "Quantum Pro"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Link",
+                                            "props": {
+                                              "href": "#",
+                                              "target": "_self",
+                                              "class": "hover:text-white"
+                                            },
+                                            "slots": {
+                                              "default": [
+                                                {
+                                                  "type": "Text",
+                                                  "props": {
+                                                    "content": "Quantum Pro Max"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Box",
+                            "props": {},
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h5",
+                                    "content": "Support",
+                                    "class": "font-bold mb-4"
+                                  }
+                                },
+                                {
+                                  "type": "List",
+                                  "props": {
+                                    "id": "footer-support",
+                                    "class": "space-y-2 text-gray-400",
+                                    "items": [
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Contact Us"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "FAQs"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Warranty"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Box",
+                            "props": {},
+                            "slots": {
+                              "default": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "as": "h5",
+                                    "content": "Company",
+                                    "class": "font-bold mb-4"
+                                  }
+                                },
+                                {
+                                  "type": "List",
+                                  "props": {
+                                    "id": "footer-company",
+                                    "class": "space-y-2 text-gray-400",
+                                    "items": [
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "About Us"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Careers"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "type": "Text",
+                                            "props": {
+                                              "content": "Press"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Box",
+                      "props": {
+                        "class": "text-center pt-8 border-t border-white/10"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "type": "Text",
+                            "props": {
+                              "content": "\u00c2\u00a9 2024 Nexus Technologies. All rights reserved.",
+                              "class": "text-gray-500"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "functions": {
+    "scrollToBuy": "document.getElementById('buy-section').scrollIntoView({ behavior: 'smooth' })",
+    "toggleCart": "this.showCart = !this.showCart; console.log('Cart toggled')",
+    "playVideo": "console.log('Playing product video')",
+    "addToCart": "this.cartItems += this.quantity; alert('Added to cart!'); console.log('Cart items:', this.cartItems)",
+    "buyNow": "alert('Proceeding to checkout...'); console.log('Buy now clicked')",
+    "increaseQuantity": "if (this.quantity < 10) this.quantity++",
+    "decreaseQuantity": "if (this.quantity > 1) this.quantity--",
+    "subscribe": "if (this.email) { alert('Subscribed successfully!'); this.email = ''; } else { alert('Please enter a valid email'); }",
+    "handleFeatureClick": "console.log('Feature clicked')"
+  }
+}

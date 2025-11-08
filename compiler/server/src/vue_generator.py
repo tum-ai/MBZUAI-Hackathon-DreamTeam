@@ -339,22 +339,34 @@ class VueGenerator:
                 if key == 'as':
                     continue
 
+                # V21: Handle event props (onClick, onSubmit, etc.) BEFORE manifest check
+                if key.startswith('on') and len(key) > 2 and key[2].isupper():
+                    # Convert onClick -> @click, onSubmit -> @submit, etc.
+                    event_name = key[2:].lower()
+                    if isinstance(value, str):
+                        # Value is a function name
+                        props_map[f"@{event_name}"] = f'"{value}"'
+                    continue
+
                 # V18: Check against manifest *after* handling global props
                 if key not in manifest['props']:
                     continue
                 
-                if key == 'content' or key == 'text':
+                if key == 'content' or key == 'text' or key == 'label':
                     content_val, _ = self._resolve_expression(value, is_event_handler=False)
                     # V18: Cleaned up content logic
                     if isinstance(value, str):
-                        content = content_val
+                        content = value  # Use raw value, not the quoted version
                     elif isinstance(value, dict) and value.get('type') == 'expression':
                          content = content_val.replace('"', '') # Use unquoted value for {{...}}
                     
                     if tag == "button": 
-                         continue
+                         # For buttons, store content but don't add as attribute
+                         pass
                     elif tag != "p": # Put prop on element (e.g., <h1 content="...">)
-                         props_map[key] = f'"{content}"'
+                         # Escape quotes in the content for HTML attributes
+                         escaped_content = content.replace('"', '&quot;')
+                         props_map[key] = f'"{escaped_content}"'
                     continue
                 
                 if key == 'style' and isinstance(value, dict):
@@ -369,8 +381,15 @@ class VueGenerator:
                     # Skip the variant prop itself (already processed)
                     continue
                 
-                elif key == 'modelValue' and isinstance(value, dict) and value.get('type') == 'stateBinding':
-                    props_map[f"v-model"] = f'"{value["stateKey"]}"'
+                elif key == 'modelValue':
+                    # V21: Handle both dict and string formats for modelValue
+                    if isinstance(value, dict) and value.get('type') == 'stateBinding':
+                        props_map[f"v-model"] = f'"{value["stateKey"]}"'
+                    elif isinstance(value, str) and value.startswith('$.'):
+                        # Handle string format like "$.email"
+                        state_key = value.replace('$.', '')
+                        props_map[f"v-model"] = f'"{state_key}"'
+                    continue
 
                 # V15: Handle SVG props for Icon
                 elif node_type == 'Icon' and key == 'svgPath':
@@ -409,7 +428,16 @@ class VueGenerator:
                 # V20: Auto-generate IDs for simple list items
                 for idx, item in enumerate(items_str):
                     item_id = f"{semantic_id}.item-{idx}"
-                    li_tags += f'{indent}  <li data-component-id="{item_id}" data-nav-id="{item_id}">{item}</li>\n'
+                    # Check if item has children (nested components)
+                    if isinstance(item, dict) and 'children' in item:
+                        # Render nested components within the list item
+                        item_content = ""
+                        for child_idx, child_node in enumerate(item['children']):
+                            item_content += self._generate_node(child_node, item_id, child_idx)
+                        li_tags += f'{indent}  <li data-component-id="{item_id}" data-nav-id="{item_id}">{item_content}</li>\n'
+                    else:
+                        # Simple string item
+                        li_tags += f'{indent}  <li data-component-id="{item_id}" data-nav-id="{item_id}">{item}</li>\n'
             
             children_str = ""
             if 'slots' in node and 'default' in node['slots']:
@@ -468,41 +496,319 @@ class VueGenerator:
         
         # V20: Render Accordion with header and collapsible content
         if node_type == 'Accordion':
-            title = node.get('props', {}).get('title', 'Accordion')
+            # V21: Handle items array format for accordion
+            items = node.get('items', [])
+            if items:
+                # Multiple accordion items
+                accordion_html = f'{indent}<div data-component-id="{semantic_id}" data-nav-id="{semantic_id}" id="{node.get("props", {}).get("id", "")}" class="space-y-2">\n'
+                
+                for idx, item in enumerate(items):
+                    item_id = item.get('id', f'item-{idx}')
+                    item_title = item.get('title', 'Accordion Item')
+                    item_content = item.get('content', '')
+                    # Convert hyphens to underscores for valid JavaScript variable names
+                    state_var = f"accordion_{item_id.replace('-', '_')}_open"
+                    
+                    # Add state variable for this accordion item
+                    if state_var not in self.state_vars:
+                        self.state_vars[state_var] = False
+                    
+                    item_semantic_id = f"{semantic_id}.{item_id}"
+                    
+                    accordion_html += f'{indent}  <div data-component-id="{item_semantic_id}" data-nav-id="{item_semantic_id}" class="border border-white/10 rounded-lg overflow-hidden">\n'
+                    accordion_html += f'{indent}    <div @click="{state_var} = !{state_var}" data-component-id="{item_semantic_id}-header" data-nav-id="{item_semantic_id}-header" class="cursor-pointer flex justify-between items-center p-4 bg-white/5 hover:bg-white/10 transition-colors">\n'
+                    accordion_html += f'{indent}      <span class="font-semibold text-lg">{item_title}</span>\n'
+                    accordion_html += f'{indent}      <span :class="{{\'transform rotate-180\': {state_var}}}" class="transition-transform">▼</span>\n'
+                    accordion_html += f'{indent}    </div>\n'
+                    accordion_html += f'{indent}    <div v-show="{state_var}" data-component-id="{item_semantic_id}-content" data-nav-id="{item_semantic_id}-content" class="p-4 text-gray-300">\n'
+                    accordion_html += f'{indent}      {item_content}\n'
+                    accordion_html += f'{indent}    </div>\n'
+                    accordion_html += f'{indent}  </div>\n'
+                
+                accordion_html += f'{indent}</div>'
+                return accordion_html
+            else:
+                # Single accordion with slots (legacy format)
+                title = node.get('props', {}).get('title', 'Accordion')
+                is_open_binding = None
+                
+                # Get state binding for isOpen
+                if 'props' in node and 'isOpen' in node['props']:
+                    is_open_prop = node['props']['isOpen']
+                    if isinstance(is_open_prop, dict) and is_open_prop.get('type') == 'stateBinding':
+                        is_open_binding = is_open_prop.get('stateKey')
+                
+                if not is_open_binding:
+                    # Create a default state variable
+                    accordion_id = node.get('props', {}).get('id', 'default').replace('-', '_')
+                    is_open_binding = f"accordion_{accordion_id}_open"
+                    if is_open_binding not in self.state_vars:
+                        self.state_vars[is_open_binding] = False
+                
+                # Generate header
+                header_id = f"{semantic_id}-header"
+                filtered_props = {k: v for k, v in props_map.items() if k not in ['title', 'isOpen']}
+                header_props_str = " ".join([f'{k}={v}' for k, v in filtered_props.items()])
+                
+                header = f'{indent}<div {header_props_str}>\n'
+                header += f'{indent}  <div @click="{is_open_binding} = !{is_open_binding}" data-component-id="{header_id}" data-nav-id="{header_id}" class="cursor-pointer flex justify-between items-center p-4 bg-white/5 hover:bg-white/10 transition-colors">\n'
+                header += f'{indent}    <span class="font-semibold text-lg">{title}</span>\n'
+                header += f'{indent}    <span :class="{{\'transform rotate-180\': {is_open_binding}}}" class="transition-transform">▼</span>\n'
+                header += f'{indent}  </div>\n'
+                
+                # Generate content container
+                content_id = f"{semantic_id}-content"
+                children_str = ""
+                if 'slots' in node and 'default' in node['slots']:
+                    for idx, child_node in enumerate(node['slots']['default']):
+                        children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+                
+                content = f'{indent}  <div v-show="{is_open_binding}" data-component-id="{content_id}" data-nav-id="{content_id}" class="p-4">\n'
+                content += children_str
+                content += f'{indent}  </div>\n'
+                
+                header += content
+                header += f'{indent}</div>'
+                
+                return header
+        
+        # V21: Render Select component with options
+        if node_type == 'Select':
+            options_data = node.get('props', {}).get('options', [])
+            placeholder = node.get('props', {}).get('placeholder', '')
+            
+            options_html = ""
+            if placeholder:
+                options_html += f'{indent}  <option value="">{placeholder}</option>\n'
+            
+            for opt in options_data:
+                value = opt.get('value', '')
+                label = opt.get('label', value)
+                options_html += f'{indent}  <option value="{value}">{label}</option>\n'
+            
+            # Remove options from props_str to avoid duplication
+            filtered_props = {k: v for k, v in props_map.items() if k not in ['options', 'placeholder']}
+            props_str = " ".join([f'{k}={v}' for k, v in filtered_props.items()])
+            
+            return f"{indent}<select {props_str}>\n{options_html}{indent}</select>"
+        
+        # V21: Render Dialog/Modal with backdrop and close button
+        if node_type == 'Dialog':
+            title = node.get('props', {}).get('title', 'Dialog')
             is_open_binding = None
             
-            # Get state binding for isOpen
             if 'props' in node and 'isOpen' in node['props']:
                 is_open_prop = node['props']['isOpen']
                 if isinstance(is_open_prop, dict) and is_open_prop.get('type') == 'stateBinding':
                     is_open_binding = is_open_prop.get('stateKey')
             
-            # Generate header
-            header_id = f"{semantic_id}-header"
-            header_props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
-            
-            header = f'{indent}<div {header_props_str}>\n'
-            header += f'{indent}  <div data-component-id="{header_id}" data-nav-id="{header_id}" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #1a1a1a; border-radius: 8px;">\n'
-            header += f'{indent}    <span style="font-weight: 600; font-size: 18px;">{title}</span>\n'
-            header += f'{indent}    <span v-if="{is_open_binding}" style="transition: transform 0.3s;">▼</span>\n'
-            header += f'{indent}    <span v-else style="transition: transform 0.3s;">▶</span>\n'
-            header += f'{indent}  </div>\n'
-            
-            # Generate content container
-            content_id = f"{semantic_id}-content"
+            # Generate dialog content
             children_str = ""
             if 'slots' in node and 'default' in node['slots']:
                 for idx, child_node in enumerate(node['slots']['default']):
                     children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
             
-            content = f'{indent}  <div v-if="{is_open_binding}" data-component-id="{content_id}" data-nav-id="{content_id}" style="padding: 1rem; margin-top: 0.5rem;">\n'
-            content += children_str
-            content += f'{indent}  </div>\n'
+            close_btn_id = f"{semantic_id}.close-button"
             
-            header += content
-            header += f'{indent}</div>'
+            dialog_html = f'{indent}<div v-if="{is_open_binding}" style="position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;">\n'
+            dialog_html += f'{indent}  <!-- Backdrop -->\n'
+            dialog_html += f'{indent}  <div @click="closeDialog" style="position: absolute; inset: 0; bg-black opacity-50;"></div>\n'
+            dialog_html += f'{indent}  <!-- Dialog Content -->\n'
+            dialog_html += f'{indent}  <div {props_str} style="position: relative; max-w-lg; width: 100%; margin: 1rem;">\n'
+            dialog_html += f'{indent}    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">\n'
+            dialog_html += f'{indent}      <h2 style="font-size: 1.5rem; font-weight: bold;">{title}</h2>\n'
+            dialog_html += f'{indent}      <button data-component-id="{close_btn_id}" data-nav-id="{close_btn_id}" data-component-type="dialog-close" role="button" @click="closeDialog" style="font-size: 1.5rem; cursor: pointer; border: none; background: transparent;">&times;</button>\n'
+            dialog_html += f'{indent}    </div>\n'
+            dialog_html += children_str
+            dialog_html += f'{indent}  </div>\n'
+            dialog_html += f'{indent}</div>'
             
-            return header
+            return dialog_html
+        
+        # V21: Render Progress bar
+        if node_type == 'Progress':
+            value = node.get('props', {}).get('value', 0)
+            max_val = node.get('props', {}).get('max', 100)
+            variant = node.get('props', {}).get('variant', 'default')
+            
+            # Calculate percentage and style
+            if isinstance(value, str) and value.startswith('$.'):
+                # State binding
+                state_var = value.replace('$.', '')
+                style_attr = f':style="{{width: ({state_var} / {max_val} * 100) + \'%\', height: \'100%\', transition: \'width 0.3s\'}}"'
+            else:
+                percentage = (int(value) / int(max_val)) * 100
+                style_attr = f'style="width: {percentage}%; height: 100%; transition: width 0.3s;"'
+            
+            # Color based on variant
+            color_map = {
+                'default': 'bg-blue-600',
+                'success': 'bg-green-500',
+                'warning': 'bg-yellow-500',
+                'error': 'bg-red-500',
+                'indeterminate': 'bg-blue-600'
+            }
+            bar_color = color_map.get(variant, 'bg-blue-600')
+            
+            if variant == 'indeterminate':
+                # Animated indeterminate progress
+                bar_html = f'{indent}  <div class="{bar_color}" style="height: 100%; animation: indeterminate 1.5s ease-in-out infinite;"></div>\n'
+            else:
+                bar_html = f'{indent}  <div class="{bar_color}" {style_attr}></div>\n'
+            
+            container_class = node.get('props', {}).get('class', 'w-full')
+            
+            return f'{indent}<div data-component-id="{semantic_id}" data-nav-id="{semantic_id}" class="{container_class} bg-gray-200 rounded-full h-2.5">\n{bar_html}{indent}</div>'
+        
+        # V21: Render Toggle switch
+        if node_type == 'Toggle':
+            model_value = None
+            if 'props' in node and 'modelValue' in node['props']:
+                mv = node['props']['modelValue']
+                if isinstance(mv, dict) and mv.get('type') == 'stateBinding':
+                    model_value = mv.get('stateKey')
+                elif isinstance(mv, str) and mv.startswith('$.'):
+                    model_value = mv.replace('$.', '')
+            
+            variant = node.get('props', {}).get('variant', 'default')
+            disabled = node.get('props', {}).get('disabled', False)
+            
+            track_classes = 'w-11 h-6 bg-gray-300 rounded-full transition-colors'
+            track_active_classes = 'bg-blue-600'
+            if variant == 'success':
+                track_active_classes = 'bg-green-500'
+            
+            if model_value:
+                toggle_html = f'{indent}<div data-component-id="{semantic_id}" data-nav-id="{semantic_id}" data-component-type="toggle" role="switch" :aria-checked="{model_value}" @click="{model_value} = !{model_value}" class="{track_classes}" :class="{{\'{track_active_classes}\': {model_value}}}" style="cursor: pointer; position: relative;">\n'
+                toggle_html += f'{indent}  <div class="w-4 h-4 bg-white rounded-full shadow-md transform transition-transform" :class="{{\'translate-x-5\': {model_value}}}" style="position: absolute; top: 4px; left: 4px;"></div>\n'
+                toggle_html += f'{indent}</div>'
+            else:
+                toggle_html = f'{indent}<div data-component-id="{semantic_id}" data-nav-id="{semantic_id}" data-component-type="toggle" class="{track_classes}"><div>Toggle (no model bound)</div></div>'
+            
+            return toggle_html
+        
+        # V21: Render Checkbox
+        if node_type == 'Checkbox':
+            checkbox_id = node.get('props', {}).get('id', semantic_id)
+            model_value = None
+            if 'props' in node and 'modelValue' in node['props']:
+                mv = node['props']['modelValue']
+                if isinstance(mv, dict) and mv.get('type') == 'stateBinding':
+                    model_value = mv.get('stateKey')
+            
+            filtered_props = {k: v for k, v in props_map.items() if k != 'v-model'}
+            if model_value:
+                filtered_props['v-model'] = f'"{model_value}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in filtered_props.items()])
+            
+            return f'{indent}<input type="checkbox" {props_str} data-component-type="checkbox" />'
+        
+        # V21: Render Radio button
+        if node_type == 'Radio':
+            radio_id = node.get('props', {}).get('id', semantic_id)
+            name = node.get('props', {}).get('name', 'radio-group')
+            value = node.get('props', {}).get('value', '')
+            model_value = None
+            if 'props' in node and 'modelValue' in node['props']:
+                mv = node['props']['modelValue']
+                if isinstance(mv, dict) and mv.get('type') == 'stateBinding':
+                    model_value = mv.get('stateKey')
+            
+            filtered_props = {k: v for k, v in props_map.items() if k not in ['v-model', 'name', 'value']}
+            filtered_props['name'] = f'"{name}"'
+            filtered_props['value'] = f'"{value}"'
+            if model_value:
+                filtered_props['v-model'] = f'"{model_value}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in filtered_props.items()])
+            
+            return f'{indent}<input type="radio" {props_str} data-component-type="radio" />'
+        
+        # V21: Render Tabs component
+        if node_type == 'Tabs':
+            tabs_data = node.get('props', {}).get('tabs', [])
+            panels_data = node.get('panels', [])
+            active_tab_binding = None
+            variant = node.get('props', {}).get('variant', 'underline')
+            
+            if 'props' in node and 'activeTab' in node['props']:
+                active_tab_prop = node['props']['activeTab']
+                if isinstance(active_tab_prop, dict) and active_tab_prop.get('type') == 'stateBinding':
+                    active_tab_binding = active_tab_prop.get('stateKey')
+            
+            tabs_html = f'{indent}<div data-component-id="{semantic_id}" data-nav-id="{semantic_id}">\n'
+            
+            # Tab buttons
+            tabs_html += f'{indent}  <div class="flex gap-2 border-b mb-4">\n'
+            for tab in tabs_data:
+                tab_id = tab.get('id', '')
+                tab_label = tab.get('label', tab_id)
+                btn_id = f"{semantic_id}.tab-button.{tab_id}"
+                
+                tabs_html += f'{indent}    <button data-component-id="{btn_id}" data-nav-id="{btn_id}" data-component-type="tab-button" role="tab" @click="{active_tab_binding} = \'{tab_id}\'" :class="{{\'border-b-2 border-blue-600 font-semibold\': {active_tab_binding} === \'{tab_id}\'}}" class="px-4 py-2">{tab_label}</button>\n'
+            tabs_html += f'{indent}  </div>\n'
+            
+            # Tab panels
+            for panel in panels_data:
+                panel_id = panel.get('id', '')
+                panel_children = panel.get('children', [])
+                
+                tabs_html += f'{indent}  <div v-if="{active_tab_binding} === \'{panel_id}\'">\n'
+                for idx, child_node in enumerate(panel_children):
+                    tabs_html += self._generate_node(child_node, f"{semantic_id}.panel.{panel_id}", idx) + "\n"
+                tabs_html += f'{indent}  </div>\n'
+            
+            tabs_html += f'{indent}</div>'
+            
+            return tabs_html
+        
+        # V21: Render Badge component
+        if node_type == 'Badge':
+            text = node.get('props', {}).get('text', 'Badge')
+            variant = node.get('props', {}).get('variant', 'default')
+            
+            color_map = {
+                'default': 'bg-gray-200 text-gray-800',
+                'success': 'bg-green-100 text-green-800',
+                'warning': 'bg-yellow-100 text-yellow-800',
+                'error': 'bg-red-100 text-red-800'
+            }
+            classes = color_map.get(variant, color_map['default'])
+            
+            return f'{indent}<span data-component-id="{semantic_id}" data-nav-id="{semantic_id}" class="{classes} px-2 py-1 rounded-full text-xs font-medium">{text}</span>'
+        
+        # V21: Render GridPattern and DotPattern backgrounds
+        if node_type in ['GridPattern', 'DotPattern']:
+            # These are SVG patterns that should be rendered as backgrounds
+            # For now, we'll skip complex SVG generation and note for future implementation
+            return f'{indent}<!-- {node_type} - SVG rendering to be implemented -->\n'
+        
+        # V21: Render Card component
+        if node_type == 'Card':
+            variant = node.get('props', {}).get('variant', 'default')
+            
+            variant_classes = {
+                'default': 'bg-white',
+                'elevated': 'bg-white shadow-lg',
+                'bordered': 'bg-white border border-gray-200'
+            }
+            card_classes = variant_classes.get(variant, variant_classes['default'])
+            
+            # Merge with user classes
+            user_class = node.get('props', {}).get('class', '')
+            final_class = f"{card_classes} {user_class}".strip()
+            
+            # Override class in props_map
+            props_map['class'] = f'"{final_class} rounded-lg"'
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            return f"{indent}<div {props_str}>\n{children_str}{indent}</div>"
 
         # --- Handle Children (Slots) ---
         children_str = ""
@@ -529,6 +835,11 @@ class VueGenerator:
         
         if 'state' in ast:
             self._parse_state(ast['state'])
+        
+        # V21: Parse functions from AST
+        if 'functions' in ast:
+            for func_name, func_body in ast['functions'].items():
+                self.functions.append(f"function {func_name}() {{\n  {func_body}\n}}")
         
         template_content = ""
         if 'tree' in ast:
