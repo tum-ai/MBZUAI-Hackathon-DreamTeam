@@ -4,7 +4,6 @@ function VoiceControl({
   onStart,
   onStop,
   isRecording = false,
-  label,
   wakeActive = false,
   interimText = '',
   disabled = false

@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
 import VoiceControl from './VoiceControl';
 import { useVoiceAssistantContext } from '../context/VoiceAssistantContext';
+import { setAudioVisualizerContainer } from '../lib/voice/audioVisualizer';
 import './VoiceAssistantOverlay.css';
 
 function VoiceAssistantOverlay() {
@@ -11,22 +13,84 @@ function VoiceAssistantOverlay() {
     startListening,
     stopListening,
     error,
+    speakText,
+    isSpeaking,
+    ttsError,
+    clearTtsError,
   } = useVoiceAssistantContext();
 
-  const label = isSupported
-    ? isListening
-      ? 'Listening...'
-      : 'Say "Hey K2"'
-    : 'Voice unsupported';
+  const [ttsInput, setTtsInput] = useState('');
+  const orbRef = useRef(null);
+
+  useEffect(() => {
+    const node = orbRef.current;
+    if (!node) return undefined;
+    setAudioVisualizerContainer(node);
+    return () => {
+      if (orbRef.current === node) {
+        setAudioVisualizerContainer(null);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (ttsInput) {
+      clearTtsError?.();
+    }
+  }, [ttsInput, clearTtsError]);
+
   const disabled = !isSupported || !!error;
+
+  const handleSpeak = () => {
+    if (!ttsInput.trim()) return;
+    speakText(ttsInput);
+  };
+
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSpeak();
+    }
+  };
 
   return (
     <div className="voice-assistant-overlay">
+      <div className="voice-assistant-overlay__panel">
+        <div
+          ref={orbRef}
+          className={`voice-assistant-overlay__orb ${
+            isSpeaking ? 'voice-assistant-overlay__orb--active' : ''
+          }`}
+          aria-hidden="true"
+        />
+        <div className="voice-assistant-overlay__tts-controls">
+          <input
+            type="text"
+            className="voice-assistant-overlay__tts-input"
+            placeholder="Enter text to speak"
+            value={ttsInput}
+            onChange={event => setTtsInput(event.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            className="voice-assistant-overlay__tts-button"
+            onClick={handleSpeak}
+            disabled={!ttsInput.trim() || isSpeaking}
+            type="button"
+          >
+            Speak
+          </button>
+        </div>
+        {ttsError && (
+          <div className="voice-assistant-overlay__tts-error" role="alert">
+            {ttsError.message || 'TTS failed'}
+          </div>
+        )}
+      </div>
       <VoiceControl
         onStart={() => startListening({ autoRestart: true })}
         onStop={stopListening}
         isRecording={isListening}
-        label={label}
         wakeActive={isWakeActive}
         interimText={interimText}
         disabled={disabled}
@@ -41,5 +105,4 @@ function VoiceAssistantOverlay() {
 }
 
 export default VoiceAssistantOverlay;
-
 

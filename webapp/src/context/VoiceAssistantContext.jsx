@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useVoiceAssistant } from '../hooks/useVoiceAssistant';
+import { speakText as playTTS } from '../lib/voice/tts';
 
 const VoiceAssistantContext = createContext(null);
 
@@ -20,6 +21,9 @@ const BASE_BIAS_PHRASES = [
 export function VoiceAssistantProvider({ children }) {
   const listenersRef = useRef(new Set());
   const [customBiasPhrases, setCustomBiasPhrases] = useState([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [ttsError, setTtsError] = useState(null);
+  const clearTtsErrorFn = useCallback(() => setTtsError(null), []);
 
   const combinedBiasPhrases = useMemo(() => {
     const merged = [...BASE_BIAS_PHRASES, ...customBiasPhrases];
@@ -84,15 +88,42 @@ export function VoiceAssistantProvider({ children }) {
     };
   }, [voice]);
 
+  const triggerTTS = useCallback(
+    async text => {
+      if (!text || isSpeaking) return;
+      await playTTS(text, {
+        isListening: voice.isListening,
+        stopListening: voice.stopListening,
+        startListening: voice.startListening,
+        disarmWakeWord: voice.disarmWakeWord,
+        armWakeWord: voice.armWakeWord,
+        setSpeaking: value => setIsSpeaking(value),
+        setError: err => setTtsError(err),
+      });
+    },
+    [
+      isSpeaking,
+      voice.isListening,
+      voice.stopListening,
+      voice.startListening,
+      voice.disarmWakeWord,
+      voice.armWakeWord,
+    ],
+  );
+
   const contextValue = useMemo(
     () => ({
       ...voice,
+      isSpeaking,
+      ttsError,
+      clearTtsError: clearTtsErrorFn,
+      speakText: triggerTTS,
       registerListener,
       setBiasPhrases: phrases => {
         setCustomBiasPhrases(Array.isArray(phrases) ? phrases : []);
       },
     }),
-    [voice, registerListener],
+    [voice, isSpeaking, ttsError, triggerTTS, registerListener, clearTtsErrorFn],
   );
 
   return (
