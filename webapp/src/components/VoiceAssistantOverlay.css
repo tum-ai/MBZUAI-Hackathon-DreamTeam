@@ -1,8 +1,8 @@
 .voice-assistant-overlay {
   position: fixed;
-  right: var(--space-5);
+  left: var(--space-5);
   bottom: var(--space-5);
-  z-index: 1000;
+  z-index: 2147483647;
   pointer-events: none;
 }
 
@@ -23,7 +23,7 @@
 
 @media (max-width: 600px) {
   .voice-assistant-overlay {
-    right: var(--space-3);
+    left: var(--space-3);
     bottom: var(--space-3);
   }
 }

@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react'
-import { setAudioVisualizerContainer } from '../lib/voice/audioVisualizer'
 import './VoiceControl.css'
 
 function VoiceControl({
@@ -11,23 +9,6 @@ function VoiceControl({
   interimText = '',
   disabled = false
 }) {
-  const visualizerRef = useRef(null)
-  const defaultLabel = isRecording
-    ? 'Listening...'
-    : wakeActive
-    ? 'Say "Hey K2"'
-    : 'Voice Control'
-
-  useEffect(() => {
-    const node = visualizerRef.current
-    setAudioVisualizerContainer(node)
-    return () => {
-      if (visualizerRef.current === node) {
-        setAudioVisualizerContainer(null)
-      }
-    }
-  }, [])
-
   const handleClick = () => {
     if (disabled) return
     if (isRecording) {
@@ -37,19 +18,16 @@ function VoiceControl({
     }
   }
 
+  const ariaLabel = isRecording ? 'Stop recording' : 'Start recording'
+
   return (
     <div className={`voice-control ${wakeActive ? 'voice-control--wake-armed' : ''}`}>
-      <div
-        ref={visualizerRef}
-        className="voice-control__visualizer"
-        aria-hidden="true"
-      />
       <button
         className={`voice-control__button ${
           isRecording ? 'voice-control__button--recording' : ''
         }`}
         onClick={handleClick}
-        aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+        aria-label={ariaLabel}
         disabled={disabled}
       >
         <svg
@@ -82,7 +60,6 @@ function VoiceControl({
             strokeLinejoin="round"
           />
         </svg>
-        <span className="voice-control__label">{label || defaultLabel}</span>
       </button>
       {isRecording && (
         <div className="voice-control__pulse" aria-hidden="true" />
