@@ -4,6 +4,8 @@ from llm.planner.models import DecideRequest, DecideResponse
 from llm.planner.planner import process_user_request
 from llm.clarifier.models import ClarifyRequest, ClarifyResponse
 from llm.clarifier.clarifier import process_clarification_request
+from llm.actor.models import ActionRequest, ActionResponse
+from llm.actor.actor import process_action_request
 
 app = FastAPI(title="LLM Agent API", version="1.0.0")
 
@@ -21,11 +23,11 @@ app.add_middleware(
 async def decide(request: DecideRequest) -> DecideResponse:
     """
     Planner agent endpoint that classifies user intent and enriches prompts.
-    
+
     Input:
     - sid: Session ID
     - text: User query
-    
+
     Output:
     - step_id: Unique step identifier
     - step_type: Intent classification (edit/act/clarify)
@@ -36,20 +38,22 @@ async def decide(request: DecideRequest) -> DecideResponse:
         response = process_user_request(request)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error processing request: {str(e)}"
+        )
 
 
 @app.post("/clarify", response_model=ClarifyResponse)
 async def clarify(request: ClarifyRequest) -> ClarifyResponse:
     """
     Clarification agent endpoint that generates Jarvis-style clarification replies.
-    
+
     Input:
     - session_id: Session ID
     - step_id: Step identifier
     - intent: User's ambiguous request with explanation
     - context: Previous actions/prompts
-    
+
     Output:
     - session_id: Session ID
     - step_id: Step identifier
@@ -61,7 +65,36 @@ async def clarify(request: ClarifyRequest) -> ClarifyResponse:
         response = process_clarification_request(request)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing clarification request: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error processing clarification request: {str(e)}"
+        )
+
+
+@app.post("/action", response_model=ActionResponse)
+async def action(request: ActionRequest) -> ActionResponse:
+    """
+    Actor agent endpoint that generates actions based on intent and context.
+
+    Input:
+    - session_id: Session ID
+    - step_id: Step identifier
+    - intent: User's request with explanation
+    - context: Previous actions/prompts
+
+    Output:
+    - session_id: Session ID
+    - step_id: Step identifier
+    - intent: User's request with explanation
+    - context: Previous actions/prompts
+    - action: Generated action
+    """
+    try:
+        response = process_action_request(request)
+        return response
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error processing action request: {str(e)}"
+        )
 
 
 @app.get("/health")
@@ -72,4 +105,5 @@ async def health():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
