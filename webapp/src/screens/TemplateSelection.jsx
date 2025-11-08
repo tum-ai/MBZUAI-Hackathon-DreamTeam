@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar'
 import GlassCard from '../components/GlassCard'
+import CircularGallery from '../components/CircularGallery'
 import './TemplateSelection.css'
 
 function TemplateSelection() {
@@ -11,6 +12,7 @@ function TemplateSelection() {
   const [inspectingOption, setInspectingOption] = useState(null)
   const [editMode, setEditMode] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState('connected')
+  const [showGallery, setShowGallery] = useState(false)
 
   const options = [
     { id: 'A' },
@@ -36,6 +38,21 @@ function TemplateSelection() {
     setInspectingOption(null)
     setEditMode(false)
     setConnectionStatus('connected')
+    setShowGallery(false) // Hide gallery when closing modal
+  }
+
+  const handleModalMouseMove = (e) => {
+    // Only trigger gallery in edit mode
+    if (!editMode) return
+    
+    const modalContent = e.currentTarget
+    const rect = modalContent.getBoundingClientRect()
+    const mouseY = e.clientY - rect.top
+    const height = rect.height
+    
+    // Show gallery when mouse is in bottom 20% of the modal
+    const threshold = height * 0.8
+    setShowGallery(mouseY > threshold)
   }
 
   return (
@@ -94,7 +111,10 @@ function TemplateSelection() {
             onClick={editMode ? null : handleCloseModal}
             style={{ cursor: editMode ? 'default' : 'pointer' }}
           />
-          <div className="inspection-modal__content">
+          <div 
+            className="inspection-modal__content"
+            onMouseMove={handleModalMouseMove}
+          >
             <iframe
               src="http://localhost:5174"
               className="inspection-modal__iframe"
@@ -143,6 +163,20 @@ function TemplateSelection() {
                 >
                   Select This Design
                 </button>
+              </div>
+            )}
+
+            {/* Circular Gallery - only in edit mode */}
+            {editMode && showGallery && (
+              <div className="inspection-modal__gallery-container">
+                <CircularGallery
+                  bend={5}
+                  textColor="#E8EDF3"
+                  borderRadius={0.08}
+                  font="bold 24px Inter"
+                  scrollSpeed={2}
+                  scrollEase={0.05}
+                />
               </div>
             )}
           </div>

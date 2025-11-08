@@ -325,6 +325,41 @@
   transform: translateY(0);
 }
 
+/* Circular Gallery Container - overlays bottom of iframe in edit mode */
+.inspection-modal__gallery-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20vh;
+  min-height: 200px;
+  max-height: 300px;
+  z-index: calc(var(--z-elevated) + 1); /* Above iframe, below close button */
+  background: transparent;
+  animation: slideUpGallery var(--duration-slow) var(--ease-out);
+  pointer-events: auto;
+}
+
+@keyframes slideUpGallery {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure gallery canvas has the proper cursor */
+.inspection-modal__gallery-container .circular-gallery {
+  cursor: grab;
+}
+
+.inspection-modal__gallery-container .circular-gallery:active {
+  cursor: grabbing;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .template-selection__grid {
