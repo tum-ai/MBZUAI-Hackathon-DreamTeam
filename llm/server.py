@@ -8,6 +8,8 @@ from llm.clarifier.models import ClarifyRequest, ClarifyResponse
 from llm.clarifier.clarifier import process_clarification_request
 from llm.actor.models import ActionRequest, ActionResponse
 from llm.actor.actor import process_action_request
+from llm.editor.models import EditRequest, EditResponse
+from llm.editor.editor import process_edit_request
 
 app = FastAPI(title="LLM Agent API", version="1.0.0")
 
@@ -93,6 +95,30 @@ async def get_queue_status(sid: str) -> QueueStatus:
         raise HTTPException(
             status_code=500, detail=f"Error getting queue status: {str(e)}"
         )
+
+@app.post("/edit", response_model=EditResponse)
+async def edit(request: EditRequest) -> EditResponse:
+    """
+    Editor agent endpoint that generates JSON Patch arrays for AST modifications.
+    
+    Input:
+    - session_id: Session ID
+    - step_id: Step identifier
+    - intent: User's edit request with explanation
+    - context: Previous actions/prompts
+    
+    Output:
+    - session_id: Session ID
+    - step_id: Step identifier
+    - intent: Original intent
+    - context: Original context
+    - code: JSON Patch array as string
+    """
+    try:
+        response = process_edit_request(request)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing edit request: {str(e)}")
 
 
 @app.post("/clarify", response_model=ClarifyResponse)
