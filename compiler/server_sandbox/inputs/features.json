@@ -1,0 +1,318 @@
+{
+  "state": {},
+  "tree": {
+    "id": "root-container",
+    "type": "Box",
+    "props": {
+      "class": "page-container"
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "sticky-header",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "sticky",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "display": "flex",
+              "justify-content": "space-between",
+              "align-items": "center",
+              "padding": "1rem 2rem",
+              "background": "rgba(0, 0, 0, 0.7)",
+              "backdrop-filter": "blur(10px)",
+              "-webkit-backdrop-filter": "blur(10px)",
+              "z-index": "1000",
+              "border-bottom": "1px solid #333",
+              "box-sizing": "border-box"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "header-logo",
+                "type": "Text",
+                "props": {
+                  "content": "iPhone 17 Pro",
+                  "as": "h3",
+                  "style": {
+                    "font-weight": "700"
+                  }
+                }
+              },
+              {
+                "id": "header-links",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "display": "flex"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "nav-link-home",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/",
+                        "text": "Home",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-home",
+                            "type": "Text",
+                            "props": {
+                              "content": "Home"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-features",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/features",
+                        "text": "Features",
+                        "style": {
+                          "color": "#fff",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-features",
+                            "type": "Text",
+                            "props": {
+                              "content": "Features"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-compare",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/compare",
+                        "text": "Compare",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-compare",
+                            "type": "Text",
+                            "props": {
+                              "content": "Compare"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-pricing",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/pricing",
+                        "text": "Pricing",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-pricing",
+                            "type": "Text",
+                            "props": {
+                              "content": "Pricing"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "header-buy-btn",
+                "type": "Button",
+                "props": {
+                  "text": "Buy",
+                  "class": "btn-primary",
+                  "style": {
+                    "padding": "5px 15px",
+                    "font-size": "14px"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "features-content",
+          "type": "Box",
+          "props": {
+            "class": "content-width"
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "feat-title",
+                "type": "Text",
+                "props": {
+                  "content": "Pro Features",
+                  "as": "h1",
+                  "style": {
+                    "font-size": "60px",
+                    "text-align": "center",
+                    "margin": "3rem 0"
+                  }
+                }
+              },
+              {
+                "id": "feat-list-container",
+                "type": "List",
+                "props": {
+                  "class": "features-list",
+                  "style": {
+                    "list-style": "none",
+                    "padding": "0"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "feat-item-1",
+                      "type": "Box",
+                      "props": {
+                        "as": "li",
+                        "style": {
+                          "display": "flex",
+                          "align-items": "center",
+                          "font-size": "20px",
+                          "margin-bottom": "1rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feat-icon-1",
+                            "type": "Icon",
+                            "props": {
+                              "svgPath": "M20 6L9 17l-5-5",
+                              "class": "icon-check",
+                              "viewBox": "0 0 24 24"
+                            }
+                          },
+                          {
+                            "id": "feat-text-1",
+                            "type": "Text",
+                            "props": {
+                              "content": "Dynamic Island"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "feat-item-2",
+                      "type": "Box",
+                      "props": {
+                        "as": "li",
+                        "style": {
+                          "display": "flex",
+                          "align-items": "center",
+                          "font-size": "20px",
+                          "margin-bottom": "1rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feat-icon-2",
+                            "type": "Icon",
+                            "props": {
+                              "svgPath": "M20 6L9 17l-5-5",
+                              "class": "icon-check",
+                              "viewBox": "0 0 24 24"
+                            }
+                          },
+                          {
+                            "id": "feat-text-2",
+                            "type": "Text",
+                            "props": {
+                              "content": "ProMotion Display (1-120Hz)"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "feat-item-3",
+                      "type": "Box",
+                      "props": {
+                        "as": "li",
+                        "style": {
+                          "display": "flex",
+                          "align-items": "center",
+                          "font-size": "20px",
+                          "margin-bottom": "1rem"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feat-icon-3",
+                            "type": "Icon",
+                            "props": {
+                              "svgPath": "M20 6L9 17l-5-5",
+                              "class": "icon-check",
+                              "viewBox": "0 0 24 24"
+                            }
+                          },
+                          {
+                            "id": "feat-text-3",
+                            "type": "Text",
+                            "props": {
+                              "content": "48MP Main Camera with 10x Optical Zoom"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

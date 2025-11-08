@@ -1,0 +1,14 @@
+{
+  "componentName": "input",
+  "friendlyName": "Textbox",
+  "props": {
+    "type": { "type": "string", "default": "text" },
+    "placeholder": { "type": "string" },
+    "modelValue": { "type": "stateBinding" },
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": [],
+  "events": ["input"]
+}

@@ -1,0 +1,22 @@
+{
+    "componentName": "img",
+    "friendlyName": "Image",
+    "props": {
+        "src": {
+            "type": "string"
+        },
+        "alt": {
+            "type": "string"
+        },
+        "style": {
+            "type": "object"
+        },
+        "class": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        }
+    },
+    "slots": []
+}

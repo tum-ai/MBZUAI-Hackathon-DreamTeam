@@ -1,0 +1,479 @@
+{
+  "state": {},
+  "tree": {
+    "id": "root-container",
+    "type": "Box",
+    "props": {
+      "class": "page-container"
+    },
+    "slots": {
+      "default": [
+        {
+          "id": "sticky-header",
+          "type": "Box",
+          "props": {
+            "style": {
+              "position": "sticky",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "display": "flex",
+              "justify-content": "space-between",
+              "align-items": "center",
+              "padding": "1rem 2rem",
+              "background": "rgba(0, 0, 0, 0.7)",
+              "backdrop-filter": "blur(10px)",
+              "-webkit-backdrop-filter": "blur(10px)",
+              "z-index": "1000",
+              "border-bottom": "1px solid #333",
+              "box-sizing": "border-box"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "header-logo",
+                "type": "Text",
+                "props": {
+                  "content": "iPhone 17 Pro",
+                  "as": "h3",
+                  "style": {
+                    "font-weight": "700"
+                  }
+                }
+              },
+              {
+                "id": "header-links",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "display": "flex"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "nav-link-home",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/",
+                        "text": "Home",
+                        "style": {
+                          "color": "#fff",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-home",
+                            "type": "Text",
+                            "props": {
+                              "content": "Home"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-features",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/features",
+                        "text": "Features",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-features",
+                            "type": "Text",
+                            "props": {
+                              "content": "Features"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-compare",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/compare",
+                        "text": "Compare",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-compare",
+                            "type": "Text",
+                            "props": {
+                              "content": "Compare"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-pricing",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/pricing",
+                        "text": "Pricing",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-pricing",
+                            "type": "Text",
+                            "props": {
+                              "content": "Pricing"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "header-buy-btn",
+                "type": "Button",
+                "props": {
+                  "text": "Buy",
+                  "class": "btn-primary",
+                  "style": {
+                    "padding": "5px 15px",
+                    "font-size": "14px"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "hero-section",
+          "type": "Box",
+          "props": {
+            "id": "hero-section",
+            "style": {
+              "height": "100vh",
+              "width": "100%",
+              "position": "relative",
+              "display": "flex",
+              "flex-direction": "column",
+              "justify-content": "center",
+              "align-items": "center",
+              "text-align": "center",
+              "overflow": "hidden"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "hero-img",
+                "type": "Image",
+                "props": {
+                  "src": "https://picsum.photos/1920/1080?random=1",
+                  "alt": "iPhone Hero",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
+                  }
+                }
+              },
+              {
+                "id": "hero-gradient",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
+                  }
+                }
+              },
+              {
+                "id": "hero-text-box",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "hero-title",
+                      "type": "Text",
+                      "props": {
+                        "content": "iPhone 17 Pro",
+                        "as": "h1",
+                        "style": {
+                          "font-size": "80px"
+                        }
+                      }
+                    },
+                    {
+                      "id": "hero-subtitle",
+                      "type": "Text",
+                      "props": {
+                        "content": "The Future. Now.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "32px",
+                          "color": "#ccc"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "chip-section",
+          "type": "Box",
+          "props": {
+            "id": "chip-section",
+            "style": {
+              "height": "100vh",
+              "width": "100%",
+              "position": "relative",
+              "display": "flex",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "chip-img",
+                "type": "Image",
+                "props": {
+                  "src": "https://picsum.photos/1920/1080?random=2",
+                  "alt": "A20 Bionic",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
+                  }
+                }
+              },
+              {
+                "id": "chip-gradient",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
+                  }
+                }
+              },
+              {
+                "id": "chip-text",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3",
+                    "text-align": "center"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "chip-title",
+                      "type": "Text",
+                      "props": {
+                        "content": "A20 Bionic",
+                        "as": "h2",
+                        "style": {
+                          "font-size": "60px"
+                        }
+                      }
+                    },
+                    {
+                      "id": "chip-subtitle",
+                      "type": "Text",
+                      "props": {
+                        "content": "The most powerful chip ever in an iPhone.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "24px",
+                          "color": "#ccc"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "camera-section",
+          "type": "Box",
+          "props": {
+            "id": "camera-section",
+            "style": {
+              "height": "100vh",
+              "width": "100%",
+              "position": "relative",
+              "display": "flex",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "camera-img",
+                "type": "Image",
+                "props": {
+                  "src": "https://picsum.photos/1920/1080?random=3",
+                  "alt": "Pro Camera",
+                  "style": {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
+                  }
+                }
+              },
+              {
+                "id": "camera-gradient",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
+                  }
+                }
+              },
+              {
+                "id": "camera-text",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3",
+                    "text-align": "center"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "camera-title",
+                      "type": "Text",
+                      "props": {
+                        "content": "Pro Camera System",
+                        "as": "h2",
+                        "style": {
+                          "font-size": "60px"
+                        }
+                      }
+                    },
+                    {
+                      "id": "camera-subtitle",
+                      "type": "Text",
+                      "props": {
+                        "content": "Capture your world like never before.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "24px",
+                          "color": "#ccc"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "footer",
+          "type": "Box",
+          "props": {
+            "style": {
+              "text-align": "center",
+              "padding": "3rem",
+              "margin-top": "3rem",
+              "border-top": "1px solid #333"
+            }
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "footer-text",
+                "type": "Text",
+                "props": {
+                  "content": "Copyright \u00a9 2025 GenAI Inc. All rights reserved.",
+                  "as": "p",
+                  "style": {
+                    "font-size": "14px",
+                    "color": "#888"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

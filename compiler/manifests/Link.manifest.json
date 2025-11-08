@@ -1,0 +1,12 @@
+{
+    "componentName": "a",
+    "friendlyName": "Link",
+    "props": {
+        "href": { "type": "string" },
+        "target": { "type": "string", "default": "_blank" },
+        "style": { "type": "object" },
+        "class": { "type": "string" },
+    "id": { "type": "string" }
+    },
+    "slots": [ "default" ]
+}

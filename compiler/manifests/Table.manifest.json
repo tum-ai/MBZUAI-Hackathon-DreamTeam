@@ -1,0 +1,12 @@
+{
+  "componentName": "table",
+  "friendlyName": "Table",
+  "props": {
+    "headers": { "type": "array" },
+    "rows": { "type": "array" },
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": []
+}

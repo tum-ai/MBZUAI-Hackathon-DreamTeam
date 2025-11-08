@@ -1,0 +1,12 @@
+{
+  "componentName": "p",
+  "friendlyName": "Text",
+  "props": {
+    "content": { "type": "string" },
+    "style": { "type": "object" },
+    "as": { "type": "string", "default": "p" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": []
+}

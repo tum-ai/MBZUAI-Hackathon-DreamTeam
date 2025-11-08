@@ -1,0 +1,12 @@
+{
+  "componentName": "button",
+  "friendlyName": "Button",
+  "props": {
+    "text": { "type": "string" },
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": ["default"],
+  "events": ["click"]
+}

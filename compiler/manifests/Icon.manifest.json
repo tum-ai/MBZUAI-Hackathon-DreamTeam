@@ -1,0 +1,12 @@
+{
+  "componentName": "svg",
+  "friendlyName": "Icon",
+  "props": {
+    "svgPath": { "type": "string" },
+    "viewBox": { "type": "string", "default": "0 0 24 24" },
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": []
+}

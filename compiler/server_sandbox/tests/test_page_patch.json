@@ -1,0 +1,407 @@
+[
+    {
+        "op": "replace",
+        "path": "/globalStyles",
+        "value": "@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap&#39;');\nbody { font-family: 'Inter', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; margin: 0; padding: 0; }"
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "hero-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "height": "100vh",
+                    "width": "100%",
+                    "display": "flex",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "background": "linear-gradient(145deg, #e3f2fd 0%, #ffffff 100%)",
+                    "padding": "0 2rem"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "hero-name",
+                        "type": "Text",
+                        "props": {
+                            "content": "Kesava Prasad",
+                            "as": "h1",
+                            "style": {
+                                "fontSize": "4rem",
+                                "fontWeight": 700,
+                                "color": "#2c3e50",
+                                "marginBottom": "1rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "hero-role",
+                        "type": "Text",
+                        "props": {
+                            "content": "Student at TUM | Photography & Coding Enthusiast",
+                            "as": "h2",
+                            "style": {
+                                "fontSize": "2.5rem",
+                                "color": "#7f8c8d",
+                                "textAlign": "center"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "about-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "width": "100%",
+                    "maxWidth": "1200px",
+                    "margin": "4rem auto",
+                    "padding": "2rem",
+                    "backgroundColor": "#ffffff",
+                    "borderRadius": "15px",
+                    "boxShadow": "0 4px 12px rgba(0, 0, 0, 0.05)"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "about-title",
+                        "type": "Text",
+                        "props": {
+                            "content": "About Me",
+                            "as": "h2",
+                            "style": {
+                                "fontSize": "3rem",
+                                "fontWeight": 700,
+                                "color": "#2c3e50",
+                                "borderBottom": "3px solid #3498db",
+                                "marginBottom": "2rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "about-content",
+                        "type": "Text",
+                        "props": {
+                            "content": "I am a student at the Technical University of Munich (TUM), actively pursuing my academic curriculum while nurturing a diverse range of hobbies and interests. My passions span creative and technical domains: I capture the beauty of moments through photography, craft solutions with coding, and engage in dynamic activities like driving, racing, and rifle practice. I also thrive in competitive environments such as cricket, chess, and hackathons, where strategy and quick thinking are key.",
+                            "as": "p",
+                            "style": {
+                                "fontSize": "1.2rem",
+                                "color": "#666",
+                                "textAlign": "justify"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "interests-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "width": "100%",
+                    "maxWidth": "1200px",
+                    "margin": "4rem auto",
+                    "padding": "2rem",
+                    "backgroundColor": "#ffffff",
+                    "borderRadius": "15px",
+                    "boxShadow": "0 4px 12px rgba(0, 0, 0, 0.05)"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "interests-title",
+                        "type": "Text",
+                        "props": {
+                            "content": "Interests & Activities",
+                            "as": "h2",
+                            "style": {
+                                "fontSize": "3rem",
+                                "fontWeight": 700,
+                                "color": "#2c3e50",
+                                "borderBottom": "3px solid #3498db",
+                                "marginBottom": "2rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "interests-grid-container",
+                        "type": "Box",
+                        "props": {
+                            "style": {
+                                "display": "grid",
+                                "gridTemplateColumns": "repeat(auto-fit, minmax(250px, 1fr))",
+                                "gap": "1.5rem"
+                            }
+                        },
+                        "slots": {
+                            "default": [
+                                {
+                                    "id": "interest-photography",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "photography-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Photography",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-coding",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "coding-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Coding",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-driving",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "driving-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Driving",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-racing",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "racing-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Racing",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-rifle-practice",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "rifle-practice-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Rifle Practice",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-cricket",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "cricket-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Cricket",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-chess",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "chess-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Chess",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "interest-hackathons",
+                                    "type": "Box",
+                                    "props": {
+                                        "style": {
+                                            "padding": "1.5rem",
+                                            "backgroundColor": "#f8f9fa",
+                                            "borderRadius": "10px",
+                                            "textAlign": "center"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "hackathons-text",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Hackathons",
+                                                    "style": {
+                                                        "fontSize": "1.5rem",
+                                                        "color": "#2c3e50"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "footer-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "width": "100%",
+                    "margin": "4rem 0 2rem",
+                    "padding": "1.5rem",
+                    "textAlign": "center",
+                    "backgroundColor": "#2c3e50",
+                    "color": "#ecf0f1",
+                    "fontSize": "1rem"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "footer-copyright",
+                        "type": "Text",
+                        "props": {
+                            "content": "© 2024 Kesava Prasad. All rights reserved."
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

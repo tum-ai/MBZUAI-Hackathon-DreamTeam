@@ -1,0 +1,11 @@
+{
+  "componentName": "ul",
+  "friendlyName": "List",
+  "props": {
+    "items": { "type": "array" },
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": []
+}

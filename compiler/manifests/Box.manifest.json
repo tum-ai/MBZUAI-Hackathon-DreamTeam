@@ -1,0 +1,10 @@
+{
+  "componentName": "div",
+  "friendlyName": "Box",
+  "props": {
+    "style": { "type": "object" },
+    "class": { "type": "string" },
+    "id": { "type": "string" }
+  },
+  "slots": ["default"]
+}
