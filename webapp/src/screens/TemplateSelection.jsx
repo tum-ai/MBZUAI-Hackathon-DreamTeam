@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar'
 import GlassCard from '../components/GlassCard'
+import CircularGallery from '../components/CircularGallery'
 import './TemplateSelection.css'
 
 function TemplateSelection() {
@@ -11,6 +12,8 @@ function TemplateSelection() {
   const [inspectingOption, setInspectingOption] = useState(null)
   const [editMode, setEditMode] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState('connected')
+  const [showGallery, setShowGallery] = useState(false)
+  const [enlargedImage, setEnlargedImage] = useState(null)
 
   const options = [
     { id: 'A' },
@@ -36,6 +39,33 @@ function TemplateSelection() {
     setInspectingOption(null)
     setEditMode(false)
     setConnectionStatus('connected')
+    setShowGallery(false) // Hide gallery when closing modal
+  }
+
+  const handleModalMouseMove = (e) => {
+    // Only trigger gallery in edit mode
+    if (!editMode) return
+    
+    // If viewing enlarged image, keep gallery visible
+    if (enlargedImage) return
+    
+    const modalContent = e.currentTarget
+    const rect = modalContent.getBoundingClientRect()
+    const mouseX = e.clientX - rect.left
+    const width = rect.width
+    
+    // Show gallery when mouse is in right 20% of the modal
+    const threshold = width * 0.8
+    setShowGallery(mouseX > threshold)
+  }
+
+  const handleImageClick = (imageData) => {
+    setEnlargedImage(imageData)
+    setShowGallery(true) // Keep gallery visible when viewing enlarged image
+  }
+
+  const handleCloseEnlargedImage = () => {
+    setEnlargedImage(null)
   }
 
   return (
@@ -94,7 +124,10 @@ function TemplateSelection() {
             onClick={editMode ? null : handleCloseModal}
             style={{ cursor: editMode ? 'default' : 'pointer' }}
           />
-          <div className="inspection-modal__content">
+          <div 
+            className="inspection-modal__content"
+            onMouseMove={handleModalMouseMove}
+          >
             <iframe
               src="http://localhost:5174"
               className="inspection-modal__iframe"
@@ -143,6 +176,51 @@ function TemplateSelection() {
                 >
                   Select This Design
                 </button>
+              </div>
+            )}
+
+            {/* Circular Gallery - only in edit mode */}
+            {editMode && showGallery && (
+              <div 
+                className="inspection-modal__gallery-container"
+                style={{ pointerEvents: enlargedImage ? 'none' : 'auto' }}
+              >
+                <CircularGallery
+                  bend={5}
+                  textColor="#E8EDF3"
+                  borderRadius={0.08}
+                  font="bold 24px Inter"
+                  scrollSpeed={2}
+                  scrollEase={0.05}
+                  onImageClick={handleImageClick}
+                />
+              </div>
+            )}
+
+            {/* Enlarged Image View */}
+            {editMode && enlargedImage && (
+              <div className="enlarged-image-overlay">
+                <div className="enlarged-image-container">
+                  <img 
+                    src={enlargedImage.image}
+                    alt={enlargedImage.text}
+                    className="enlarged-image"
+                  />
+                  <button 
+                    className="enlarged-image__close"
+                    onClick={handleCloseEnlargedImage}
+                    aria-label="Close enlarged view"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M15 5L5 15M5 5L15 15"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             )}
           </div>

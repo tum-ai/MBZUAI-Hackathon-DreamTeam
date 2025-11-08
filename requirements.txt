@@ -10,3 +10,4 @@ playwright
 httpx
 watchdog
 websockets
+httpx>=0.25.0

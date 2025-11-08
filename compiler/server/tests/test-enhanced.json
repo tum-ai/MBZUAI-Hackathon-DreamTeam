@@ -77,7 +77,7 @@
                             "id": "perf-title",
                             "type": "Text",
                             "props": {
-                              "content": "\u00e2\u0161\u00a1 Lightning Fast",
+                              "content": "⚡ Lightning Fast",
                               "as": "h3",
                               "style": {
                                 "fontSize": "24px",
@@ -107,7 +107,7 @@
                             "id": "design-title",
                             "type": "Text",
                             "props": {
-                              "content": "\u00f0\u0178\u017d\u00a8 Beautiful Design",
+                              "content": "🎨 Beautiful Design",
                               "as": "h3",
                               "style": {
                                 "fontSize": "24px",
@@ -137,7 +137,7 @@
                             "id": "easy-title",
                             "type": "Text",
                             "props": {
-                              "content": "\u00f0\u0178\u0161\u20ac Easy to Use",
+                              "content": "🚀 Easy to Use",
                               "as": "h3",
                               "style": {
                                 "fontSize": "24px",

@@ -1,16 +1,11 @@
 {
-  "projectName": "GenAI Web Design",
+  "projectName": "test-enhanced-site",
+  "globalStyles": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');\nbody { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #fff; margin: 0; padding: 0; }",
   "pages": [
     {
       "name": "Home",
       "path": "/",
       "astFile": "home.json"
-    },
-    {
-      "name": "Contact",
-      "path": "/contact",
-      "astFile": "contact.json"
     }
-  ],
-  "globalStyles": "\n/* V12: Import 'Inter' font (Google Sans-like) */\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');\n\nbody {\n  font-family: 'Inter', sans-serif;\n  background-color: #111;\n  color: #eee;\n  margin: 0;\n  padding: 0;\n}\n\n/* V12: Style the nav bar (previously hardcoded in generator) */\n#nav {\n  padding: 2rem;\n  text-align: center;\n  background-color: #1a1a1a;\n}\n.nav-link { /* Class added by generator */\n  font-weight: 700;\n  color: #888;\n  text-decoration: none;\n  padding: 0 1rem;\n}\n.nav-link.router-link-exact-active {\n  color: #42b983;\n}\n\n/* --- Global Component Classes --- */\nh1, h2, h3, h4 {\n  font-weight: 700;\n}\n\n.btn-primary {\n  background-color: #42b983;\n  color: white;\n  border: none;\n  padding: 12px 24px;\n  font-size: 16px;\n  font-weight: 700;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n.btn-primary:hover {\n  background-color: #36a473;\n}\n\n.btn-secondary {\n  background-color: transparent;\n  color: #eee;\n  border: 1px solid #eee;\n  padding: 12px 24px;\n  font-size: 16px;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: all 0.2s;\n}\n.btn-secondary:hover {\n  background-color: #eee;\n  color: #111;\n}\n\n.text-link {\n  color: #42b983;\n  text-decoration: none;\n}\n.text-link:hover {\n  text-decoration: underline;\n}\n\n.page-container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 2rem 4rem;\n}\n"
+  ]
 }

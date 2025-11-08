@@ -1,0 +1,88 @@
+{
+  "componentName": "div",
+  "friendlyName": "GradientText",
+  "description": "Text with animated gradient effect",
+  "props": {
+    "content": {
+      "type": "string",
+      "required": true,
+      "description": "Text content to display"
+    },
+    "as": {
+      "type": "string",
+      "default": "span",
+      "enum": ["span", "h1", "h2", "h3", "h4", "h5", "h6", "p"],
+      "description": "HTML tag to render as"
+    },
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "gradientFrom": {
+      "type": "string",
+      "default": "#ff6b6b",
+      "description": "Start color of gradient"
+    },
+    "gradientTo": {
+      "type": "string",
+      "default": "#4ecdc4",
+      "description": "End color of gradient"
+    },
+    "animated": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable gradient animation"
+    },
+    "animationDuration": {
+      "type": "string",
+      "default": "3s",
+      "description": "Duration of one animation cycle"
+    }
+  },
+  "slots": [],
+  "events": [],
+  "variants": {
+    "sunset": {
+      "description": "Warm sunset gradient",
+      "props": {
+        "gradientFrom": "#ff6b6b",
+        "gradientTo": "#feca57"
+      }
+    },
+    "ocean": {
+      "description": "Cool ocean gradient",
+      "props": {
+        "gradientFrom": "#4ecdc4",
+        "gradientTo": "#556270"
+      }
+    },
+    "neon": {
+      "description": "Vibrant neon gradient",
+      "props": {
+        "gradientFrom": "#f857a6",
+        "gradientTo": "#ff5858"
+      }
+    },
+    "purple-haze": {
+      "description": "Purple to pink gradient",
+      "props": {
+        "gradientFrom": "#a18cd1",
+        "gradientTo": "#fbc2eb"
+      }
+    }
+  },
+  "animations": {
+    "gradient-shift": {
+      "description": "Animates gradient colors in a loop",
+      "props": ["animated", "animationDuration", "gradientFrom", "gradientTo"]
+    }
+  }
+}

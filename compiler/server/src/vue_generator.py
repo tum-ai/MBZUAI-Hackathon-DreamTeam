@@ -9,12 +9,14 @@ class VueGenerator:
     Takes an AST (with state and events) and compiles
     a single-file .vue component.
     V19: Adds data-nav-id to all generated nodes for automation.
+    V20: Enhanced semantic ID generation with hierarchy tracking.
     """
     def __init__(self, manifests_path):
         self.manifests_path = Path(manifests_path)
         self.manifests = self._load_manifests()
         self.state_vars = {}
         self.functions = []
+        self.id_counter = {}  # Track counts for auto-generated IDs
 
     def _load_manifests(self):
         """Loads all component manifests from a directory."""
@@ -36,6 +38,7 @@ class VueGenerator:
         """Resets the state for a new file generation."""
         self.state_vars = {}
         self.functions = []
+        self.id_counter = {}
 
     def _parse_state(self, state_data):
         """Generates state variable definitions (e.g., ref())"""
@@ -44,6 +47,99 @@ class VueGenerator:
                 self.state_vars[key] = value['defaultValue']
             else:
                 self.state_vars[key] = value
+
+    def _generate_semantic_id(self, node, parent_context="", index_in_parent=None):
+        """
+        Generates a semantic, hierarchical ID for a node.
+        
+        Format: parent-context.component-type[-semantic-hint][-index]
+        
+        Examples:
+        - hero-section.box-text-container
+        - feature-list.item-0.icon-check
+        - navigation-menu.link-home
+        
+        Args:
+            node: The AST node
+            parent_context: Dot-separated path of parent IDs
+            index_in_parent: Position in parent's children array (for auto-numbering)
+        
+        Returns:
+            str: A semantic, hierarchical ID
+        """
+        node_type = node.get('type', 'unknown')
+        node_id = node.get('id', '')
+        
+        # If node already has a semantic ID, use it
+        if node_id and '.' not in node_id:
+            # This is a user-provided base ID
+            if parent_context:
+                return f"{parent_context}.{node_id}"
+            return node_id
+        elif node_id and '.' in node_id:
+            # Already hierarchical
+            return node_id
+        
+        # Auto-generate semantic ID
+        component_type = node_type.lower()
+        
+        # Get semantic hint from common props
+        semantic_hint = self._extract_semantic_hint(node)
+        
+        # Build the ID parts
+        id_parts = []
+        if parent_context:
+            id_parts.append(parent_context)
+        
+        # Add component type
+        id_parts.append(component_type)
+        
+        # Add semantic hint if available
+        if semantic_hint:
+            id_parts.append(semantic_hint)
+        
+        # Add index if in a collection
+        if index_in_parent is not None:
+            id_parts.append(str(index_in_parent))
+        
+        generated_id = ".".join(id_parts)
+        
+        # Ensure uniqueness by tracking and adding suffix if needed
+        base_id = generated_id
+        counter = self.id_counter.get(base_id, 0)
+        if counter > 0:
+            generated_id = f"{base_id}-{counter}"
+        self.id_counter[base_id] = counter + 1
+        
+        return generated_id
+    
+    def _extract_semantic_hint(self, node):
+        """
+        Extracts a semantic hint from the node's props.
+        
+        Looks at props like: content, text, href, src, etc.
+        Returns a short, kebab-case hint or None.
+        """
+        props = node.get('props', {})
+        
+        # Check common semantic props
+        for prop in ['content', 'text', 'id', 'class']:
+            value = props.get(prop)
+            if isinstance(value, str) and value:
+                # Convert to kebab-case, take first few words
+                hint = value.lower().strip()
+                # Remove special characters
+                hint = re.sub(r'[^a-z0-9\s-]', '', hint)
+                # Convert spaces to dashes
+                hint = re.sub(r'\s+', '-', hint)
+                # Take first 2-3 words max
+                words = hint.split('-')[:2]
+                hint = '-'.join(words)
+                if len(hint) > 20:
+                    hint = hint[:20]
+                return hint if hint else None
+        
+        return None
 
     def _resolve_expression(self, expr_obj, is_event_handler=False):
         """
@@ -100,7 +196,8 @@ class VueGenerator:
                 # V14 FIX: Use a regex to check if the resolved value is PURE code.
                 # This regex looks for math, logic, state vars, and parens.
                 # V17: Added \ (for modulo) to regex
-                pure_code_pattern = re.compile(r"^[\w.()+\-*/%\s\d]+$")
+                # V20: Added ! for negation operator
+                pure_code_pattern = re.compile(r"^[\w.()+\-*/%!\s\d]+$")
 
                 if pure_code_pattern.match(resolved_value):
                     # It's a pure code expression (like the carousel), return raw
@@ -127,13 +224,17 @@ class VueGenerator:
         """
         Parses the "events" block and generates Vue functions.
         Returns a dictionary of event bindings, e.g., {'@click': 'onBtn1Click'}
+        
+        V20: Sanitizes dots from semantic IDs for function names.
         """
         event_bindings = {}
         if not events:
             return {}
             
         for event_name, actions in events.items():
-            func_name = f"on{node_id.replace('-', '_')}_{event_name}"
+            # V20: Replace both dots and dashes with underscores for valid JS function names
+            sanitized_id = node_id.replace('.', '_').replace('-', '_')
+            func_name = f"on{sanitized_id}_{event_name}"
             
             func_body = ""
             needs_event_param = False
@@ -181,8 +282,12 @@ class VueGenerator:
             return re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()
         return "; ".join([f"{camel_to_kebab(k)}: {v}" for k, v in style_obj.items()])
 
-    def _generate_node(self, node):
-        """RECURSIVE FUNCTION: Generates HTML for one AST node."""
+    def _generate_node(self, node, parent_context="", index_in_parent=None):
+        """
+        RECURSIVE FUNCTION: Generates HTML for one AST node.
+        
+        V20: Now accepts parent_context and index_in_parent for hierarchical ID generation.
+        """
         node_type = node.get('type')
         if not node_type or node_type not in self.manifests:
             print(f"Warning: Skipping node {node.get('id')}, manifest not found for type '{node_type}'")
@@ -191,10 +296,13 @@ class VueGenerator:
         manifest = self.manifests[node_type]
         tag = node.get('props', {}).get('as', manifest['componentName'])
         
-        # V19: Add data-nav-id for automation
+        # V20: Generate semantic, hierarchical ID
+        semantic_id = self._generate_semantic_id(node, parent_context, index_in_parent)
+        
+        # V19: Add data-nav-id for automation (now using semantic ID)
         props_map = {
-            'data-component-id': f'"{node["id"]}"',
-            'data-nav-id': f'"{node["id"]}"'
+            'data-component-id': f'"{semantic_id}"',
+            'data-nav-id': f'"{semantic_id}"'
         }
         
         v_if = node.get('v-if')
@@ -206,6 +314,13 @@ class VueGenerator:
             elif 'stateKey' in v_if:
                 props_map['v-if'] = f'"{v_if["stateKey"]}"'
 
+        # --- V20: Handle Variants (apply variant props first) ---
+        variant_props = {}
+        if 'props' in node and 'variant' in node['props']:
+            variant_name = node['props']['variant']
+            if 'variants' in manifest and variant_name in manifest['variants']:
+                variant_props = manifest['variants'][variant_name].get('props', {})
+        
         # --- Handle Props ---
         content = None
         if 'props' in node:
@@ -243,7 +358,16 @@ class VueGenerator:
                     continue
                 
                 if key == 'style' and isinstance(value, dict):
-                    props_map['style'] = f'"{self._generate_style_string(value)}"'
+                    # V20: Merge variant styles with node styles (node styles take precedence)
+                    merged_styles = {}
+                    if 'style' in variant_props and isinstance(variant_props['style'], dict):
+                        merged_styles.update(variant_props['style'])
+                    merged_styles.update(value)
+                    props_map['style'] = f'"{self._generate_style_string(merged_styles)}"'
+                
+                elif key == 'variant':
+                    # Skip the variant prop itself (already processed)
+                    continue
                 
                 elif key == 'modelValue' and isinstance(value, dict) and value.get('type') == 'stateBinding':
                     props_map[f"v-model"] = f'"{value["stateKey"]}"'
@@ -271,7 +395,7 @@ class VueGenerator:
 
         # --- Handle Events ---
         if 'events' in node:
-            event_bindings = self._generate_functions(node['id'], node.get('events', {}))
+            event_bindings = self._generate_functions(semantic_id, node.get('events', {}))
             props_map.update(event_bindings)
 
         props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
@@ -282,12 +406,16 @@ class VueGenerator:
             items_str = node.get('props', {}).get('items', [])
             li_tags = ""
             if items_str:
-                li_tags = "\n".join([f"{indent}  <li>{item}</li>" for item in items_str])
+                # V20: Auto-generate IDs for simple list items
+                for idx, item in enumerate(items_str):
+                    item_id = f"{semantic_id}.item-{idx}"
+                    li_tags += f'{indent}  <li data-component-id="{item_id}" data-nav-id="{item_id}">{item}</li>\n'
             
             children_str = ""
             if 'slots' in node and 'default' in node['slots']:
-                 for child_node in node['slots']['default']:
-                    children_str += self._generate_node(child_node) + "\n"
+                # V20: Pass context for hierarchical IDs
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
 
             return f"{indent}<{tag} {props_str}>\n{li_tags}{children_str}{indent}</{tag}>"
 
@@ -315,12 +443,73 @@ class VueGenerator:
             # We must remove 'd' from props_str to avoid duplicate
             props_str = " ".join([f'{k}={v}' for k, v in props_map.items() if k != 'd'])
             return f"{indent}<svg {props_str} fill=\"currentColor\" width=\"1em\" height=\"1em\">\n{indent}  <path d={path_d_attr}></path>\n{indent}</svg>"
+        
+        # V20: Render GradientText with gradient styles
+        if node_type == 'GradientText':
+            gradient_from = node.get('props', {}).get('gradientFrom', '#ff6b6b')
+            gradient_to = node.get('props', {}).get('gradientTo', '#4ecdc4')
+            animated = node.get('props', {}).get('animated', True)
+            duration = node.get('props', {}).get('animationDuration', '3s')
+            
+            # Build gradient style
+            gradient_style = f"background: linear-gradient(90deg, {gradient_from}, {gradient_to})"
+            if animated:
+                gradient_style += f"; background-size: 200% auto; animation: gradient-shift {duration} ease infinite"
+            
+            # Get existing style from props_map
+            existing_style = props_map.get('style', '""').strip('"')
+            combined_style = f"{existing_style}; {gradient_style}; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text"
+            props_map['style'] = f'"{combined_style}"'
+            
+            props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            if content:
+                return f"{indent}<{tag} {props_str}>{content}</{tag}>"
+        
+        # V20: Render Accordion with header and collapsible content
+        if node_type == 'Accordion':
+            title = node.get('props', {}).get('title', 'Accordion')
+            is_open_binding = None
+            
+            # Get state binding for isOpen
+            if 'props' in node and 'isOpen' in node['props']:
+                is_open_prop = node['props']['isOpen']
+                if isinstance(is_open_prop, dict) and is_open_prop.get('type') == 'stateBinding':
+                    is_open_binding = is_open_prop.get('stateKey')
+            
+            # Generate header
+            header_id = f"{semantic_id}-header"
+            header_props_str = " ".join([f'{k}={v}' for k, v in props_map.items()])
+            
+            header = f'{indent}<div {header_props_str}>\n'
+            header += f'{indent}  <div data-component-id="{header_id}" data-nav-id="{header_id}" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #1a1a1a; border-radius: 8px;">\n'
+            header += f'{indent}    <span style="font-weight: 600; font-size: 18px;">{title}</span>\n'
+            header += f'{indent}    <span v-if="{is_open_binding}" style="transition: transform 0.3s;">▼</span>\n'
+            header += f'{indent}    <span v-else style="transition: transform 0.3s;">▶</span>\n'
+            header += f'{indent}  </div>\n'
+            
+            # Generate content container
+            content_id = f"{semantic_id}-content"
+            children_str = ""
+            if 'slots' in node and 'default' in node['slots']:
+                for idx, child_node in enumerate(node['slots']['default']):
+                    children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
+            
+            content = f'{indent}  <div v-if="{is_open_binding}" data-component-id="{content_id}" data-nav-id="{content_id}" style="padding: 1rem; margin-top: 0.5rem;">\n'
+            content += children_str
+            content += f'{indent}  </div>\n'
+            
+            header += content
+            header += f'{indent}</div>'
+            
+            return header
 
         # --- Handle Children (Slots) ---
         children_str = ""
         if 'slots' in node and 'default' in node['slots']:
-            for child_node in node['slots']['default']:
-                children_str += self._generate_node(child_node) + "\n"
+            # V20: Pass parent context for hierarchical ID generation
+            for idx, child_node in enumerate(node['slots']['default']):
+                children_str += self._generate_node(child_node, semantic_id, idx) + "\n"
         
         # --- Assemble Node ---
         if content:
@@ -343,7 +532,8 @@ class VueGenerator:
         
         template_content = ""
         if 'tree' in ast:
-            template_content = self._generate_node(ast['tree'])
+            # V20: Start with empty context for root node
+            template_content = self._generate_node(ast['tree'], parent_context="")
         else:
             print("Warning: AST has no 'tree' root. Generating empty template.")
             

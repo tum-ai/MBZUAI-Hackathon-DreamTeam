@@ -1,0 +1,88 @@
+{
+  "componentName": "div",
+  "friendlyName": "Card",
+  "description": "A container with background, border, and shadow for grouping content",
+  "props": {
+    "style": {
+      "type": "object",
+      "description": "Custom CSS styles"
+    },
+    "class": {
+      "type": "string",
+      "description": "CSS class name"
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique identifier"
+    },
+    "as": {
+      "type": "string",
+      "default": "div",
+      "description": "HTML tag to render as"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["default", "elevated", "outlined", "flat"],
+      "default": "default",
+      "description": "Visual style variant"
+    },
+    "padding": {
+      "type": "string",
+      "default": "1.5rem",
+      "description": "Internal padding"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "8px",
+      "description": "Corner roundness"
+    }
+  },
+  "slots": ["default", "header", "footer"],
+  "events": ["click"],
+  "variants": {
+    "default": {
+      "description": "Standard card with subtle shadow",
+      "props": {
+        "style": {
+          "background": "#1a1a1a",
+          "borderRadius": "8px",
+          "padding": "1.5rem",
+          "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.2)"
+        }
+      }
+    },
+    "elevated": {
+      "description": "Card with prominent shadow for emphasis",
+      "props": {
+        "style": {
+          "background": "#1a1a1a",
+          "borderRadius": "12px",
+          "padding": "2rem",
+          "boxShadow": "0 8px 24px rgba(0, 0, 0, 0.4)",
+          "transition": "transform 0.2s ease, box-shadow 0.2s ease"
+        }
+      }
+    },
+    "outlined": {
+      "description": "Card with border, no shadow",
+      "props": {
+        "style": {
+          "background": "transparent",
+          "border": "1px solid #333",
+          "borderRadius": "8px",
+          "padding": "1.5rem"
+        }
+      }
+    },
+    "flat": {
+      "description": "Card with background, no shadow or border",
+      "props": {
+        "style": {
+          "background": "#1a1a1a",
+          "borderRadius": "8px",
+          "padding": "1.5rem"
+        }
+      }
+    }
+  }
+}
