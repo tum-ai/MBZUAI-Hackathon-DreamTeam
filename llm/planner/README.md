@@ -32,7 +32,7 @@ Server: http://localhost:8000
 
 ## API
 
-**POST /decide**
+**POST /decide** - Process user request (supports multi-task)
 
 ```bash
 curl -X POST http://localhost:8000/decide \
@@ -40,7 +40,15 @@ curl -X POST http://localhost:8000/decide \
   -d '{"sid": "session-123", "text": "Add a hero section"}'
 ```
 
-Response: `{step_id, step_type, intent, context}`
+Response: Array of `{step_id, step_type, intent, context}`
+
+**GET /queue/{sid}** - Get queue status for session
+
+```bash
+curl http://localhost:8000/queue/session-123
+```
+
+Response: `{sid, pending, processing, completed}`
 
 **GET /health** → `{"status": "healthy"}`
 
@@ -50,6 +58,126 @@ Response: `{step_id, step_type, intent, context}`
 2. **Enriches prompt**: adds explanation for next agent
 3. **Manages context**: stores last 2 prompts, summarizes if >100 chars
 4. **Tracks steps**: generates unique step_id per request
+5. **Queue system**: splits multi-task requests and processes sequentially per session
+
+## Queue System
+
+The planner now supports **multi-task requests** and **concurrent session handling** with a built-in queue system.
+
+### Features
+
+- **Task Splitting**: LLM automatically detects and splits multi-task requests
+- **Sequential Processing**: Tasks within a session execute in order
+- **Concurrent Sessions**: Multiple sessions can process tasks simultaneously
+- **Queue Tracking**: Monitor pending, processing, and completed tasks
+
+### Example: Multi-Task Request
+
+**Input:**
+```bash
+curl -X POST http://localhost:8000/decide \
+  -H "Content-Type: application/json" \
+  -d '{"sid": "session-123", "text": "scroll down, click the submit button and make it orange"}'
+```
+
+**Output:** Array of 3 DecideResponse objects:
+```json
+[
+  {
+    "step_id": "uuid-1",
+    "step_type": "act",
+    "intent": "scroll down | User wants to scroll down the page",
+    "context": ""
+  },
+  {
+    "step_id": "uuid-2", 
+    "step_type": "act",
+    "intent": "click the submit button | User wants to click the submit button",
+    "context": "scroll down"
+  },
+  {
+    "step_id": "uuid-3",
+    "step_type": "edit",
+    "intent": "make it orange | User wants to change submit button color to orange",
+    "context": "scroll down | click the submit button"
+  }
+]
+```
+
+### Queue Status Endpoint
+
+**GET /queue/{sid}** - Track session queue status
+
+```bash
+curl http://localhost:8000/queue/session-123
+```
+
+Response:
+```json
+{
+  "sid": "session-123",
+  "pending": [],
+  "processing": [],
+  "completed": [
+    {"text": "scroll down", "step_type": "act", "status": "completed", ...},
+    {"text": "click submit", "step_type": "act", "status": "completed", ...},
+    {"text": "make it orange", "step_type": "edit", "status": "completed", ...}
+  ]
+}
+```
+
+### Architecture
+
+```
+Request: "scroll down, click submit, make it orange"
+                         │
+                         ▼
+┌────────────────────────────────────────────────┐
+│          POST /decide (server.py)              │
+└────────────────┬───────────────────────────────┘
+                 │
+                 ▼
+┌────────────────────────────────────────────────┐
+│      LLM Task Splitter (llm_client.py)         │
+│  Detects 3 tasks → returns task array          │
+└────────────────┬───────────────────────────────┘
+                 │
+                 ▼
+┌────────────────────────────────────────────────┐
+│      Queue Manager (queue_manager.py)          │
+│  ┌──────────────────────────────────────┐      │
+│  │  Session Queue (session-123)         │      │
+│  │  ┌────────────────────────────────┐  │      │
+│  │  │ 1. scroll down      [pending]  │  │      │
+│  │  │ 2. click submit     [pending]  │  │      │
+│  │  │ 3. make it orange   [pending]  │  │      │
+│  │  └────────────────────────────────┘  │      │
+│  └──────────────────────────────────────┘      │
+└────────────────┬───────────────────────────────┘
+                 │ Process sequentially
+                 ▼
+         ┌───────┴────────┐
+         │                │
+    Task 1 (act)     Task 2 (act)     Task 3 (edit)
+         │                │                │
+         ▼                ▼                ▼
+    [processing]     [processing]     [processing]
+         │                │                │
+         ▼                ▼                ▼
+    [completed]      [completed]      [completed]
+         │                │                │
+         └────────────────┴────────────────┘
+                         │
+                         ▼
+              Array of DecideResponse
+```
+
+### Key Components
+
+- **`queue_manager.py`**: Per-session queues with asyncio locks for thread-safe operations
+- **`llm_client.py`**: `split_tasks()` function uses LLM to intelligently detect multiple tasks
+- **`planner.py`**: `process_user_request()` enqueues and processes tasks sequentially
+- **`server.py`**: Async endpoints supporting list responses and queue status
 
 ## Notes
 - Summarization is triggered only if `len(previous_context) > 100`

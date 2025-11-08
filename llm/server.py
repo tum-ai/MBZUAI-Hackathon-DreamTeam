@@ -1,7 +1,9 @@
+from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from llm.planner.models import DecideRequest, DecideResponse
+from llm.planner.models import DecideRequest, DecideResponse, QueueStatus
 from llm.planner.planner import process_user_request
+from llm.planner.queue_manager import get_queue_manager
 from llm.clarifier.models import ClarifyRequest, ClarifyResponse
 from llm.clarifier.clarifier import process_clarification_request
 
@@ -17,26 +19,50 @@ app.add_middleware(
 )
 
 
-@app.post("/decide", response_model=DecideResponse)
-async def decide(request: DecideRequest) -> DecideResponse:
+@app.post("/decide", response_model=List[DecideResponse])
+async def decide(request: DecideRequest) -> List[DecideResponse]:
     """
     Planner agent endpoint that classifies user intent and enriches prompts.
+    Supports multi-task requests and sequential processing per session.
     
     Input:
     - sid: Session ID
-    - text: User query
+    - text: User query (can contain multiple tasks)
     
     Output:
+    List of DecideResponse objects, one per task:
     - step_id: Unique step identifier
     - step_type: Intent classification (edit/act/clarify)
     - intent: Enriched user query with explanation
     - context: Summarized context from previous prompts
     """
     try:
-        response = process_user_request(request)
-        return response
+        responses = await process_user_request(request)
+        return responses
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
+
+
+@app.get("/queue/{sid}", response_model=QueueStatus)
+async def get_queue_status(sid: str) -> QueueStatus:
+    """
+    Get the current status of a session's task queue.
+    
+    Input:
+    - sid: Session ID (path parameter)
+    
+    Output:
+    - sid: Session ID
+    - pending: List of pending tasks
+    - processing: List of currently processing tasks
+    - completed: List of completed tasks
+    """
+    try:
+        queue_manager = get_queue_manager()
+        status = await queue_manager.get_queue_status(sid)
+        return QueueStatus(sid=sid, **status)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting queue status: {str(e)}")
 
 
 @app.post("/clarify", response_model=ClarifyResponse)

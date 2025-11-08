@@ -70,7 +70,16 @@ async def send_request(client, session_id, text):
     try:
         response = await client.post(url, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
-        return response.json()
+        result = response.json()
+        
+        # Handle list response (new format) - for single-task tests, return first item
+        if isinstance(result, list):
+            if len(result) > 0:
+                return result[0]
+            else:
+                return {"error": "Empty response list"}
+        
+        return result
     except httpx.TimeoutException:
         return {"error": "Request timeout"}
     except httpx.HTTPStatusError as e:
