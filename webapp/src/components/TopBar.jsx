@@ -32,23 +32,7 @@ function TopBar({ title = 'Voice-First Platform', showBack = false, children }) 
           </button>
         )}
         <div className="top-bar__logo">
-          <svg viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* K2 geometric logo - matching reference design */}
-            {/* Top horizontal bar with 3D perspective effect */}
-            <polygon points="30,7 105,25 105,38 35,20" fill="#EF5F3A"/>
-            
-            {/* Connecting vertical piece */}
-            <polygon points="30,20 30,40 35,40 35,20" fill="#EF5F3A"/>
-            
-            {/* Large diagonal ribbon going down to bottom-right */}
-            <polygon points="30,40 105,38 115,93 40,85" fill="#EF5F3A"/>
-            
-            {/* Bottom left square */}
-            <rect x="10" y="73" width="30" height="20" fill="#EF5F3A"/>
-            
-            {/* K2 Ink text in strong orange */}
-            <text x="123" y="70" fontFamily="Arial, sans-serif" fontSize="55" fontWeight="700" fill="#FF6B35">K2 Ink</text>
-          </svg>
+          <img src="/k2-ink-logo.png" alt="K2 Ink" />
         </div>
       </div>
       <div className="top-bar__right">

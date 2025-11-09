@@ -40,12 +40,13 @@
 .top-bar__logo {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 36px;
 }
 
-.top-bar__logo svg {
+.top-bar__logo img {
   height: 100%;
   width: auto;
+  object-fit: contain;
 }
 
 .top-bar__right {

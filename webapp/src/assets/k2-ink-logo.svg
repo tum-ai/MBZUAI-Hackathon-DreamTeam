@@ -1,9 +1,0 @@
-<svg width="1280" height="400" viewBox="0 0 1280 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Orange/Red K2 geometric logo on left -->
-  <polygon points="100,68 357,68 357,140 160,140 237,348 160,348" fill="#EF5F3A"/>
-  <rect x="39" y="268" width="121" height="80" fill="#EF5F3A"/>
-  
-  <!-- K2 Ink text -->
-  <text x="495" y="280" font-family="Arial, sans-serif" font-size="220" font-weight="700" fill="#2B1F1A">K2 Ink</text>
-</svg>
-
