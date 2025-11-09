@@ -2,7 +2,11 @@
  * Captures all interactive elements with data-nav-id attributes
  * This creates a "navigation map" for the LLM agent
  */
-const IFRAME_SELECTOR = '#dynamic-content-iframe'
+const IFRAME_SELECTORS = [
+  '.inspection-modal__iframe', // Priority: modal iframe when editing
+  '.template-selection__iframe', // Fallback: template grid iframes
+  '#dynamic-content-iframe' // Legacy: original selector
+]
 const IFRAME_TIMEOUT = 5000
 
 const resolveIframeOrigin = () => {
@@ -124,12 +128,79 @@ export const captureIframeDOMSnapshot = () => {
   }
 
   return new Promise((resolve, reject) => {
-    const iframe = document.querySelector(IFRAME_SELECTOR)
+    // Try to find the first visible iframe using priority selectors
+    let iframe = null
+    let matchedSelector = null
+    let iframeContext = {}
+    
+    for (const selector of IFRAME_SELECTORS) {
+      const found = document.querySelector(selector)
+      if (found && found.contentWindow) {
+        iframe = found
+        matchedSelector = selector
+        console.log(`[DOM Snapshot] Found iframe using selector: ${selector}`)
+        break
+      }
+    }
+
+    // If no prioritized iframe found, try to find any iframe that's visible
+    if (!iframe) {
+      const allIframes = document.querySelectorAll('iframe')
+      for (const candidateIframe of allIframes) {
+        if (candidateIframe.contentWindow && isElementVisible(candidateIframe)) {
+          iframe = candidateIframe
+          matchedSelector = 'fallback-visible-iframe'
+          console.log('[DOM Snapshot] Found visible iframe as fallback')
+          break
+        }
+      }
+    }
 
     if (!iframe || !iframe.contentWindow) {
-      console.log('[DOM Snapshot] iframe not found, returning empty snapshot')
+      console.log('[DOM Snapshot] No iframe found, returning empty snapshot')
       resolve({ elements: [], source: 'iframe-not-found' })
       return
+    }
+
+    // Extract context about which iframe this is
+    iframeContext = {
+      selector: matchedSelector,
+      title: iframe.title || null,
+      src: iframe.src || null,
+    }
+
+    // Check if this is the inspection modal (editing mode)
+    const isInModal = matchedSelector === '.inspection-modal__iframe'
+    if (isInModal) {
+      // Try to find which template option is being inspected from iframe title
+      // Title format: "Editing Design Option A" or "Inspecting Design Option A"
+      const templateMatch = iframe.title?.match(/Option ([A-D])/i)
+      const editModeMatch = iframe.title?.match(/Editing/i)
+      
+      iframeContext.mode = editModeMatch ? 'editing' : 'inspecting'
+      iframeContext.templateId = templateMatch?.[1] || null
+      iframeContext.editMode = !!editModeMatch
+      
+      // Also check for the footer as a backup way to detect edit mode
+      const modal = iframe.closest('.inspection-modal')
+      const hasFooter = modal?.querySelector('.inspection-modal__footer')
+      if (!iframeContext.editMode && !hasFooter) {
+        iframeContext.editMode = true
+        iframeContext.mode = 'editing'
+      }
+      
+      console.log(`[DOM Snapshot] Capturing from Template ${iframeContext.templateId || '?'} - ${iframeContext.editMode ? 'EDIT MODE' : 'INSPECTION MODE'}`)
+    } else if (matchedSelector === '.template-selection__iframe') {
+      iframeContext.mode = 'grid-view'
+      // Try to identify which grid item this is by finding parent option div
+      const optionDiv = iframe.closest('[data-nav-id^="template-option-"]')
+      if (optionDiv) {
+        const navId = optionDiv.getAttribute('data-nav-id')
+        const templateMatch = navId?.match(/template-option-([a-d])/i)
+        iframeContext.templateId = templateMatch?.[1]?.toUpperCase() || null
+      }
+    } else {
+      iframeContext.mode = 'grid-view'
     }
 
     const timeout = setTimeout(() => {
@@ -145,7 +216,12 @@ export const captureIframeDOMSnapshot = () => {
 
       if (event.data?.type === 'DOM_SNAPSHOT_RESPONSE') {
         cleanup()
-        resolve(event.data.snapshot)
+        // Add iframe context metadata to the snapshot
+        const snapshotWithContext = {
+          ...event.data.snapshot,
+          iframeContext
+        }
+        resolve(snapshotWithContext)
       }
     }
 
@@ -167,10 +243,23 @@ export const captureIframeDOMSnapshot = () => {
 
 export const captureCombinedDOMSnapshot = async () => {
   const mainSnapshot = captureDOMSnapshot()
+  console.log('[DOM Snapshot] Captured main app:', mainSnapshot.elements.length, 'elements')
 
   let iframeSnapshot = { elements: [] }
   try {
     iframeSnapshot = await captureIframeDOMSnapshot()
+    console.log('[DOM Snapshot] Captured iframe:', iframeSnapshot.elements?.length || 0, 'elements')
+    
+    // Log which iframe was captured
+    if (iframeSnapshot.iframeContext) {
+      const ctx = iframeSnapshot.iframeContext
+      console.log('[DOM Snapshot] Active iframe:', {
+        mode: ctx.mode,
+        templateId: ctx.templateId || 'unknown',
+        editMode: ctx.editMode,
+        selector: ctx.selector
+      })
+    }
   } catch (error) {
     console.warn('[DOM Snapshot] Failed to capture iframe DOM:', error)
   }
@@ -180,11 +269,19 @@ export const captureCombinedDOMSnapshot = async () => {
     ...(iframeSnapshot.elements || []).map((element) => ({ ...element, context: 'iframe' }))
   ]
 
+  console.log('[DOM Snapshot] Combined snapshot:', {
+    mainApp: mainSnapshot.elements.length,
+    iframe: iframeSnapshot.elements?.length || 0,
+    total: combinedElements.length
+  })
+
   return {
     ...mainSnapshot,
     elements: combinedElements,
     iframeElementCount: iframeSnapshot.elements?.length || 0,
-    totalElementCount: combinedElements.length
+    totalElementCount: combinedElements.length,
+    // Include iframe context so consumers know which iframe was captured
+    activeIframe: iframeSnapshot.iframeContext || null
   }
 }
 
