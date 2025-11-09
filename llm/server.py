@@ -669,7 +669,7 @@ async def action(request: ActionRequest) -> ActionResponse:
     - action: Generated action
     """
     try:
-        response = process_action_request(request)
+        response = await process_action_request(request)
         return response
     except Exception as e:
         raise HTTPException(
