@@ -38,12 +38,23 @@ def validate_edit_output(result_string):
     try:
         component = json.loads(result_string)
         
-        # Check for basic component structure
-        if "id" not in component:
+        # Check for basic component structure (allowing the new AST-style envelope)
+        top_level = component
+        tree = None
+
+        if isinstance(component, dict) and "tree" in component and isinstance(component["tree"], dict):
+            tree = component["tree"]
+        elif isinstance(component, dict) and "component" in component and isinstance(component["component"], dict):
+            tree = component["component"]
+
+        # Choose the node we will validate (prefer the tree/component payload when present)
+        node = tree or top_level
+
+        if "id" not in node:
             return False, "EDIT output missing 'id' field"
-        if "type" not in component:
+        if "type" not in node:
             return False, "EDIT output missing 'type' field"
-        if "props" not in component:
+        if "props" not in node:
             return False, "EDIT output missing 'props' field"
         
         return True, None
