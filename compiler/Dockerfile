@@ -22,6 +22,7 @@ RUN pip3 install --no-cache-dir -r /tmp/requirements.txt --break-system-packages
 
 # Copy the entire compiler directory
 COPY compiler/ /app/compiler/
+COPY compiler/docker-ref/start.sh /app/start.sh
 
 # Make scripts executable
 RUN chmod +x /app/compiler/server/run_server.py \
@@ -39,7 +40,6 @@ RUN mkdir -p /tmp/selection/0 /tmp/selection/1 /tmp/selection/2 /tmp/selection/3
 EXPOSE 8000 5173 5174 5175 5176 5177
 
 # Create startup script that runs both services
-COPY docker-ref/start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 # Set the startup command
