@@ -210,9 +210,13 @@ __marimo__/
 llm/venv/
 llm/planner/sessions/
 llm/planner/tests/results/
+llm/editor/tests/results/
 
 #Compiler
 compiler/output
+compiler/**/input
+
+**/vue-bits-demos
 
 # Node.js
 node_modules/
