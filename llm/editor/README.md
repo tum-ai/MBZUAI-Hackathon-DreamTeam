@@ -7,12 +7,13 @@ The Editor Agent generates component code based on user's natural language reque
 ### Single-Step LLM Process (Optimized)
 
 1. **Generate Component Directly**
-   - LLM receives user intent, context, and all component manifests
-   - LLM also receives current AST for context
+   - LLM receives user intent, context, and structured component definitions
+   - LLM also receives current AST for context (if editing)
    - LLM decides component type AND generates component in one call
+   - Prompt structure inspired by compiler's `prompt.md` for maximum efficiency
    - Output: Complete component JSON object with id, type, props, slots
 
-**Performance**: ~3.5-4s per request (50% faster than previous two-step approach)
+**Performance**: ~2.2s per request (70% faster than original two-step approach)
 
 ## Workflow
 
@@ -173,10 +174,21 @@ curl -X POST http://localhost:8000/edit \
 ## Design Principles
 
 - **Single-Step Process**: Optimized for speed with one LLM call
+- **Structured Prompts**: Inspired by compiler's prompt.md for clear component definitions
 - **Minimal Code**: Simple, clean implementation
 - **Component-Focused**: Works at component level
 - **Cached Resources**: Manifests and HTTP client cached at module level
 - **Modern Styling**: Generates professional, modern components
+
+## Performance Metrics
+
+From test suite (`llm/tests/results/`):
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| EDIT agent | 7.4s | 2.2s | **70% faster** |
+| Total test suite | 231.8s | 94.5s | **59% faster** |
+| Average per task | 6.1s | 2.5s | **59% faster** |
 
 ## Integration
 
