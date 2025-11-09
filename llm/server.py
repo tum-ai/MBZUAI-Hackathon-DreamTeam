@@ -3,10 +3,12 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
 import websockets
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from llm.planner.models import (
@@ -35,6 +37,33 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+
+# Load shared environment settings if present, then project-specific overrides
+load_dotenv(REPO_ROOT / ".env")
+load_dotenv(BASE_DIR / ".env", override=True)
+
+
+def get_env_int(name: str, default: int) -> int:
+    """Fetch an integer environment variable with a safe fallback."""
+    raw_value = os.getenv(name)
+    if raw_value is None or raw_value.strip() == "":
+        return default
+    try:
+        return int(raw_value)
+    except ValueError:
+        logger.warning(
+            "Invalid integer for %s=%s; falling back to %s", name, raw_value, default
+        )
+        return default
+
+
+LLM_SERVER_HOST = os.getenv("LLM_SERVER_HOST", "0.0.0.0")
+LLM_SERVER_PORT = get_env_int("LLM_SERVER_PORT", 8000)
+EXECUTOR_SERVER_HOST = os.getenv("EXECUTOR_SERVER_HOST", "0.0.0.0")
+EXECUTOR_SERVER_PORT = get_env_int("EXECUTOR_SERVER_PORT", 8100)
 
 
 # ============================================================================
@@ -824,14 +853,14 @@ log_config = {
 
 
 def run_llm_server():
-    """Run LLM Agent API on port 8000"""
+    """Run LLM Agent API using configured host/port."""
     import uvicorn
 
-    logger.info("Starting LLM Agent API on port 8000")
+    logger.info("Starting LLM Agent API on %s:%s", LLM_SERVER_HOST, LLM_SERVER_PORT)
     uvicorn.run(
         "llm.server:app",
-        host="0.0.0.0",
-        port=8000,
+        host=LLM_SERVER_HOST,
+        port=LLM_SERVER_PORT,
         log_config=log_config,
         log_level="info",
         reload=bool(os.getenv("LLM_SERVER_RELOAD", "")),
@@ -839,14 +868,18 @@ def run_llm_server():
 
 
 def run_executor_server():
-    """Run Executor Bridge API on port 8100"""
+    """Run Executor Bridge API using configured host/port."""
     import uvicorn
 
-    logger.info("Starting Executor Bridge API on port 8100")
+    logger.info(
+        "Starting Executor Bridge API on %s:%s",
+        EXECUTOR_SERVER_HOST,
+        EXECUTOR_SERVER_PORT,
+    )
     uvicorn.run(
         "llm.server:executor_app",
-        host="0.0.0.0",
-        port=8100,
+        host=EXECUTOR_SERVER_HOST,
+        port=EXECUTOR_SERVER_PORT,
         log_config=log_config,
         log_level="info",
         reload=bool(os.getenv("EXECUTOR_SERVER_RELOAD", "")),
@@ -865,8 +898,10 @@ if __name__ == "__main__":
     print("=" * 60)
     print("🚀 Starting Unified Server")
     print("=" * 60)
-    print(f"📡 LLM Agent API:       http://0.0.0.0:8000")
-    print(f"🔗 Executor Bridge API: http://0.0.0.0:8100")
+    print(f"📡 LLM Agent API:       http://{LLM_SERVER_HOST}:{LLM_SERVER_PORT}")
+    print(
+        f"🔗 Executor Bridge API: http://{EXECUTOR_SERVER_HOST}:{EXECUTOR_SERVER_PORT}"
+    )
     print("=" * 60)
     print("Press Ctrl+C to stop both servers")
     print("=" * 60)
