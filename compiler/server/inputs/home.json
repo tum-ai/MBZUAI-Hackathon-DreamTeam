@@ -829,6 +829,121 @@
               }
             ]
           }
+        },
+        {
+          "id": "click-me-button",
+          "type": "Button",
+          "props": {
+            "text": "Click Me",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#ff0000",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "click-me-button",
+          "type": "Button",
+          "props": {
+            "text": "Click Me",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#ff0000",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "learn-more-button",
+          "type": "Button",
+          "props": {
+            "text": "Learn More",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#007bff",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "learn-more-button",
+          "type": "Button",
+          "props": {
+            "text": "Learn More",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#007bff",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "learn-more-button-2",
+          "type": "Button",
+          "props": {
+            "text": "Learn More",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#007bff",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "learn-more-button-2",
+          "type": "Button",
+          "props": {
+            "text": "Learn More",
+            "style": {
+              "fontSize": "1.2rem",
+              "padding": "0.8rem 1.5rem",
+              "backgroundColor": "#007bff",
+              "color": "#ffffff",
+              "borderRadius": "8px",
+              "border": "none",
+              "fontWeight": "600",
+              "transition": "all 0.3s ease"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "error-component",
+          "type": "Box",
+          "props": {},
+          "slots": {},
+          "error": "Could not parse component: Expecting property name enclosed in double quotes: line 735 column 57 (char 25723)"
         }
       ]
     }

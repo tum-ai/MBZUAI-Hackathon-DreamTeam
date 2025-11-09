@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -14,4 +15,5 @@ class EditResponse(BaseModel):
     intent: str
     context: str
     code: str
+    compiler_status: Optional[str] = None
 

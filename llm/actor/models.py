@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class ActionRequest(BaseModel):
@@ -14,3 +15,4 @@ class ActionResponse(BaseModel):
     intent: str
     context: str
     action: str
+    automation_status: Optional[str] = None

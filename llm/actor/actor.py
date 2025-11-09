@@ -1,6 +1,10 @@
 import logging
 import sys
+import os
+import json
+import asyncio
 from pathlib import Path
+import websockets
 
 from .models import ActionRequest, ActionResponse
 from .llm_client import generate_action
@@ -10,6 +14,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from planner.session_manager import load_session, save_session
 
 logger = logging.getLogger(__name__)
+
+# Configuration for DOM WebSocket (same as in llm/server.py)
+DOM_SNAPSHOT_WS_URL = os.getenv("DOM_SNAPSHOT_WS_URL", "ws://localhost:8002/dom-snapshot")
 
 
 def _preview(text: str, *, length: int = 160) -> str:
@@ -99,12 +106,8 @@ async def process_action_request(request: ActionRequest) -> ActionResponse:
 
     save_session(request.session_id, session)
 
-    logger.info(
-        "Actor response stored: session=%s step=%s historyCount=%s",
-        request.session_id,
-        request.step_id,
-        len(session.get("actions", {})),
-    )
+    # Send action to frontend via WebSocket
+    automation_status = await send_action_to_frontend(action)
 
     response = ActionResponse(
         session_id=request.session_id,
@@ -112,6 +115,7 @@ async def process_action_request(request: ActionRequest) -> ActionResponse:
         intent=request.intent,
         context=request.context,
         action=action,
+        automation_status=automation_status,
     )
 
     logger.info(
@@ -122,3 +126,81 @@ async def process_action_request(request: ActionRequest) -> ActionResponse:
     )
 
     return response
+
+
+async def send_action_to_frontend(action_string: str) -> str:
+    """
+    Send the generated action to the frontend via WebSocket for execution.
+    
+    The frontend is already connected to the DOM snapshot WebSocket bridge.
+    We send a message with type='browser_action' containing the parsed action.
+    
+    Args:
+        action_string: The action string from LLM (e.g., "click(targetId='button-1')")
+        
+    Returns:
+        Status message about the action broadcast
+    """
+    try:
+        # Parse the action string into browser action format
+        browser_action = parse_action_string(action_string)
+        
+        logger.info(f"Sending action to frontend via WebSocket: {browser_action}")
+        
+        # Connect to the DOM snapshot WebSocket and broadcast the action
+        async with websockets.connect(DOM_SNAPSHOT_WS_URL, ping_interval=None) as websocket:
+            # Register as backend
+            await websocket.send(json.dumps({"type": "register", "role": "backend"}))
+            
+            # Send browser action message
+            action_message = {
+                "type": "browser_action",
+                "action": browser_action,
+                "timestamp": asyncio.get_event_loop().time()
+            }
+            await websocket.send(json.dumps(action_message))
+            
+            logger.info(f"Action broadcast successfully: {browser_action.get('action')}")
+            return f"Action sent to frontend: {browser_action.get('action')} on {browser_action.get('targetId', 'N/A')}"
+                
+    except (websockets.exceptions.WebSocketException, ConnectionError) as e:
+        error_msg = f"Failed to connect to DOM WebSocket: {str(e)}"
+        logger.error(error_msg)
+        return error_msg
+    except Exception as e:
+        error_msg = f"Error sending action to frontend: {str(e)}"
+        logger.error(error_msg)
+        return error_msg
+
+
+def parse_action_string(action_string: str) -> dict:
+    """
+    Parse LLM-generated action string into BrowserAction format.
+    
+    Examples:
+        "click(targetId='contact-button')" → {"action": "click", "targetId": "contact-button"}
+        "scroll(direction='down', amount=500)" → {"action": "scroll", "direction": "down", "amount": 500}
+        "type(targetId='search-box', text='hello')" → {"action": "type", "targetId": "search-box", "text": "hello"}
+    """
+    import re
+    
+    # Extract action name
+    action_match = re.match(r"(\w+)\((.*)\)", action_string.strip())
+    if not action_match:
+        # Fallback: treat entire string as action type
+        return {"action": action_string.strip()}
+    
+    action_type = action_match.group(1)
+    params_str = action_match.group(2)
+    
+    # Parse parameters
+    params = {"action": action_type}
+    
+    # Match key='value' or key=123 patterns
+    param_pattern = r"(\w+)=(?:'([^']*)'|(\d+))"
+    for match in re.finditer(param_pattern, params_str):
+        key = match.group(1)
+        value = match.group(2) if match.group(2) is not None else int(match.group(3))
+        params[key] = value
+    
+    return params

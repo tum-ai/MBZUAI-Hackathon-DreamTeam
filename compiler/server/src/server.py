@@ -113,6 +113,25 @@ async def patch_project_config(
         project_gen = ProjectGenerator()
         project_gen.generate_project()
         print("File generation complete.")
+        
+        # --- Copy generated files to active project (for live preview) ---
+        if ACTIVE_PROJECT_DIR.exists():
+            print(f"Copying generated files to active project: {ACTIVE_PROJECT_DIR}")
+            # Copy the generated views and updated files
+            for item in config.OUTPUT_DIR.iterdir():
+                if item.name in ['node_modules', 'dist', '.vite', 'package-lock.json']:
+                    continue
+                dest = ACTIVE_PROJECT_DIR / item.name
+                if item.is_dir():
+                    shutil.copytree(item, dest, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(item, dest)
+            # Also copy project.json and jsrepo.json if they exist in the server directory
+            for config_file in ['project.json', 'jsrepo.json']:
+                src_config = config.BASE_DIR / config_file
+                if src_config.exists():
+                    shutil.copy2(src_config, ACTIVE_PROJECT_DIR / config_file)
+            print("✓ Active project updated")
         # --- End V5 change ---
 
         return {"status": "success", "data": patched_config}
@@ -207,6 +226,25 @@ async def patch_page_ast(
         project_gen = ProjectGenerator()
         project_gen.generate_project()
         print("File generation complete.")
+        
+        # --- Copy generated files to active project (for live preview) ---
+        if ACTIVE_PROJECT_DIR.exists():
+            print(f"Copying generated files to active project: {ACTIVE_PROJECT_DIR}")
+            # Copy the generated views and updated files
+            for item in config.OUTPUT_DIR.iterdir():
+                if item.name in ['node_modules', 'dist', '.vite', 'package-lock.json']:
+                    continue
+                dest = ACTIVE_PROJECT_DIR / item.name
+                if item.is_dir():
+                    shutil.copytree(item, dest, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(item, dest)
+            # Also copy project.json and jsrepo.json if they exist in the server directory
+            for config_file in ['project.json', 'jsrepo.json']:
+                src_config = config.BASE_DIR / config_file
+                if src_config.exists():
+                    shutil.copy2(src_config, ACTIVE_PROJECT_DIR / config_file)
+            print("✓ Active project updated")
         # --- End V5 change ---
         
         return {"status": "success", "data": patched_ast}

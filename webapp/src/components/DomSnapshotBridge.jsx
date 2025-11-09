@@ -71,6 +71,8 @@ const DomSnapshotBridge = () => {
 
         if (payload?.type === 'dom_snapshot_request') {
           handleSnapshotRequest(socket, payload)
+        } else if (payload?.type === 'browser_action') {
+          handleBrowserAction(payload)
         } else if (payload?.type === 'ping') {
           safeSend(socket, { type: 'pong', timestamp: Date.now() })
         } else if (payload?.type === 'status') {
@@ -91,6 +93,25 @@ const DomSnapshotBridge = () => {
         socket.send(JSON.stringify(message))
       } catch (error) {
         console.warn('[DomSnapshotBridge] Failed to send message', error)
+      }
+    }
+
+    const handleBrowserAction = async (payload) => {
+      const action = payload?.action
+      if (!action) {
+        console.warn('[DomSnapshotBridge] Received browser_action without action data')
+        return
+      }
+
+      console.log('[DomSnapshotBridge] Executing browser action:', action)
+      
+      try {
+        // Import actionExecutor dynamically to avoid circular dependencies
+        const { executeAction } = await import('../services/actionExecutor')
+        const result = await executeAction(action)
+        console.log('[DomSnapshotBridge] Action executed:', result)
+      } catch (error) {
+        console.error('[DomSnapshotBridge] Failed to execute action:', error)
       }
     }
 

@@ -887,3 +887,54 @@ class PortfolioTemplate(TemplateBase):
             "path": "/tree/slots/default/-",
             "value": footer
         }
+    
+    def generate_multi_page(self) -> Dict[str, Any]:
+        """
+        Generate multi-page structure with project patches and page ASTs.
+        
+        Returns:
+            {
+                "projectPatches": [...],  # Patches for project.json
+                "pages": {
+                    "home.json": {...}    # Complete AST for home page
+                }
+            }
+        """
+        patches = self.generate_patches()
+        
+        # Extract global styles patches (for project.json)
+        project_patches = [p for p in patches if p.get('path', '').startswith('/globalStyles')]
+        
+        # Add page definition to project.json
+        project_patches.append({
+            "op": "add",
+            "path": "/pages/-",
+            "value": {
+                "name": "Home",
+                "path": "/",
+                "astFile": "home.json"
+            }
+        })
+        
+        # Build the home page AST from component patches
+        home_ast = {
+            "state": {},
+            "tree": {
+                "id": "root",
+                "type": "Box",
+                "props": {"style": {"padding": "2rem"}},
+                "slots": {"default": []}
+            }
+        }
+        
+        # Add all components to the home page
+        for patch in patches:
+            if patch.get('op') == 'add' and patch.get('path', '').startswith('/tree/slots/default'):
+                home_ast["tree"]["slots"]["default"].append(patch["value"])
+        
+        return {
+            "projectPatches": project_patches,
+            "pages": {
+                "home.json": home_ast
+            }
+        }

@@ -88,7 +88,7 @@ async def execute_plan(request: PlanRequest) -> PlanResponse:
             edit_request = EditRequest(
                 session_id=request.sid, step_id=step_id, intent=intent, context=context
             )
-            edit_response = process_edit_request(edit_request)
+            edit_response = await process_edit_request(edit_request)
 
             agent_duration = time.time() - agent_start
 

@@ -56,14 +56,31 @@ services:
         condition: service_healthy
     command: >
       bash -c "
-        echo '⏳ Waiting for template variations to be generated...';
-        while [ ! -f /tmp/selection/0/package.json ]; do sleep 2; done;
-        echo '⏳ Waiting for all variations to be ready...';
-        while [ ! -f /tmp/selection/1/package.json ] || 
-              [ ! -f /tmp/selection/2/package.json ] || 
-              [ ! -f /tmp/selection/3/package.json ]; do sleep 1; done;
-        echo '✅ All variations ready, starting dev servers...';
-        /app/compiler/server/run_variations.sh
+        echo '🚀 Starting active project dev server on port 5177...';
+        cd /tmp/active;
+        if [ -f package.json ]; then
+          npm install;
+          npx vite --host 0.0.0.0 --port 5177 --strictPort &
+          ACTIVE_PID=\$!;
+          echo '✅ Active project server started (PID: '\$ACTIVE_PID')';
+        else
+          echo '⚠️  No package.json in /tmp/active, waiting for files...';
+          while [ ! -f /tmp/active/package.json ]; do sleep 2; done;
+          npm install;
+          npx vite --host 0.0.0.0 --port 5177 --strictPort &
+          ACTIVE_PID=\$!;
+          echo '✅ Active project server started (PID: '\$ACTIVE_PID')';
+        fi;
+        
+        echo '📦 Checking for template variations (optional)...';
+        if [ -d /tmp/selection/0 ] && [ -f /tmp/selection/0/package.json ]; then
+          echo '✅ Variations found, starting variation servers...';
+          /app/compiler/server/run_variations.sh &
+        else
+          echo 'ℹ️  No variations found, skipping variation servers';
+        fi;
+        
+        wait \$ACTIVE_PID;
       "
 
 
