@@ -1,0 +1,696 @@
+[
+  {
+    "op": "replace",
+    "path": "/globalStyles",
+    "value": "@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600&display=swap');\nbody {\n    font-family: 'Nunito', sans-serif;\n    background-color: #f7f1e3;\n    color: #2d3436;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6;\n}\n\nh1, h2, h3, h4, h5, h6 {\n    font-family: 'Fredoka', sans-serif;\n    font-weight: 600;\n    margin: 0;\n}\n\n* {\n    box-sizing: border-box;\n}"
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "hero-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "height": "100vh",
+          "width": "100%",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "padding": "0 2rem",
+          "background": "linear-gradient(135deg, #f7f1e3 0%, #ffffff 100%)"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "hero-name",
+            "type": "GradientText",
+            "props": {
+              "content": "Alex Chen",
+              "as": "h1",
+              "variant": "sunset",
+              "animated": true
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "hero-tagline",
+            "type": "Text",
+            "props": {
+              "content": "Creative Designer & Front-End Developer",
+              "as": "h2",
+              "style": {
+                "fontSize": "1.8rem",
+                "color": "#636e72",
+                "textAlign": "center",
+                "marginTop": "1rem",
+                "fontWeight": "400"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "about-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "6rem auto",
+          "padding": "3rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "about-title",
+            "type": "Text",
+            "props": {
+              "content": "About Me",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#ff6b6b",
+                "borderBottom": "3px solid #4ecdc4",
+                "paddingBottom": "1rem",
+                "marginBottom": "2rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "about-content",
+            "type": "Text",
+            "props": {
+              "content": "I blend design and code to create delightful digital experiences. With a quirky approach to problem-solving and a passion for user-centered design.",
+              "as": "p",
+              "style": {
+                "fontSize": "1.2rem",
+                "color": "#2d3436",
+                "lineHeight": "1.8",
+                "textAlign": "justify"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "projects-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "6rem auto",
+          "padding": "3rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "projects-title",
+            "type": "Text",
+            "props": {
+              "content": "Projects",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#ff6b6b",
+                "borderBottom": "3px solid #4ecdc4",
+                "paddingBottom": "1rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "projects-grid",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "repeat(auto-fit, minmax(300px, 1fr))",
+                "gap": "2rem",
+                "marginTop": "2rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "project-0",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated",
+                    "style": {
+                      "padding": "0",
+                      "overflow": "hidden"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "project-0-image",
+                        "type": "Image",
+                        "props": {
+                          "src": "https://picsum.photos/400/300?random=20",
+                          "alt": "Animated Dashboard",
+                          "style": {
+                            "width": "100%",
+                            "height": "200px",
+                            "objectFit": "cover",
+                            "borderRadius": "8px 8px 0 0"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-0-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "Animated Dashboard",
+                          "as": "h3",
+                          "style": {
+                            "fontSize": "1.5rem",
+                            "color": "#ff6b6b",
+                            "marginBottom": "0.5rem"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-0-description",
+                        "type": "Text",
+                        "props": {
+                          "content": "Interactive data visualization",
+                          "as": "p",
+                          "style": {
+                            "fontSize": "1rem",
+                            "color": "#636e72"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "project-1",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated",
+                    "style": {
+                      "padding": "0",
+                      "overflow": "hidden"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "project-1-image",
+                        "type": "Image",
+                        "props": {
+                          "src": "https://picsum.photos/400/300?random=21",
+                          "alt": "Mobile App Design",
+                          "style": {
+                            "width": "100%",
+                            "height": "200px",
+                            "objectFit": "cover",
+                            "borderRadius": "8px 8px 0 0"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-1-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "Mobile App Design",
+                          "as": "h3",
+                          "style": {
+                            "fontSize": "1.5rem",
+                            "color": "#ff6b6b",
+                            "marginBottom": "0.5rem"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-1-description",
+                        "type": "Text",
+                        "props": {
+                          "content": "Award-winning food delivery app",
+                          "as": "p",
+                          "style": {
+                            "fontSize": "1rem",
+                            "color": "#636e72"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "skills-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "6rem auto",
+          "padding": "3rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "skills-title",
+            "type": "Text",
+            "props": {
+              "content": "Skills",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#ff6b6b",
+                "borderBottom": "3px solid #4ecdc4",
+                "paddingBottom": "1rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "skills-grid",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "repeat(auto-fit, minmax(150px, 1fr))",
+                "gap": "2rem",
+                "marginTop": "2rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "skill-0",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#ffffff",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #ff6b6b"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-0-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "UI/UX Design",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#ff6b6b",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-1",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#ffffff",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #ff6b6b"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-1-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "React",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#ff6b6b",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-2",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#ffffff",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #ff6b6b"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-2-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Animation",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#ff6b6b",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-3",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#ffffff",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #ff6b6b"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-3-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Illustration",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#ff6b6b",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-4",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#ffffff",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #ff6b6b"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-4-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "CSS",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#ff6b6b",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "contact-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "6rem auto",
+          "padding": "3rem",
+          "textAlign": "center"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "contact-title",
+            "type": "Text",
+            "props": {
+              "content": "Get In Touch",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#ff6b6b",
+                "marginBottom": "2rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "contact-description",
+            "type": "Text",
+            "props": {
+              "content": "Feel free to reach out for collaborations or just a friendly hello",
+              "as": "p",
+              "style": {
+                "fontSize": "1.2rem",
+                "color": "#636e72",
+                "marginBottom": "2rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "contact-links",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "flex",
+                "gap": "1rem",
+                "justifyContent": "center",
+                "flexWrap": "wrap"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "social-dribbble",
+                  "type": "Link",
+                  "props": {
+                    "href": "https://dribbble.com/alexchen",
+                    "target": "_blank",
+                    "style": {
+                      "padding": "0.8rem 1.5rem",
+                      "backgroundColor": "#ff6b6b",
+                      "color": "#f7f1e3",
+                      "borderRadius": "8px",
+                      "textDecoration": "none",
+                      "fontSize": "1.1rem",
+                      "fontWeight": "600",
+                      "transition": "all 0.3s ease"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "social-dribbble-text",
+                        "type": "Text",
+                        "props": {
+                          "content": "Dribbble",
+                          "as": "span"
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "social-twitter",
+                  "type": "Link",
+                  "props": {
+                    "href": "https://twitter.com/alexchen",
+                    "target": "_blank",
+                    "style": {
+                      "padding": "0.8rem 1.5rem",
+                      "backgroundColor": "#ff6b6b",
+                      "color": "#f7f1e3",
+                      "borderRadius": "8px",
+                      "textDecoration": "none",
+                      "fontSize": "1.1rem",
+                      "fontWeight": "600",
+                      "transition": "all 0.3s ease"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "social-twitter-text",
+                        "type": "Text",
+                        "props": {
+                          "content": "Twitter",
+                          "as": "span"
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "footer-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "margin": "6rem 0 0 0",
+          "padding": "2rem",
+          "textAlign": "center",
+          "backgroundColor": "#ffffff",
+          "borderTop": "1px solid #ff6b6b"
+        },
+        "as": "footer"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "footer-copyright",
+            "type": "Text",
+            "props": {
+              "content": "\u00a9 2024 Alex Chen. All rights reserved.",
+              "as": "p",
+              "style": {
+                "fontSize": "1rem",
+                "color": "#636e72"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          }
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "storeName": "Modern Home",
+  "tagline": "Curated furniture for modern living",
+  "palette": "minimal",
+  "fonts": "modern",
+  "products": [
+    {
+      "name": "Minimalist Sofa",
+      "price": "$1,299",
+      "image": "https://picsum.photos/400/400?random=30"
+    },
+    {
+      "name": "Scandinavian Chair",
+      "price": "$399",
+      "image": "https://picsum.photos/400/400?random=31"
+    },
+    {
+      "name": "Oak Dining Table",
+      "price": "$899",
+      "image": "https://picsum.photos/400/400?random=32"
+    },
+    {
+      "name": "Modern Lamp",
+      "price": "$129",
+      "image": "https://picsum.photos/400/400?random=33"
+    }
+  ],
+  "about": "Modern Home brings you carefully curated furniture pieces that blend functionality with timeless design. Each piece is selected for its quality, craftsmanship, and ability to elevate your living space."
+}

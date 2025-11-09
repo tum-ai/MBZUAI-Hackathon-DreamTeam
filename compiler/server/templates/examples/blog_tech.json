@@ -1,0 +1,27 @@
+{
+  "blogName": "Tech Insights",
+  "tagline": "Exploring the future of technology",
+  "palette": "professional",
+  "fonts": "modern",
+  "posts": [
+    {
+      "title": "The Rise of AI in Everyday Life",
+      "date": "November 2024",
+      "excerpt": "How artificial intelligence is transforming our daily routines...",
+      "image": "https://picsum.photos/800/400?random=40"
+    },
+    {
+      "title": "Future of Web Development",
+      "date": "October 2024",
+      "excerpt": "Exploring emerging trends in modern web technologies...",
+      "image": "https://picsum.photos/800/400?random=41"
+    },
+    {
+      "title": "Sustainable Tech Solutions",
+      "date": "September 2024",
+      "excerpt": "How technology can help solve environmental challenges...",
+      "image": "https://picsum.photos/800/400?random=42"
+    }
+  ],
+  "about": "Tech Insights is a blog dedicated to exploring the latest trends and innovations in technology. From AI to web development, we cover topics that shape our digital future."
+}

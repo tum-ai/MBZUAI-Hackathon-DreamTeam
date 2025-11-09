@@ -1,11 +1,11 @@
 {
-  "projectName": "test-enhanced-site",
-  "globalStyles": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');\nbody { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #fff; margin: 0; padding: 0; }",
+  "projectName": "New GenAI Project",
   "pages": [
     {
       "name": "Home",
       "path": "/",
       "astFile": "home.json"
     }
-  ]
+  ],
+  "globalStyles": "@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');\nbody {\n    font-family: 'Merriweather', sans-serif;\n    background-color: #ffffff;\n    color: #000000;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6;\n}\n\nh1, h2, h3, h4, h5, h6 {\n    font-family: 'Merriweather', sans-serif;\n    font-weight: 700;\n    margin: 0;\n}\n\n* {\n    box-sizing: border-box;\n}"
 }
