@@ -199,3 +199,82 @@ async def patch_page_ast(
         raise HTTPException(status_code=400, detail=f"Invalid patch: {e}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Server error: {e}")
+
+
+@app.post("/clean", summary="Clean generated files and/or cache")
+async def clean_files(mode: str = "all"):
+    """
+    Clean generated files, cache, and/or orphaned inputs.
+    
+    Args:
+        mode: Cleaning mode - 'all', 'cache-only', 'files-only', or 'inputs'
+    
+    Returns:
+        Status and list of removed items
+    """
+    import shutil
+    from pathlib import Path
+    
+    removed_items = []
+    
+    try:
+        if mode in ["all", "files-only"]:
+            # Remove generated files
+            items_to_remove = [
+                config.OUTPUT_DIR / 'src',
+                config.OUTPUT_DIR / 'public',
+                config.OUTPUT_DIR / 'node_modules',
+                config.OUTPUT_DIR / 'dist',
+                config.OUTPUT_DIR / 'package.json',
+                config.OUTPUT_DIR / 'vite.config.js',
+                config.OUTPUT_DIR / 'index.html',
+            ]
+            
+            for item in items_to_remove:
+                if item.exists():
+                    if item.is_dir():
+                        shutil.rmtree(item)
+                        removed_items.append(f"directory: {item.name}/")
+                    else:
+                        item.unlink()
+                        removed_items.append(f"file: {item.name}")
+        
+        if mode in ["all", "cache-only"]:
+            # Remove cache file
+            if config.GENERATION_CACHE_FILE.exists():
+                config.GENERATION_CACHE_FILE.unlink()
+                removed_items.append(f"cache: {config.GENERATION_CACHE_FILE.name}")
+        
+        if mode == "inputs":
+            # Remove orphaned input files
+            try:
+                with open(config.PROJECT_CONFIG_FILE, 'r') as f:
+                    project_data = json.load(f)
+            except:
+                project_data = config.DEFAULT_PROJECT_CONFIG
+            
+            valid_ast_files = set(
+                page.get('astFile', '').lower() 
+                for page in project_data.get('pages', []) 
+                if page.get('astFile')
+            )
+            
+            json_files = list(config.AST_INPUT_DIR.glob('*.json'))
+            orphaned_files = [
+                f for f in json_files 
+                if f.name.lower() not in valid_ast_files
+            ]
+            
+            for orphaned_file in orphaned_files:
+                orphaned_file.unlink()
+                removed_items.append(f"orphaned input: {orphaned_file.name}")
+        
+        return {
+            "status": "success",
+            "mode": mode,
+            "removed_items": removed_items,
+            "count": len(removed_items)
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Clean operation failed: {e}")

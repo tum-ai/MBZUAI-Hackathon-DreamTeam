@@ -32,5 +32,19 @@ FRONTEND_REFRESH_WEBHOOK = "http://localhost:3000/api/refresh-iframe"
 DEFAULT_PROJECT_CONFIG = {
   "projectName": "New GenAI Project",
   "pages": [],
-  "globalStyles": ""
+  "globalStyles": "",
+  "sharedComponents": {
+    "navbar": {
+      "enabled": False,
+      "ast": None
+    },
+    "footer": {
+      "enabled": False,
+      "ast": None
+    }
+  }
 }
+
+# --- Cache File ---
+# Cache is stored with generated artifacts for easy cleanup
+GENERATION_CACHE_FILE = OUTPUT_DIR / ".generation_cache.json"

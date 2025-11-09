@@ -13,191 +13,13 @@
     "slots": {
       "default": [
         {
-          "id": "navbar",
-          "type": "Box",
-          "props": {
-            "style": {
-              "position": "fixed",
-              "top": "0",
-              "left": "0",
-              "width": "100%",
-              "zIndex": "1000",
-              "background": "rgba(10, 10, 10, 0.8)",
-              "backdropFilter": "blur(10px)",
-              "borderBottom": "1px solid rgba(255, 255, 255, 0.1)",
-              "padding": "1rem 2rem"
-            }
-          },
-          "slots": {
-            "default": [
-              {
-                "id": "nav-content",
-                "type": "Box",
-                "props": {
-                  "style": {
-                    "maxWidth": "1400px",
-                    "margin": "0 auto",
-                    "display": "flex",
-                    "justifyContent": "space-between",
-                    "alignItems": "center"
-                  }
-                },
-                "slots": {
-                  "default": [
-                    {
-                      "id": "logo",
-                      "type": "Link",
-                      "props": {
-                        "href": "#/",
-                        "style": {
-                          "fontSize": "24px",
-                          "fontWeight": "700",
-                          "color": "#fff",
-                          "textDecoration": "none"
-                        }
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "logo-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Vue Bits"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "nav-links",
-                      "type": "Box",
-                      "props": {
-                        "style": {
-                          "display": "flex",
-                          "gap": "2rem",
-                          "alignItems": "center"
-                        }
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "nav-link-home",
-                            "type": "Link",
-                            "props": {
-                              "href": "#/",
-                              "style": {
-                                "color": "#b0b0b0",
-                                "textDecoration": "none",
-                                "fontSize": "16px",
-                                "fontWeight": "500",
-                                "transition": "color 0.3s"
-                              }
-                            },
-                            "slots": {
-                              "default": [
-                                {
-                                  "id": "nav-link-home-text",
-                                  "type": "Text",
-                                  "props": {
-                                    "content": "Home"
-                                  }
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "id": "nav-link-about",
-                            "type": "Link",
-                            "props": {
-                              "href": "#/about",
-                              "style": {
-                                "color": "#b0b0b0",
-                                "textDecoration": "none",
-                                "fontSize": "16px",
-                                "fontWeight": "500",
-                                "transition": "color 0.3s"
-                              }
-                            },
-                            "slots": {
-                              "default": [
-                                {
-                                  "id": "nav-link-about-text",
-                                  "type": "Text",
-                                  "props": {
-                                    "content": "About"
-                                  }
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "id": "nav-link-services",
-                            "type": "Link",
-                            "props": {
-                              "href": "#/services",
-                              "style": {
-                                "color": "#fff",
-                                "textDecoration": "none",
-                                "fontSize": "16px",
-                                "fontWeight": "500",
-                                "transition": "color 0.3s"
-                              }
-                            },
-                            "slots": {
-                              "default": [
-                                {
-                                  "id": "nav-link-services-text",
-                                  "type": "Text",
-                                  "props": {
-                                    "content": "Services"
-                                  }
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "id": "nav-link-contact",
-                            "type": "Link",
-                            "props": {
-                              "href": "#/contact",
-                              "style": {
-                                "color": "#b0b0b0",
-                                "textDecoration": "none",
-                                "fontSize": "16px",
-                                "fontWeight": "500",
-                                "transition": "color 0.3s"
-                              }
-                            },
-                            "slots": {
-                              "default": [
-                                {
-                                  "id": "nav-link-contact-text",
-                                  "type": "Text",
-                                  "props": {
-                                    "content": "Contact"
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
           "id": "services-section",
           "type": "Box",
           "props": {
             "style": {
               "position": "relative",
               "minHeight": "100vh",
-              "padding": "6rem 2rem",
-              "paddingTop": "calc(6rem + 80px)"
+              "padding": "6rem 2rem"
             }
           },
           "slots": {
@@ -287,32 +109,32 @@
                         "items": [
                           {
                             "label": "Web Design",
-                            "icon": "🎨",
+                            "icon": "\ud83c\udfa8",
                             "href": "#design"
                           },
                           {
                             "label": "Development",
-                            "icon": "💻",
+                            "icon": "\ud83d\udcbb",
                             "href": "#dev"
                           },
                           {
                             "label": "UI/UX",
-                            "icon": "✨",
+                            "icon": "\u2728",
                             "href": "#ux"
                           },
                           {
                             "label": "Consulting",
-                            "icon": "💡",
+                            "icon": "\ud83d\udca1",
                             "href": "#consulting"
                           },
                           {
                             "label": "Support",
-                            "icon": "🛠️",
+                            "icon": "\ud83d\udee0\ufe0f",
                             "href": "#support"
                           },
                           {
                             "label": "Training",
-                            "icon": "📚",
+                            "icon": "\ud83d\udcda",
                             "href": "#training"
                           }
                         ],
@@ -356,7 +178,7 @@
                                   "id": "service-1-icon",
                                   "type": "Text",
                                   "props": {
-                                    "content": "🚀",
+                                    "content": "\ud83d\ude80",
                                     "style": {
                                       "fontSize": "56px",
                                       "marginBottom": "1.5rem",
@@ -410,7 +232,7 @@
                                   "id": "service-2-icon",
                                   "type": "Text",
                                   "props": {
-                                    "content": "🎯",
+                                    "content": "\ud83c\udfaf",
                                     "style": {
                                       "fontSize": "56px",
                                       "marginBottom": "1.5rem",
@@ -464,7 +286,7 @@
                                   "id": "service-3-icon",
                                   "type": "Text",
                                   "props": {
-                                    "content": "📊",
+                                    "content": "\ud83d\udcca",
                                     "style": {
                                       "fontSize": "56px",
                                       "marginBottom": "1.5rem",
@@ -518,7 +340,7 @@
                                   "id": "service-4-icon",
                                   "type": "Text",
                                   "props": {
-                                    "content": "🔒",
+                                    "content": "\ud83d\udd12",
                                     "style": {
                                       "fontSize": "56px",
                                       "marginBottom": "1.5rem",

@@ -605,7 +605,9 @@ class VueGenerator:
                 size = "400px"
                 anim_delay = f"{i * 2}s"
                 
-                orb_style = f"position: absolute; width: {size}; height: {size}; background: {color}; opacity: {opacity}; border-radius: 50%; filter: blur({blur}); animation: color-flow {speed} {anim_delay} infinite ease-in-out"
+                # Ensure blur has units (px)
+                blur_value = blur if 'px' in str(blur) else f"{blur}px"
+                orb_style = f"position: absolute; width: {size}; height: {size}; background: {color}; opacity: {opacity}; border-radius: 50%; filter: blur({blur_value}); animation: color-flow {speed} {anim_delay} infinite ease-in-out"
                 orbs_html += f'{indent}  <div style="{orb_style}"></div>\n'
             
             children_str = ""
@@ -634,7 +636,9 @@ class VueGenerator:
             for i, color in enumerate(colors):
                 pos = positions[i % len(positions)]
                 
-                plasma_style = f"position: absolute; width: 300px; height: 300px; background: {color}; opacity: 0.6; border-radius: 50%; filter: blur({blur}); mix-blend-mode: screen; animation: plasma-flow {speed} {i}s infinite ease-in-out; top: {pos.split(',')[0]}; left: {pos.split(',')[1]}"
+                # Ensure blur has units (px)
+                blur_value = blur if 'px' in str(blur) else f"{blur}px"
+                plasma_style = f"position: absolute; width: 300px; height: 300px; background: {color}; opacity: 0.6; border-radius: 50%; filter: blur({blur_value}); mix-blend-mode: screen; animation: plasma-flow {speed} {i}s infinite ease-in-out; top: {pos.split(',')[0]}; left: {pos.split(',')[1]}"
                 plasma_html += f'{indent}  <div style="{plasma_style}"></div>\n'
             
             children_str = ""
