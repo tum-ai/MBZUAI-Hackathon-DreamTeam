@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  position: relative;
 }
 
 .top-bar__back {
@@ -37,11 +38,23 @@
   border-color: var(--glass-border);
 }
 
-.top-bar__title {
-  font-size: var(--font-size-body-large);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin: 0;
+.top-bar__logo {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  /* Reserve space for back button to prevent logo shift */
+  margin-left: calc(32px + var(--space-2));
+}
+
+/* When back button is present, remove the extra margin */
+.top-bar__back + .top-bar__logo {
+  margin-left: 0;
+}
+
+.top-bar__logo img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
 }
 
 .top-bar__right {

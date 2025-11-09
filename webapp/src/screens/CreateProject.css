@@ -62,7 +62,7 @@
 .create-project__cta:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-large);
-  background: #5A98EF;
+  background: #FF7A4A;
 }
 
 .create-project__cta:active {

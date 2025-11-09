@@ -31,7 +31,9 @@ function TopBar({ title = 'Voice-First Platform', showBack = false, children }) 
             </svg>
           </button>
         )}
-        <h1 className="top-bar__title">{title}</h1>
+        <div className="top-bar__logo">
+          <img src="/k2-ink-logo.png" alt="K2 Ink" />
+        </div>
       </div>
       <div className="top-bar__right">
         {children}
