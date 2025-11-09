@@ -1,6 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useVoiceAssistant } from '../hooks/useVoiceAssistant';
 import { speakText as playTTS } from '../lib/voice/tts';
+import { captureCombinedDOMSnapshot } from '../utils/domSnapshot';
+import { queryAgent, validateAction } from '../services/llmAgent';
+import { routeAndExecuteAction } from '../services/actionRouter';
 
 const VoiceAssistantContext = createContext(null);
 const SESSION_STORAGE_KEY = 'voice-assistant-session-id';
@@ -42,7 +45,7 @@ export function VoiceAssistantProvider({ children }) {
     }
   });
   const sessionIdRef = useRef(sessionId);
-  const [lastPlanResponse, setLastPlanResponse] = useState(null);
+  const [lastActionResult, setLastActionResult] = useState(null);
   const [submissionError, setSubmissionError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pendingClarifierStepRef = useRef(null);
@@ -87,17 +90,6 @@ export function VoiceAssistantProvider({ children }) {
     });
   }, []);
 
-  const llmApiBase = useMemo(() => {
-    const envBase = import.meta?.env?.VITE_LLM_API_BASE_URL;
-    if (envBase && typeof envBase === 'string') {
-      return envBase.replace(/\/$/, '');
-    }
-    if (typeof window !== 'undefined' && typeof window.__LLM_API_BASE_URL === 'string') {
-      return window.__LLM_API_BASE_URL.replace(/\/$/, '');
-    }
-    return 'http://localhost:8000';
-  }, []);
-
   const ensureSessionId = useCallback(() => {
     if (sessionIdRef.current) return sessionIdRef.current;
     const generated = generateId();
@@ -118,43 +110,67 @@ export function VoiceAssistantProvider({ children }) {
       setIsSubmitting(true);
 
       try {
-        const response = await fetch(`${llmApiBase}/plan`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            sid,
-            text: trimmed,
-            step_id: stepId,
-          }),
-        });
+        console.log('[VoiceAssistant] Capturing DOM snapshot for utterance execution');
+        const domSnapshot = await captureCombinedDOMSnapshot();
 
-        if (!response.ok) {
-          const message = await response.text();
-          throw new Error(message || `LLM request failed (${response.status})`);
-        }
-
-        const json = await response.json();
-        setLastPlanResponse({
+        console.log('[VoiceAssistant] Querying actor with command:', {
+          command: trimmed,
           sessionId: sid,
           stepId,
-          text: trimmed,
-          response: json,
-          timestamp: Date.now(),
         });
-        return json;
+
+        const actorResponse = await queryAgent(trimmed, domSnapshot, {
+          sessionId: sid,
+          stepId,
+          metadata: {
+            source: 'voice-assistant-context',
+          },
+        });
+
+        const actorSessionId = actorResponse?.sessionId || sid;
+        const actorStepId = actorResponse?.stepId || stepId;
+        const actionPayload = actorResponse?.action ?? actorResponse;
+
+        if (!validateAction(actionPayload)) {
+          throw new Error('Actor returned an invalid action payload');
+        }
+
+        if (actorSessionId && actorSessionId !== sessionIdRef.current) {
+          sessionIdRef.current = actorSessionId;
+          setSessionId(actorSessionId);
+        }
+
+        console.log('[VoiceAssistant] Routing action to frontend:', actionPayload);
+        const executionResult = await routeAndExecuteAction(actionPayload, domSnapshot);
+
+        const record = {
+          sessionId: actorSessionId,
+          stepId: actorStepId,
+          command: trimmed,
+          action: actionPayload,
+          result: executionResult,
+          actorMeta: {
+            rawAction: actorResponse?.rawAction ?? null,
+          },
+          timestamp: Date.now(),
+        };
+
+        setLastActionResult(record);
+        notifyListeners('onActionExecuted', record);
+
+        return record;
       } catch (err) {
         const normalized =
           err instanceof Error ? err : new Error('Voice assistant request failed.');
         setSubmissionError(normalized);
+        notifyListeners('onActionError', normalized);
         throw normalized;
       } finally {
         pendingClarifierStepRef.current = null;
         setIsSubmitting(false);
       }
     },
-    [ensureSessionId, llmApiBase],
+    [ensureSessionId, notifyListeners],
   );
 
   const voice = useVoiceAssistant({
@@ -415,7 +431,7 @@ export function VoiceAssistantProvider({ children }) {
       submitUtterance,
       isSubmitting,
       submissionError,
-      lastPlanResponse,
+      lastActionResult,
       lastBackendPrompt,
       clearLastBackendPrompt,
       setBiasPhrases: phrases => {
@@ -434,7 +450,7 @@ export function VoiceAssistantProvider({ children }) {
       submitUtterance,
       isSubmitting,
       submissionError,
-      lastPlanResponse,
+      lastActionResult,
     ],
   );
 
