@@ -14,14 +14,17 @@ function VoiceAssistantOverlay() {
     stopListening,
     error,
     isSpeaking,
+    lastBackendPrompt,
   } = useVoiceAssistantContext();
 
   const orbRef = useRef(null);
-  const disabled = !isSupported || !!error;
-
   // Check if we're on template selection screen or modal is open - MUST be declared before useEffects
   const [shouldShowToolbar, setShouldShowToolbar] = useState(false);
   const [isOnCreateProject, setIsOnCreateProject] = useState(false);
+
+  const disabled = !isSupported || !!error;
+  const hasBackendPrompt = Boolean(lastBackendPrompt?.text);
+  const displayToolbar = shouldShowToolbar || isSpeaking || hasBackendPrompt;
 
   const handleStart = () => {
     startListening({ autoRestart: true });
@@ -29,7 +32,7 @@ function VoiceAssistantOverlay() {
 
   // Set up audio visualizer container when toolbar becomes visible
   useEffect(() => {
-    if (!shouldShowToolbar) {
+    if (!displayToolbar) {
       console.log('[VoiceAssistant] Toolbar hidden, skipping orb setup');
       return undefined;
     }
@@ -49,7 +52,7 @@ function VoiceAssistantOverlay() {
       console.log('[VoiceAssistant] Cleaning up audio visualizer container');
       setAudioVisualizerContainer(null);
     };
-  }, [shouldShowToolbar]);
+  }, [displayToolbar]);
 
   // Debug: log when isSpeaking changes
   useEffect(() => {
@@ -93,7 +96,7 @@ function VoiceAssistantOverlay() {
   return (
     <>
       {/* Toolbar - show on Create Project, Template Selection, or when modal is open */}
-      {shouldShowToolbar && (
+      {displayToolbar && (
         <div className="voice-assistant-toolbar">
           {/* Button column */}
           <div className="voice-assistant-toolbar__buttons">
@@ -130,7 +133,9 @@ function VoiceAssistantOverlay() {
           {/* Audio visualization orb - shows when TTS is speaking */}
           <div
             ref={orbRef}
-            className={`voice-assistant-toolbar__orb ${isSpeaking ? 'voice-assistant-toolbar__orb--active' : ''}`}
+            className={`voice-assistant-toolbar__orb ${
+              isSpeaking || hasBackendPrompt ? 'voice-assistant-toolbar__orb--active' : ''
+            }`}
             aria-hidden="true"
           />
         </div>

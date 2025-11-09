@@ -283,15 +283,15 @@ export function VoiceAssistantProvider({ children }) {
       if (!text || isSpeaking) return;
 
       try {
-        await playTTS(text, {
-          isListening: voice.isListening,
-          stopListening: voice.stopListening,
-          startListening: voice.startListening,
-          disarmWakeWord: voice.disarmWakeWord,
-          armWakeWord: voice.armWakeWord,
-          setSpeaking: value => setIsSpeaking(value),
-          setError: err => setTtsError(err),
-        });
+      await playTTS(text, {
+        isListening: voice.isListening,
+        stopListening: voice.stopListening,
+        startListening: voice.startListening,
+        disarmWakeWord: voice.disarmWakeWord,
+        armWakeWord: voice.armWakeWord,
+        setSpeaking: value => setIsSpeaking(value),
+        setError: err => setTtsError(err),
+      });
       } catch (err) {
         console.warn('[VoiceAssistant] ElevenLabs TTS failed, falling back to browser TTS.', err);
         try {
@@ -324,7 +324,7 @@ export function VoiceAssistantProvider({ children }) {
       return undefined;
     }
 
-    const handleBackendTts = event => {
+    const handleBackendTts = async event => {
       const detail = event?.detail || {};
       const incomingText = detail.text;
       if (!incomingText) {
@@ -351,7 +351,8 @@ export function VoiceAssistantProvider({ children }) {
         setSessionId(payload.sessionId);
       }
       pendingClarifierStepRef.current = payload.stepId ?? null;
-      triggerTTS(incomingText);
+      await triggerTTS(incomingText);
+      clearLastBackendPrompt();
     };
 
     window.addEventListener('voice-assistant-tts', handleBackendTts);

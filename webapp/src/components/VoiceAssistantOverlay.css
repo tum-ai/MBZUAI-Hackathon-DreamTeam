@@ -36,25 +36,7 @@
   width: 100%;
   max-width: 120px;
   height: 100px;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
   pointer-events: none;
-  border-top: 1px solid transparent;
-  padding-top: 0;
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.voice-assistant-toolbar__orb--active {
-  max-height: 100px;
-  opacity: 1;
-  border-top-color: var(--glass-border);
-  padding-top: var(--space-2);
-  margin-top: var(--space-2);
 }
 
 /* Toolbar button styling - matches mic button */
