@@ -15,15 +15,13 @@ def get_k2_client():
     api_key = os.getenv("K2_API_KEY")
     if not api_key:
         raise ValueError("K2_API_KEY not found in environment variables")
-    
+
     import httpx
+
     http_client = httpx.Client(timeout=1200.0)
-    
+
     return OpenAI(
-        base_url=BASE_URL,
-        api_key=api_key,
-        http_client=http_client,
-        max_retries=2
+        base_url=BASE_URL, api_key=api_key, http_client=http_client, max_retries=2
     )
 
 
@@ -33,9 +31,9 @@ def split_tasks(user_text: str, previous_context: str = "") -> dict:
     Returns dict with: tasks (list), context_summary (str)
     """
     client = get_k2_client()
-    
+
     needs_summary = len(previous_context) > 100
-    
+
     if needs_summary:
         prompt = f"""You are a planner agent for a voice-first web development tool. Analyze the user's request and detect if it contains multiple tasks.
 
@@ -49,6 +47,8 @@ Your job:
 3. For each task, classify as:
    - "act" (perform action): ANY user interaction with existing UI elements
      Examples: scroll, click, navigate, hover, **fill in form fields**, enter text, type, press keys, check boxes, submit forms, select dropdowns, etc.
+     Also if a user says something like "let's get started", it's an "act" task. Especially if he doesnt mention adding new components or modifying the website structure/style.
+     Also if a user says something like "Go to ..." or "Navigate to ..." or "Show me ..." or "Show me the ..." or "Show me the ... page", it's an "act" task and you should navigate to the page or click the button.
    - "edit" (modify website structure/style): changing the website code, design, or content
      Examples: change colors, add new components, modify layout, style changes, create elements, etc.
    - "clarify" (need more information): vague or ambiguous requests
@@ -102,15 +102,13 @@ Respond with ONLY valid JSON in this exact format:
 If there's only one task, return a single-item array."""
 
     messages = [{"role": "user", "content": prompt}]
-    
+
     response = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=messages,
-        stream=False
+        model=MODEL_NAME, messages=messages, stream=False
     )
-    
+
     content = response.choices[0].message.content.strip()
-    
+
     # Parse response handling <think> and <answer> tags
     try:
         if "<answer>" in content and "</answer>" in content:
@@ -119,37 +117,47 @@ If there's only one task, return a single-item array."""
             content = content.split("```json")[1].split("```")[0].strip()
         elif "```" in content:
             content = content.split("```")[1].split("```")[0].strip()
-        
+
         result = json.loads(content)
-        
+
         if not needs_summary:
             result["context_summary"] = ""
-        
+
         return {
-            "tasks": result.get("tasks", [{"text": user_text, "step_type": "clarify", "explanation": "Could not parse tasks"}]),
-            "context_summary": result.get("context_summary", "")
+            "tasks": result.get(
+                "tasks",
+                [
+                    {
+                        "text": user_text,
+                        "step_type": "clarify",
+                        "explanation": "Could not parse tasks",
+                    }
+                ],
+            ),
+            "context_summary": result.get("context_summary", ""),
         }
     except (json.JSONDecodeError, IndexError) as e:
         # Fallback: treat as single task
         return {
-            "tasks": [{
-                "text": user_text,
-                "step_type": "clarify",
-                "explanation": f"Could not parse tasks. Original request: {user_text}"
-            }],
-            "context_summary": ""
+            "tasks": [
+                {
+                    "text": user_text,
+                    "step_type": "clarify",
+                    "explanation": f"Could not parse tasks. Original request: {user_text}",
+                }
+            ],
+            "context_summary": "",
         }
 
-
-#def classify_intent(user_text: str, previous_context: str = "") -> dict:
+    # def classify_intent(user_text: str, previous_context: str = "") -> dict:
     """
     Classify user intent and enrich with explanation.
     Returns dict with: step_type, explanation, context_summary
     """
     client = get_k2_client()
-    
+
     needs_summary = len(previous_context) > 100
-    
+
     if needs_summary:
         # prompt = f"""You are a planner agent for a voice-first web development tool. Analyze the user's request and respond with a JSON object.
         #
@@ -188,15 +196,13 @@ If there's only one task, return a single-item array."""
         prompt = ""
 
     messages = [{"role": "user", "content": prompt}]
-    
+
     response = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=messages,
-        stream=False
+        model=MODEL_NAME, messages=messages, stream=False
     )
-    
+
     content = response.choices[0].message.content.strip()
-    
+
     #  <think> and <answer> tags to be parsed
     try:
         if "<answer>" in content and "</answer>" in content:
@@ -205,16 +211,16 @@ If there's only one task, return a single-item array."""
             content = content.split("```json")[1].split("```")[0].strip()
         elif "```" in content:
             content = content.split("```")[1].split("```")[0].strip()
-        
+
         result = json.loads(content)
-        
+
         if not needs_summary:
             result["context_summary"] = ""
-        
+
         return result
     except (json.JSONDecodeError, IndexError) as e:
         return {
             "step_type": "clarify",
             "explanation": f"Could not parse intent. Original request: {user_text}",
-            "context_summary": ""
+            "context_summary": "",
         }
