@@ -1,0 +1,940 @@
+[
+  {
+    "op": "replace",
+    "path": "/globalStyles",
+    "value": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');\nbody {\n    font-family: 'Inter', sans-serif;\n    background-color: #ffffff;\n    color: #333333;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6;\n}\n\nh1, h2, h3, h4, h5, h6 {\n    font-family: 'Inter', sans-serif;\n    font-weight: 700;\n    margin: 0;\n}\n\n* {\n    box-sizing: border-box;\n}"
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "hero-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "minHeight": "100vh",
+          "width": "100%",
+          "display": "flex",
+          "alignItems": "center",
+          "padding": "2rem",
+          "gap": "4rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "hero-text-content",
+            "type": "Box",
+            "props": {
+              "style": {
+                "flex": "1",
+                "display": "flex",
+                "flexDirection": "column",
+                "justifyContent": "center",
+                "padding": "2rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "hero-name",
+                  "type": "GradientText",
+                  "props": {
+                    "content": "Kesava Prasad",
+                    "as": "h1",
+                    "variant": "sunset",
+                    "animated": true
+                  },
+                  "slots": {
+                    "default": []
+                  }
+                },
+                {
+                  "id": "hero-tagline",
+                  "type": "Text",
+                  "props": {
+                    "content": "Student at TUM | Photography & Coding Enthusiast",
+                    "as": "h2",
+                    "style": {
+                      "fontSize": "1.8rem",
+                      "color": "#7f8c8d",
+                      "marginTop": "1rem",
+                      "fontWeight": "400"
+                    }
+                  },
+                  "slots": {
+                    "default": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "hero-image-container",
+            "type": "Box",
+            "props": {
+              "style": {
+                "flex": "1",
+                "display": "flex",
+                "alignItems": "center",
+                "justifyContent": "center",
+                "padding": "2rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "hero-image",
+                  "type": "Image",
+                  "props": {
+                    "src": "https://picsum.photos/600/600?random=1",
+                    "alt": "Photo of Kesava Prasad",
+                    "style": {
+                      "width": "100%",
+                      "maxWidth": "500px",
+                      "height": "auto",
+                      "borderRadius": "12px",
+                      "boxShadow": "0 20px 60px rgba(0, 0, 0, 0.3)"
+                    }
+                  },
+                  "slots": {
+                    "default": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "about-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "4rem auto",
+          "padding": "2rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "about-title",
+            "type": "Text",
+            "props": {
+              "content": "About Me",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#2c3e50",
+                "borderBottom": "3px solid #3498db",
+                "paddingBottom": "1rem",
+                "marginBottom": "1.5rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "about-content",
+            "type": "Text",
+            "props": {
+              "content": "I am a student at the Technical University of Munich (TUM), actively pursuing my academic curriculum while nurturing a diverse range of hobbies and interests. My passions span creative and technical domains: I capture the beauty of moments through photography, craft solutions with coding, and engage in dynamic activities like driving, racing, and rifle practice. I also thrive in competitive environments such as cricket, chess, and hackathons, where strategy and quick thinking are key.",
+              "as": "p",
+              "style": {
+                "fontSize": "1.2rem",
+                "color": "#333333",
+                "lineHeight": "1.8",
+                "textAlign": "justify"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "projects-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "4rem auto",
+          "padding": "2rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "projects-title",
+            "type": "Text",
+            "props": {
+              "content": "Projects",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#2c3e50",
+                "borderBottom": "3px solid #3498db",
+                "paddingBottom": "1rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "projects-grid",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "repeat(auto-fit, minmax(300px, 1fr))",
+                "gap": "1.5rem",
+                "marginTop": "1.5rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "project-0",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated",
+                    "style": {
+                      "padding": "0",
+                      "overflow": "hidden"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "project-0-image",
+                        "type": "Image",
+                        "props": {
+                          "src": "https://picsum.photos/400/300?random=10",
+                          "alt": "AI Web Builder",
+                          "style": {
+                            "width": "100%",
+                            "height": "200px",
+                            "objectFit": "cover",
+                            "borderRadius": "8px 8px 0 0"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-0-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "AI Web Builder",
+                          "as": "h3",
+                          "style": {
+                            "fontSize": "1.5rem",
+                            "color": "#2c3e50",
+                            "marginBottom": "0.5rem"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-0-description",
+                        "type": "Text",
+                        "props": {
+                          "content": "Voice-controlled web development platform",
+                          "as": "p",
+                          "style": {
+                            "fontSize": "1rem",
+                            "color": "#7f8c8d"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "project-1",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated",
+                    "style": {
+                      "padding": "0",
+                      "overflow": "hidden"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "project-1-image",
+                        "type": "Image",
+                        "props": {
+                          "src": "https://picsum.photos/400/300?random=11",
+                          "alt": "Photography Portfolio",
+                          "style": {
+                            "width": "100%",
+                            "height": "200px",
+                            "objectFit": "cover",
+                            "borderRadius": "8px 8px 0 0"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-1-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "Photography Portfolio",
+                          "as": "h3",
+                          "style": {
+                            "fontSize": "1.5rem",
+                            "color": "#2c3e50",
+                            "marginBottom": "0.5rem"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-1-description",
+                        "type": "Text",
+                        "props": {
+                          "content": "Collection of my best shots",
+                          "as": "p",
+                          "style": {
+                            "fontSize": "1rem",
+                            "color": "#7f8c8d"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "project-2",
+                  "type": "Card",
+                  "props": {
+                    "variant": "elevated",
+                    "style": {
+                      "padding": "0",
+                      "overflow": "hidden"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "project-2-image",
+                        "type": "Image",
+                        "props": {
+                          "src": "https://picsum.photos/400/300?random=12",
+                          "alt": "Racing Analytics",
+                          "style": {
+                            "width": "100%",
+                            "height": "200px",
+                            "objectFit": "cover",
+                            "borderRadius": "8px 8px 0 0"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-2-title",
+                        "type": "Text",
+                        "props": {
+                          "content": "Racing Analytics",
+                          "as": "h3",
+                          "style": {
+                            "fontSize": "1.5rem",
+                            "color": "#2c3e50",
+                            "marginBottom": "0.5rem"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      },
+                      {
+                        "id": "project-2-description",
+                        "type": "Text",
+                        "props": {
+                          "content": "Data-driven racing performance tracker",
+                          "as": "p",
+                          "style": {
+                            "fontSize": "1rem",
+                            "color": "#7f8c8d"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "skills-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "4rem auto",
+          "padding": "2rem"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "skills-title",
+            "type": "Text",
+            "props": {
+              "content": "Skills",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#2c3e50",
+                "borderBottom": "3px solid #3498db",
+                "paddingBottom": "1rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "skills-grid",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "grid",
+                "gridTemplateColumns": "repeat(auto-fit, minmax(150px, 1fr))",
+                "gap": "1.5rem",
+                "marginTop": "1.5rem"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "skill-0",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-0-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Photography",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-1",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-1-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Coding",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-2",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-2-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Driving",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-3",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-3-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Racing",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-4",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-4-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Rifle Practice",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-5",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-5-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Cricket",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-6",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-6-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Chess",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "skill-7",
+                  "type": "Box",
+                  "props": {
+                    "style": {
+                      "padding": "1rem 1.5rem",
+                      "backgroundColor": "#f8f9fa",
+                      "borderRadius": "8px",
+                      "textAlign": "center",
+                      "border": "2px solid #dee2e6"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "skill-7-name",
+                        "type": "Text",
+                        "props": {
+                          "content": "Hackathons",
+                          "as": "span",
+                          "style": {
+                            "fontSize": "1.1rem",
+                            "color": "#2c3e50",
+                            "fontWeight": "600"
+                          }
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "contact-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "maxWidth": "1200px",
+          "margin": "4rem auto",
+          "padding": "2rem",
+          "textAlign": "center"
+        },
+        "as": "section"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "contact-title",
+            "type": "Text",
+            "props": {
+              "content": "Get In Touch",
+              "as": "h2",
+              "style": {
+                "fontSize": "3rem",
+                "fontWeight": "700",
+                "color": "#2c3e50",
+                "marginBottom": "1.5rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "contact-description",
+            "type": "Text",
+            "props": {
+              "content": "Feel free to reach out for collaborations or just a friendly hello",
+              "as": "p",
+              "style": {
+                "fontSize": "1.2rem",
+                "color": "#7f8c8d",
+                "marginBottom": "1.5rem"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          },
+          {
+            "id": "contact-links",
+            "type": "Box",
+            "props": {
+              "style": {
+                "display": "flex",
+                "gap": "1rem",
+                "justifyContent": "center",
+                "flexWrap": "wrap"
+              }
+            },
+            "slots": {
+              "default": [
+                {
+                  "id": "social-github",
+                  "type": "Link",
+                  "props": {
+                    "href": "https://github.com/kesava89",
+                    "target": "_blank",
+                    "style": {
+                      "padding": "0.8rem 1.5rem",
+                      "backgroundColor": "#2c3e50",
+                      "color": "#ffffff",
+                      "borderRadius": "8px",
+                      "textDecoration": "none",
+                      "fontSize": "1.1rem",
+                      "fontWeight": "600",
+                      "transition": "all 0.3s ease"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "social-github-text",
+                        "type": "Text",
+                        "props": {
+                          "content": "Github",
+                          "as": "span"
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "social-linkedin",
+                  "type": "Link",
+                  "props": {
+                    "href": "https://linkedin.com/in/kesavaprasad",
+                    "target": "_blank",
+                    "style": {
+                      "padding": "0.8rem 1.5rem",
+                      "backgroundColor": "#2c3e50",
+                      "color": "#ffffff",
+                      "borderRadius": "8px",
+                      "textDecoration": "none",
+                      "fontSize": "1.1rem",
+                      "fontWeight": "600",
+                      "transition": "all 0.3s ease"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "social-linkedin-text",
+                        "type": "Text",
+                        "props": {
+                          "content": "Linkedin",
+                          "as": "span"
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "social-email",
+                  "type": "Link",
+                  "props": {
+                    "href": "mailto:kesava@example.com",
+                    "target": "_blank",
+                    "style": {
+                      "padding": "0.8rem 1.5rem",
+                      "backgroundColor": "#2c3e50",
+                      "color": "#ffffff",
+                      "borderRadius": "8px",
+                      "textDecoration": "none",
+                      "fontSize": "1.1rem",
+                      "fontWeight": "600",
+                      "transition": "all 0.3s ease"
+                    }
+                  },
+                  "slots": {
+                    "default": [
+                      {
+                        "id": "social-email-text",
+                        "type": "Text",
+                        "props": {
+                          "content": "Email",
+                          "as": "span"
+                        },
+                        "slots": {
+                          "default": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/tree/slots/default/-",
+    "value": {
+      "id": "footer-section",
+      "type": "Box",
+      "props": {
+        "style": {
+          "width": "100%",
+          "margin": "4rem 0 0 0",
+          "padding": "2rem",
+          "textAlign": "center",
+          "backgroundColor": "#f8f9fa",
+          "borderTop": "1px solid #dee2e6"
+        },
+        "as": "footer"
+      },
+      "slots": {
+        "default": [
+          {
+            "id": "footer-copyright",
+            "type": "Text",
+            "props": {
+              "content": "\u00a9 2024 Kesava Prasad. All rights reserved.",
+              "as": "p",
+              "style": {
+                "fontSize": "1rem",
+                "color": "#7f8c8d"
+              }
+            },
+            "slots": {
+              "default": []
+            }
+          }
+        ]
+      }
+    }
+  }
+]

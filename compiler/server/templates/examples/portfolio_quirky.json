@@ -1,0 +1,27 @@
+{
+  "name": "Alex Chen",
+  "tagline": "Creative Designer & Front-End Developer",
+  "palette": "quirky",
+  "fonts": "playful",
+  "spacing": "spacious",
+  "heroLayout": "centered",
+  "about": "I blend design and code to create delightful digital experiences. With a quirky approach to problem-solving and a passion for user-centered design.",
+  "sections": ["about", "projects", "skills", "contact"],
+  "skills": ["UI/UX Design", "React", "Animation", "Illustration", "CSS"],
+  "projects": [
+    {
+      "title": "Animated Dashboard",
+      "description": "Interactive data visualization",
+      "image": "https://picsum.photos/400/300?random=20"
+    },
+    {
+      "title": "Mobile App Design",
+      "description": "Award-winning food delivery app",
+      "image": "https://picsum.photos/400/300?random=21"
+    }
+  ],
+  "socialLinks": {
+    "dribbble": "https://dribbble.com/alexchen",
+    "twitter": "https://twitter.com/alexchen"
+  }
+}

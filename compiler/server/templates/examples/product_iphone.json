@@ -1,0 +1,30 @@
+{
+  "productName": "iPhone 16 Pro",
+  "tagline": "Titanium. So strong. So light. So Pro.",
+  "palette": "minimal",
+  "fonts": "modern",
+  "heroImage": "https://picsum.photos/1200/800?random=100",
+  "features": [
+    {
+      "title": "A18 Pro Chip",
+      "description": "The fastest chip ever in a smartphone"
+    },
+    {
+      "title": "ProMotion Display",
+      "description": "120Hz adaptive refresh rate"
+    },
+    {
+      "title": "Pro Camera System",
+      "description": "48MP main, 5x telephoto, macro photography"
+    }
+  ],
+  "specs": [
+    {"label": "Display", "value": "6.3-inch Super Retina XDR"},
+    {"label": "Chip", "value": "A18 Pro with 6-core GPU"},
+    {"label": "Camera", "value": "48MP + 12MP + 12MP"},
+    {"label": "Battery", "value": "Up to 29 hours video playback"},
+    {"label": "Storage", "value": "256GB / 512GB / 1TB"}
+  ],
+  "ctaText": "Pre-order Now",
+  "ctaLink": "#"
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Dr. Sarah Martinez",
+  "tagline": "Research Scientist | AI Ethics Advocate",
+  "palette": "minimal",
+  "fonts": "serif",
+  "spacing": "normal",
+  "heroLayout": "minimal",
+  "about": "Researching the intersection of artificial intelligence and human values. Published author and frequent speaker on responsible AI development.",
+  "sections": ["about", "experience", "education", "blog", "contact"],
+  "experience": [
+    {
+      "title": "Senior Research Scientist",
+      "company": "AI Ethics Lab",
+      "period": "2020-Present",
+      "description": "Leading research on fairness and transparency in machine learning systems"
+    },
+    {
+      "title": "Assistant Professor",
+      "company": "Tech University",
+      "period": "2017-2020",
+      "description": "Taught AI ethics and machine learning courses"
+    }
+  ],
+  "education": [
+    {
+      "degree": "PhD in Computer Science",
+      "school": "Stanford University",
+      "year": "2017",
+      "description": "Dissertation on algorithmic fairness"
+    },
+    {
+      "degree": "MSc in AI",
+      "school": "MIT",
+      "year": "2013",
+      "description": "Focus on natural language processing"
+    }
+  ],
+  "socialLinks": {
+    "linkedin": "https://linkedin.com/in/sarahmartinez",
+    "scholar": "https://scholar.google.com/sarahmartinez"
+  }
+}
