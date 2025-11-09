@@ -311,5 +311,3 @@ All components use modern CSS:
 - Progress: Stepper
 
 ---
-
-**Pro Tip**: Layer multiple backgrounds with varying opacities and blend modes for unique effects!

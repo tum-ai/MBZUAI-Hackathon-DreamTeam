@@ -1,200 +1,21 @@
 {
-  "projectName": "api-generated-site",
-  "globalStyles": "@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');\n\n:root {\n  --navbar-height: 80px;\n}\n\nbody { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }",
+  "projectName": "New GenAI Project",
+  "pages": [
+    {
+      "name": "Home",
+      "path": "/",
+      "astFile": "home.json"
+    }
+  ],
+  "globalStyles": "",
   "sharedComponents": {
     "navbar": {
-      "enabled": true,
-      "ast": {
-        "id": "navbar",
-        "type": "Box",
-        "props": {
-          "style": {
-            "position": "fixed",
-            "top": "0",
-            "left": "0",
-            "width": "100%",
-            "zIndex": "1000",
-            "background": "rgba(10, 10, 10, 0.8)",
-            "backdropFilter": "blur(10px)",
-            "borderBottom": "1px solid rgba(255, 255, 255, 0.1)",
-            "padding": "1rem 2rem",
-            "display": "flex",
-            "alignItems": "center",
-            "justifyContent": "space-between"
-          }
-        },
-        "slots": {
-          "default": [
-            {
-              "id": "logo",
-              "type": "Link",
-              "props": {
-                "href": "#/",
-                "style": {
-                  "fontSize": "1.5rem",
-                  "fontWeight": "bold",
-                  "textDecoration": "none",
-                  "color": "#fff"
-                }
-              },
-              "slots": {
-                "default": [
-                  {
-                    "id": "logo-text",
-                    "type": "Text",
-                    "props": {
-                      "content": "VueBits"
-                    },
-                    "slots": {}
-                  }
-                ]
-              }
-            },
-            {
-              "id": "nav-links",
-              "type": "Box",
-              "props": {
-                "style": {
-                  "display": "flex",
-                  "gap": "2rem",
-                  "alignItems": "center"
-                }
-              },
-              "slots": {
-                "default": [
-                  {
-                    "id": "nav-link-home",
-                    "type": "Link",
-                    "props": {
-                      "href": "#/",
-                      "style": {
-                        "textDecoration": "none",
-                        "color": "#b0b0b0",
-                        "fontWeight": "500"
-                      }
-                    },
-                    "slots": {
-                      "default": [
-                        {
-                          "id": "nav-link-home-text",
-                          "type": "Text",
-                          "props": {
-                            "content": "Home"
-                          },
-                          "slots": {}
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "nav-link-about",
-                    "type": "Link",
-                    "props": {
-                      "href": "#/about",
-                      "style": {
-                        "textDecoration": "none",
-                        "color": "#b0b0b0",
-                        "fontWeight": "500"
-                      }
-                    },
-                    "slots": {
-                      "default": [
-                        {
-                          "id": "nav-link-about-text",
-                          "type": "Text",
-                          "props": {
-                            "content": "About"
-                          },
-                          "slots": {}
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "nav-link-services",
-                    "type": "Link",
-                    "props": {
-                      "href": "#/services",
-                      "style": {
-                        "textDecoration": "none",
-                        "color": "#b0b0b0",
-                        "fontWeight": "500"
-                      }
-                    },
-                    "slots": {
-                      "default": [
-                        {
-                          "id": "nav-link-services-text",
-                          "type": "Text",
-                          "props": {
-                            "content": "Services"
-                          },
-                          "slots": {}
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "nav-link-contact",
-                    "type": "Link",
-                    "props": {
-                      "href": "#/contact",
-                      "style": {
-                        "textDecoration": "none",
-                        "color": "#b0b0b0",
-                        "fontWeight": "500"
-                      }
-                    },
-                    "slots": {
-                      "default": [
-                        {
-                          "id": "nav-link-contact-text",
-                          "type": "Text",
-                          "props": {
-                            "content": "Contact"
-                          },
-                          "slots": {}
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
+      "enabled": false,
+      "ast": null
     },
     "footer": {
       "enabled": false,
       "ast": null
     }
-  },
-  "pages": [
-    {
-      "name": "Home",
-      "path": "/",
-      "astFile": "home-page.json"
-    },
-    {
-      "name": "About",
-      "path": "/about",
-      "astFile": "about-page.json"
-    },
-    {
-      "name": "Services",
-      "path": "/services",
-      "astFile": "services-page.json"
-    },
-    {
-      "name": "Contact",
-      "path": "/contact",
-      "astFile": "contact-page.json"
-    },
-    {
-      "name": "Landing",
-      "path": "/",
-      "astFile": "landing.json"
-    }
-  ]
+  }
 }

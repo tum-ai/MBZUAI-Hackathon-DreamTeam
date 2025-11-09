@@ -1,0 +1,428 @@
+[
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "hero-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "position": "relative",
+                    "height": "100dvh",
+                    "minHeight": "100dvh",
+                    "display": "flex",
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "overflow": "hidden"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "hero-ribbons",
+                        "type": "Ribbons",
+                        "props": {
+                            "colors": [
+                                "#667eea",
+                                "#764ba2",
+                                "#f093fb",
+                                "#4facfe"
+                            ],
+                            "ribbonCount": 5,
+                            "speed": "25s",
+                            "opacity": 0.5,
+                            "variant": "diagonal",
+                            "style": {
+                                "position": "absolute",
+                                "top": "0",
+                                "left": "0",
+                                "width": "100%",
+                                "height": "100%",
+                                "zIndex": "0"
+                            }
+                        }
+                    },
+                    {
+                        "id": "hero-veil",
+                        "type": "DarkVeil",
+                        "props": {
+                            "opacity": 0.7,
+                            "direction": "bottom",
+                            "blur": true,
+                            "style": {
+                                "position": "absolute",
+                                "top": "0",
+                                "left": "0",
+                                "width": "100%",
+                                "height": "100%",
+                                "zIndex": "1"
+                            }
+                        }
+                    },
+                    {
+                        "id": "hero-content",
+                        "type": "Box",
+                        "props": {
+                            "style": {
+                                "position": "relative",
+                                "zIndex": "10",
+                                "textAlign": "center",
+                                "maxWidth": "1200px",
+                                "padding": "0 2rem"
+                            }
+                        },
+                        "slots": {
+                            "default": [
+                                {
+                                    "id": "hero-title",
+                                    "type": "GradientText",
+                                    "props": {
+                                        "content": "Prof. Dr. [Full Name]",
+                                        "as": "h1",
+                                        "animated": true,
+                                        "variant": "sunset",
+                                        "style": {
+                                            "fontSize": "72px",
+                                            "fontWeight": "700",
+                                            "marginBottom": "2rem"
+                                        }
+                                    }
+                                },
+                                {
+                                    "id": "hero-subtitle",
+                                    "type": "Text",
+                                    "props": {
+                                        "content": "Mechanical Engineering Professor | TUM | 24 Years of Research & Teaching",
+                                        "as": "p",
+                                        "style": {
+                                            "fontSize": "24px",
+                                            "color": "#d0d0d0",
+                                            "maxWidth": "600px",
+                                            "margin": "0 auto"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "about-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "padding": "6rem 2rem"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "about-title",
+                        "type": "GradientText",
+                        "props": {
+                            "content": "About Me",
+                            "as": "h2",
+                            "animated": true,
+                            "variant": "sunset",
+                            "style": {
+                                "fontSize": "48px",
+                                "marginBottom": "3rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "about-content",
+                        "type": "Text",
+                        "props": {
+                            "content": "Dr. [Name] has been a professor at TUM's Mechanical Engineering department for 24 years, specializing in [Field of Expertise]. His research focuses on [Key Area 1], [Key Area 2], and [Key Area 3]. Beyond research, he is passionate about teaching and mentoring the next generation of engineers.",
+                            "as": "p",
+                            "style": {
+                                "fontSize": "18px",
+                                "lineHeight": "1.6",
+                                "maxWidth": "800px",
+                                "margin": "0 auto"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "research-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "padding": "6rem 2rem"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "research-title",
+                        "type": "GradientText",
+                        "props": {
+                            "content": "Research Areas",
+                            "as": "h2",
+                            "animated": true,
+                            "variant": "sunset",
+                            "style": {
+                                "fontSize": "48px",
+                                "marginBottom": "3rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "research-grid",
+                        "type": "MagicBento",
+                        "props": {
+                            "columns": 3,
+                            "gap": "2rem",
+                            "glowColor": "#667eea",
+                            "variant": "hover-lift"
+                        },
+                        "slots": {
+                            "default": [
+                                {
+                                    "id": "research-card-1",
+                                    "type": "Card",
+                                    "props": {
+                                        "variant": "elevated",
+                                        "style": {
+                                            "padding": "2rem",
+                                            "backgroundColor": "white"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "research-card-1-title",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "[Research Area 1]",
+                                                    "as": "h3",
+                                                    "style": {
+                                                        "fontWeight": "600",
+                                                        "marginBottom": "1rem"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "research-card-1-desc",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Exploring [details] in collaboration with [partners].",
+                                                    "style": {
+                                                        "lineHeight": "1.5"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "research-card-2",
+                                    "type": "Card",
+                                    "props": {
+                                        "variant": "elevated",
+                                        "style": {
+                                            "padding": "2rem",
+                                            "backgroundColor": "white"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "research-card-2-title",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "[Research Area 2]",
+                                                    "as": "h3",
+                                                    "style": {
+                                                        "fontWeight": "600",
+                                                        "marginBottom": "1rem"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "research-card-2-desc",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Investigating [details] with a focus on [objectives].",
+                                                    "style": {
+                                                        "lineHeight": "1.5"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "research-card-3",
+                                    "type": "Card",
+                                    "props": {
+                                        "variant": "elevated",
+                                        "style": {
+                                            "padding": "2rem",
+                                            "backgroundColor": "white"
+                                        }
+                                    },
+                                    "slots": {
+                                        "default": [
+                                            {
+                                                "id": "research-card-3-title",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "[Research Area 3]",
+                                                    "as": "h3",
+                                                    "style": {
+                                                        "fontWeight": "600",
+                                                        "marginBottom": "1rem"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "research-card-3-desc",
+                                                "type": "Text",
+                                                "props": {
+                                                    "content": "Developing [innovations] to address [challenges].",
+                                                    "style": {
+                                                        "lineHeight": "1.5"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "publications-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "padding": "6rem 2rem"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "publications-title",
+                        "type": "GradientText",
+                        "props": {
+                            "content": "Publications",
+                            "as": "h2",
+                            "animated": true,
+                            "variant": "sunset",
+                            "style": {
+                                "fontSize": "48px",
+                                "marginBottom": "3rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "publications-list",
+                        "type": "List",
+                        "props": {
+                            "items": [
+                                "Recent Publication 1: [Title]",
+                                "Recent Publication 2: [Title]",
+                                "Recent Publication 3: [Title]"
+                            ],
+                            "style": {
+                                "maxWidth": "800px",
+                                "margin": "0 auto",
+                                "fontSize": "18px",
+                                "lineHeight": "1.6"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/-",
+        "value": {
+            "id": "contact-section",
+            "type": "Box",
+            "props": {
+                "style": {
+                    "padding": "6rem 2rem",
+                    "backgroundColor": "#f0f4fc"
+                }
+            },
+            "slots": {
+                "default": [
+                    {
+                        "id": "contact-title",
+                        "type": "GradientText",
+                        "props": {
+                            "content": "Contact",
+                            "as": "h2",
+                            "animated": true,
+                            "variant": "sunset",
+                            "style": {
+                                "fontSize": "48px",
+                                "marginBottom": "3rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "contact-email",
+                        "type": "Text",
+                        "props": {
+                            "content": "Email: [prof.name@tum.de ]",
+                            "as": "p",
+                            "style": {
+                                "fontSize": "20px",
+                                "marginBottom": "1rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "contact-office",
+                        "type": "Text",
+                        "props": {
+                            "content": "Office: [Room X, Building Y, TUM Campus Garching]",
+                            "as": "p",
+                            "style": {
+                                "fontSize": "20px",
+                                "marginBottom": "1rem"
+                            }
+                        }
+                    },
+                    {
+                        "id": "contact-phone",
+                        "type": "Text",
+                        "props": {
+                            "content": "Phone: [+49 89 ...]",
+                            "as": "p",
+                            "style": {
+                                "fontSize": "20px"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

@@ -1,0 +1,17 @@
+[
+    {
+        "op": "add",
+        "path": "/tree/slots/default/3/slots/default/1/slots/default/0/props/style/backgroundColor",
+        "value": "white"
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/3/slots/default/1/slots/default/1/props/style/backgroundColor",
+        "value": "white"
+    },
+    {
+        "op": "add",
+        "path": "/tree/slots/default/3/slots/default/1/slots/default/2/props/style/backgroundColor",
+        "value": "white"
+    }
+]

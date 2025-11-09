@@ -196,8 +196,10 @@ async def patch_page_ast(
         return {"status": "success", "data": patched_ast}
 
     except jsonpatch.JsonPatchException as e:
+        print(e)
         raise HTTPException(status_code=400, detail=f"Invalid patch: {e}")
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=f"Server error: {e}")
 
 
