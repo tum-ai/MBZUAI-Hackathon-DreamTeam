@@ -211,6 +211,7 @@ llm/venv/
 llm/planner/sessions/
 llm/planner/tests/results/
 llm/editor/tests/results/
+llm/tests/results/
 
 #Compiler
 compiler/output

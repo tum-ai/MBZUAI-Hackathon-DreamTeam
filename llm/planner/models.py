@@ -75,9 +75,19 @@ class AgentResult(BaseModel):
     context: str
     result: str  # Can be code, action, or reply depending on agent_type
     agent_type: str  # "edit", "act", or "clarify"
+    execution_time_seconds: Optional[float] = None  # Time taken by this agent
+
+
+class TimingMetadata(BaseModel):
+    """Timing information for the orchestration pipeline."""
+    planner_time_seconds: float
+    total_agent_time_seconds: float
+    total_time_seconds: float
+    task_timings: List[dict] 
 
 
 class PlanResponse(BaseModel):
     """Response from the plan orchestrator with all agent results."""
     sid: str
     results: List[AgentResult]
+    timing: Optional[TimingMetadata] = None
