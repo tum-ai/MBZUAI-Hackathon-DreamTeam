@@ -7,7 +7,7 @@ A robust multi-agent system that processes user requests through intelligent pla
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                         CLIENT REQUEST                           │
-│                    POST /plan {sid, text}                        │
+│             POST /plan {sid, text, step_id?}                     │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
@@ -143,7 +143,8 @@ response = requests.post(
     "http://localhost:8000/plan",
     json={
         "sid": "session-123",
-        "text": "Create a login form and make the submit button blue"
+        "text": "Create a login form and make the submit button blue",
+        "step_id": "session-123-root-0",
     }
 )
 
@@ -155,7 +156,8 @@ print(response.json())
 ```bash
 http POST http://localhost:8000/plan \
   sid="session-123" \
-  text="Create a login form and make the submit button blue"
+  text="Create a login form and make the submit button blue" \
+  step_id="session-123-root-0"
 ```
 
 #### Using the FastAPI Interactive Docs
@@ -168,7 +170,8 @@ http POST http://localhost:8000/plan \
    ```json
    {
      "sid": "session-123",
-     "text": "Create a login form and make the submit button blue"
+     "text": "Create a login form and make the submit button blue",
+     "step_id": "session-123-root-0"
    }
    ```
 6. Click "Execute"
@@ -177,14 +180,17 @@ http POST http://localhost:8000/plan \
 
 #### 1. `/plan` - Main Orchestration Endpoint (Recommended)
 
-Execute the full pipeline: planner → agents → results
+Execute the full pipeline: planner → agents → results.  
+Optionally supply a `step_id` to continue a specific task thread (e.g., when replying to a
+clarification). If omitted, the planner generates unique IDs for each downstream task.
 
 **Request:**
 ```json
 POST /plan
 {
   "sid": "session-123",
-  "text": "Create a login form and make the submit button blue"
+  "text": "Create a login form and make the submit button blue",
+  "step_id": "session-123-root-0"
 }
 ```
 
@@ -222,7 +228,8 @@ Get task classification without executing agents
 POST /decide
 {
   "sid": "session-123",
-  "text": "Click the login button"
+  "text": "Click the login button",
+  "step_id": "session-123-root-0"
 }
 ```
 
@@ -237,6 +244,9 @@ POST /decide
   }
 ]
 ```
+
+> Provide `step_id` when you want the planner to reuse an existing identifier (e.g., when resuming
+> after a clarification). If omitted, the planner generates a UUID.
 
 #### 3. Individual Agent Endpoints
 
@@ -270,7 +280,7 @@ POST /decide
 4. **Orchestrator routes each task:**
    - `StepType.EDIT` → Editor agent → Returns `EditResponse` with `code` field
    - `StepType.ACT` → Actor agent → Returns `ActionResponse` with `action` field
-   - `StepType.CLARIFY` → Clarifier agent → Returns `ClarifyResponse` with `reply` field
+   - `StepType.CLARIFY` → Clarifier agent → Returns `ClarifyResponse` with `reply` field and broadcasts the clarification text over the websocket bridge for frontend TTS playback
 
 5. **Agent processes task:**
    - Receives intent and context
@@ -279,7 +289,7 @@ POST /decide
    - Returns agent-specific response:
      - Editor: `EditResponse {code: str}` - Component JSON
      - Actor: `ActionResponse {action: str}` - Browser action
-     - Clarifier: `ClarifyResponse {reply: str}` - Question
+     - Clarifier: `ClarifyResponse {reply: str}` - Question (also streamed to the frontend over the DOM websocket so the UI can speak it immediately)
 
 6. **Orchestrator normalizes and aggregates:**
    - Converts `EditResponse.code` → `AgentResult.result`
@@ -294,10 +304,13 @@ POST /decide
 ### Core Request/Response Models
 
 ```python
+from typing import Optional
+
 # Main orchestration
 class PlanRequest(BaseModel):
     sid: str          # Session ID
     text: str         # User query
+    step_id: Optional[str] = None  # Optional client-supplied step identifier
 
 class PlanResponse(BaseModel):
     sid: str
