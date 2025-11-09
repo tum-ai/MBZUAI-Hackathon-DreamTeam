@@ -21,6 +21,7 @@ function VoiceAssistantOverlay() {
 
   // Check if we're on template selection screen or modal is open - MUST be declared before useEffects
   const [shouldShowToolbar, setShouldShowToolbar] = useState(false);
+  const [isOnCreateProject, setIsOnCreateProject] = useState(false);
 
   const handleStart = () => {
     startListening({ autoRestart: true });
@@ -59,7 +60,10 @@ function VoiceAssistantOverlay() {
     const checkVisibility = () => {
       const modal = document.querySelector('.inspection-modal__content');
       const templateSelection = document.querySelector('.template-selection');
-      setShouldShowToolbar(!!(modal || templateSelection));
+      const createProject = document.querySelector('.create-project');
+      
+      setShouldShowToolbar(!!(modal || templateSelection || createProject));
+      setIsOnCreateProject(!!createProject && !modal && !templateSelection);
     };
 
     // Initial check
@@ -88,27 +92,29 @@ function VoiceAssistantOverlay() {
 
   return (
     <>
-      {/* Toolbar - only show on template selection or when modal is open */}
+      {/* Toolbar - show on Create Project, Template Selection, or when modal is open */}
       {shouldShowToolbar && (
         <div className="voice-assistant-toolbar">
           {/* Button column */}
           <div className="voice-assistant-toolbar__buttons">
-            {/* Close button */}
-            <button 
-              className="voice-toolbar-button voice-toolbar-button--close"
-              onClick={handleClose}
-              aria-label="Close modal"
-              data-nav-id="toolbar-close-btn"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M18 6L6 18M6 6L18 18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
+            {/* Close button - only show when not on Create Project screen */}
+            {!isOnCreateProject && (
+              <button 
+                className="voice-toolbar-button voice-toolbar-button--close"
+                onClick={handleClose}
+                aria-label="Close modal"
+                data-nav-id="toolbar-close-btn"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M18 6L6 18M6 6L18 18"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            )}
 
             {/* Mic button */}
             <VoiceControl
