@@ -181,7 +181,7 @@ const extractLikelyJson = (text) => {
   return text.slice(start, end + 1)
 }
 
-const parseActionPayload = (raw) => {
+export const parseActionPayload = (raw) => {
   if (raw == null) {
     throw new Error('Actor response is missing an action payload')
   }
