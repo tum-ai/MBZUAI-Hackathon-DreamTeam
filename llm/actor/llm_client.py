@@ -1,8 +1,9 @@
-from pathlib import Path
 import os
-from openai import OpenAI
-from dotenv import load_dotenv
 import httpx
+from pathlib import Path
+
+from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
@@ -27,18 +28,33 @@ def get_k2_client():
     )
 
 
-def generate_action(intent: str, context: str) -> str:
+def generate_action(
+    intent: str,
+    context: str,
+    system_prompt: str,
+) -> str:
     """
     Generate an action based on intent and context.
     """
     client = get_k2_client()
 
-    prompt = f"""You are an actor agent for a voice-first web development tool. Generate an action based on the intent and context.
-    """
-    messages = [{"role": "user", "content": prompt}]
+    intent_text = intent.strip() if intent else ""
+    context_text = context.strip() if context else ""
+    context_text = context_text if context_text else "No additional context provided."
+
+    user_content = (
+        f'{intent_text}\n"""\n\n'
+        f"Context:\n{context_text}\n\n"
+        "Follow the instructions above and respond with ONLY the JSON action payload."
+    )
 
     response = client.chat.completions.create(
-        model=MODEL_NAME, messages=messages, stream=False
+        model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_content},
+        ],
+        stream=False,
     )
 
     content = response.choices[0].message.content.strip()
