@@ -59,3 +59,25 @@ class QueueStatus(BaseModel):
 #     {"text": "click submit", "status": "completed", ...}
 #   ]
 # }
+
+
+class PlanRequest(BaseModel):
+    """Request for executing a full plan through the orchestrator."""
+    sid: str
+    text: str
+
+
+class AgentResult(BaseModel):
+    """Result from any agent (edit/act/clarify) in unified format."""
+    session_id: str
+    step_id: str
+    intent: str
+    context: str
+    result: str  # Can be code, action, or reply depending on agent_type
+    agent_type: str  # "edit", "act", or "clarify"
+
+
+class PlanResponse(BaseModel):
+    """Response from the plan orchestrator with all agent results."""
+    sid: str
+    results: List[AgentResult]

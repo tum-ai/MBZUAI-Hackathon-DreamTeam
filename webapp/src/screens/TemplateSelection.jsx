@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar'
 import GlassCard from '../components/GlassCard'
@@ -41,6 +41,28 @@ function TemplateSelection() {
     setConnectionStatus('connected')
     setShowGallery(false) // Hide gallery when closing modal
   }
+
+  // Expose close handlers and state globally for voice toolbar
+  useEffect(() => {
+    if (inspectingOption) {
+      window.__closeInspectionModal = handleCloseModal
+      window.__closeEnlargedImage = handleCloseEnlargedImage
+      window.__hasEnlargedImage = () => !!enlargedImage
+      return () => {
+        delete window.__closeInspectionModal
+        delete window.__closeEnlargedImage
+        delete window.__hasEnlargedImage
+      }
+    }
+  }, [inspectingOption, enlargedImage])
+
+  // Expose navigation back handler for template selection screen
+  useEffect(() => {
+    window.__navigateBackFromTemplates = () => navigate('/')
+    return () => {
+      delete window.__navigateBackFromTemplates
+    }
+  }, [navigate])
 
   const handleModalMouseMove = (e) => {
     // Only trigger gallery in edit mode
@@ -137,23 +159,6 @@ function TemplateSelection() {
               title={`${editMode ? 'Editing' : 'Inspecting'} Design Option ${inspectingOption}`}
               sandbox="allow-same-origin allow-scripts"
             />
-            
-            {/* Floating close button */}
-            <button 
-              className="inspection-modal__close"
-              onClick={handleCloseModal}
-              aria-label={editMode ? 'Close editor' : 'Close inspection'}
-              data-nav-id="template-modal-close"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M15 5L5 15M5 5L15 15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
 
             {/* Status indicator - only in edit mode */}
             {editMode && (
@@ -229,21 +234,6 @@ function TemplateSelection() {
                     alt={enlargedImage.text}
                     className="enlarged-image"
                   />
-                  <button 
-                    className="enlarged-image__close"
-                    onClick={handleCloseEnlargedImage}
-                    aria-label="Close enlarged view"
-                    data-nav-id="gallery-close-enlarged"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M15 5L5 15M5 5L15 15"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </button>
                 </div>
               </div>
             )}

@@ -1,7 +1,9 @@
+import logging
+import sys
 from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from llm.planner.models import DecideRequest, DecideResponse, QueueStatus
+from llm.planner.models import DecideRequest, DecideResponse, QueueStatus, PlanRequest, PlanResponse
 from llm.planner.planner import process_user_request
 from llm.planner.queue_manager import get_queue_manager
 from llm.clarifier.models import ClarifyRequest, ClarifyResponse
@@ -10,6 +12,19 @@ from llm.actor.models import ActionRequest, ActionResponse
 from llm.actor.actor import process_action_request
 from llm.editor.models import EditRequest, EditResponse
 from llm.editor.editor import process_edit_request
+from llm.orchestrator import execute_plan
+
+# Configure logging to output to stdout with proper formatting
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ],
+    force=True  # Override any existing configuration
+)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 app = FastAPI(title="LLM Agent API", version="1.0.0")
 
@@ -49,27 +64,41 @@ async def decide(request: DecideRequest) -> List[DecideResponse]:
         )
 
 
-@app.get("/queue/{sid}", response_model=QueueStatus)
-async def get_queue_status(sid: str) -> QueueStatus:
+@app.post("/plan", response_model=PlanResponse)
+async def plan(request: PlanRequest) -> PlanResponse:
     """
-    Get the current status of a session's task queue.
-
+    Main orchestration endpoint that executes the full pipeline.
+    
+    Workflow:
+    1. Accepts user request with session_id and text
+    2. Calls planner to classify and split tasks
+    3. Routes each task to appropriate agent (edit/act/clarify)
+    4. Stores results in session
+    5. Returns aggregated responses
+    
     Input:
-    - sid: Session ID (path parameter)
-
+    - sid: Session ID
+    - text: User query (can contain multiple tasks)
+    
     Output:
     - sid: Session ID
-    - pending: List of pending tasks
-    - processing: List of currently processing tasks
-    - completed: List of completed tasks
+    - results: List of AgentResult objects with unified format
+      - session_id: Session ID
+      - step_id: Step identifier
+      - intent: User's request with explanation
+      - context: Previous actions/prompts
+      - result: Agent output (code/action/reply)
+      - agent_type: Type of agent that processed the task
     """
     try:
-        queue_manager = get_queue_manager()
-        status = await queue_manager.get_queue_status(sid)
-        return QueueStatus(sid=sid, **status)
+        logger.info(f"Received /plan request for session: {request.sid}")
+        response = await execute_plan(request)
+        logger.info(f"Successfully completed /plan request for session: {request.sid}")
+        return response
     except Exception as e:
+        logger.error(f"Error processing /plan request for session {request.sid}: {str(e)}")
         raise HTTPException(
-            status_code=500, detail=f"Error getting queue status: {str(e)}"
+            status_code=500, detail=f"Error executing plan: {str(e)}"
         )
 
 
@@ -95,6 +124,7 @@ async def get_queue_status(sid: str) -> QueueStatus:
         raise HTTPException(
             status_code=500, detail=f"Error getting queue status: {str(e)}"
         )
+
 
 @app.post("/edit", response_model=EditResponse)
 async def edit(request: EditRequest) -> EditResponse:
@@ -183,5 +213,33 @@ async def health():
 
 if __name__ == "__main__":
     import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+    # Configure uvicorn logging to show our application logs
+    log_config = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "default": {
+                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            },
+        },
+        "handlers": {
+            "default": {
+                "formatter": "default",
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+            },
+        },
+        "root": {
+            "level": "INFO",
+            "handlers": ["default"],
+        },
+    }
+    
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=8000,
+        log_config=log_config,
+        log_level="info"
+    )

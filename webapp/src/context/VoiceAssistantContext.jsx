@@ -41,7 +41,7 @@ export function VoiceAssistantProvider({ children }) {
 
   const voice = useVoiceAssistant({
     autoRestart: true,
-    wakeWordEnabled: true,
+    wakeWordEnabled: false, // Temporarily disabled to prevent error loop
     biasPhrases: combinedBiasPhrases,
     onFinalSegment: (joined, segments) => {
       notifyListeners('onFinal', joined, segments);
@@ -125,6 +125,16 @@ export function VoiceAssistantProvider({ children }) {
     }),
     [voice, isSpeaking, ttsError, triggerTTS, registerListener, clearTtsErrorFn],
   );
+
+  // Expose speakText globally for testing
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      window.__speakText = triggerTTS;
+      return () => {
+        delete window.__speakText;
+      };
+    }
+  }, [triggerTTS]);
 
   return (
     <VoiceAssistantContext.Provider value={contextValue}>

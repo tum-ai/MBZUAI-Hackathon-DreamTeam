@@ -31,125 +31,59 @@ def get_k2_client():
     )
 
 
-def generate_json_patch(intent: str, context: str, manifests: dict, current_ast: dict, project_config: dict) -> list:
+def decide_component_action(intent: str, context: str, manifests: dict) -> dict:
     """
-    Generate JSON Patch array based on user intent and current AST.
+    Step 1: Decide whether to generate or edit, and which component type.
     
     Args:
         intent: User's request with explanation
         context: Previous actions/prompts for context
         manifests: Dictionary of available component manifests
-        current_ast: Current page AST (from home.json)
-        project_config: Project configuration (from project.json)
     
     Returns:
-        List of JSON Patch operations (RFC 6902 format)
+        {"action": "generate" | "edit", "component_type": "Button" | "Text" | ...}
     """
     client = get_k2_client()
     
-    manifests_str = json.dumps(manifests, indent=2)
-    current_ast_str = json.dumps(current_ast, indent=2)
-    project_config_str = json.dumps(project_config, indent=2)
+    manifest_list = []
+    for name, manifest in manifests.items():
+        manifest_list.append(f"- {name}: {manifest.get('componentName', name)}")
+    manifests_str = "\n".join(manifest_list)
     
-    prompt = f"""# **🤖 ROLE: AI AST COMPILER**
+    prompt = f"""You are an expert AI component analyzer. Analyze the user's request and decide two things:
 
-You are an expert AI Web Developer and systems architect. Your **sole purpose** is to act as a "compiler" that translates a user's natural language request into a precise **JSON Patch (RFC 6902) array**.
+1. **ACTION**: Should we generate a new component or edit an existing one?
+   - "generate": User wants to add/create something new
+   - "edit": User wants to modify/change something that already exists
 
-You will be given the user's request and the current state of the project (as JSON). You will analyze the user's intent and the current state, and you will generate *only* the JSON Patch array required to achieve the user's goal.
+2. **COMPONENT_TYPE**: Which component type best matches the user's intent?
 
-# **📝 INPUT FORMAT**
+**USER_REQUEST**: {intent}
 
-You have received:
+**CONTEXT**: {context}
 
-1. **USER_REQUEST**: {intent}
-
-2. **PROJECT_CONFIG**:
-```json
-{project_config_str}
-```
-
-3. **CURRENT_PAGE_AST**:
-```json
-{current_ast_str}
-```
-
-4. **CONTEXT**: {context}
-
-# **🎯 OUTPUT FORMAT**
-
-You **MUST** respond with **ONLY** a single, valid, parsable JSON array of patch operations.
-
-* **DO NOT** include any other text, markdown (```json ...), or explanations outside the JSON array.
-* Your entire response must be a single JSON block.
-
-# **🧠 MANDATORY THOUGHT PROCESS**
-
-Before generating the final JSON, you **MUST** engage in a step-by-step "thought" process. This is for your own planning.
-
-**Thought Process:**
-
-1. **Analyze Intent:** What *exactly* does the user want to do? (e.g., "Add a new component," "Change a style," "Add a new page," "Create a state variable").
-2. **Identify Target(s):**
-   * Am I modifying the whole project or just one page?
-   * If "make the site dark" or "add a font," my target is PROJECT_CONFIG and the path is /globalStyles.
-   * If "add a title," my target is CURRENT_PAGE_AST and the path is likely /tree/slots/default/- (to add) or /tree/slots/default/0 (to modify).
-   * If "add a new page," my target is PROJECT_CONFIG and the path is /pages/-.
-3. **Formulate Patches:** What op (add, replace, remove) is needed? What is the value?
-   * Do I need to create a new component? If so, I will construct its full JSON object based on the Component Schema.
-   * Do I need to add state? If so, I will add to the /state/myNewVariable path in CURRENT_PAGE_AST.
-   * Do I need to add interactivity? If so, I will add an events block using the Action Schema.
-4. **Style & Design (CRITICAL):** How do I make this look like a professional, modern website (e.g., Apple, DeepMind)?
-   * **Layout:** I will use display: "grid" or display: "flex" on a Box for all layouts.
-   * **Centering:** I will use alignItems: "center" and justifyContent: "center".
-   * **Overlays:** I will use position: "relative" on a parent Box, and position: "absolute" on child components (like Image and a gradient Box). I will use z-index to layer them.
-   * **Gradients:** I will create a Box with background: "linear-gradient(to top, #000, transparent)" to make text visible over images.
-   * **Full Screen:** I will use height: "100vh" for hero sections.
-   * **Spacing:** I will use padding and margin (e.g., padding: "2rem").
-   * **Fonts/Colors:** I will define global styles in PROJECT_CONFIG's /globalStyles or add inline style props.
-   * **Images:** When adding a placeholder image, I will prefer a dynamic, high-quality one like https://picsum.photos/1920/1080 to make the design look professional.
-5. **Review Patches:** Is the JSON valid? Does it respect the component manifests? Is the path correct?
-
-# **📚 AVAILABLE COMPONENTS**
-
-Here are the component manifests you can use:
-
-```json
+**AVAILABLE COMPONENTS**:
 {manifests_str}
-```
 
-# **📝 CORE RULES**
+**YOUR TASK**:
+Analyze the request and respond with ONLY a JSON object in this exact format:
+{{
+  "action": "generate" or "edit",
+  "component_type": "exact component name from the list above"
+}}
 
-* **Output ONLY JSON.** No pleasantries.
-* **Strings must be raw:** All string values must be raw text. Do not use HTML entities (e.g., use & not &amp;, use ' not &apos;).
-* All style keys MUST be camelCase (e.g., backgroundColor, fontSize, zIndex). The generator handles conversion.
-* All component types MUST match a friendlyName from the Component Manifests (e.g., "Box", "Text", "Button").
-* All events MUST use an actionType from the Action Schema.
-* **ALWAYS** generate a unique, human-readable id for all new components (e.g., hero-section, hero-title).
-* To add multiple changes (e.g., add state *and* add a component), create a **single array with multiple patch operations**.
+**RULES**:
+- If the user says "add", "create", "make a new", "insert" → action is "generate"
+- If the user says "change", "modify", "update", "make it", "edit" → action is "edit"
+- Choose the component_type that best matches the user's intent (Button for buttons, Text for text/titles, Box for containers, etc.)
+- Component_type MUST be one of the available components listed above
+- Output ONLY the JSON object, no other text
 
-# **📚 ACTION SCHEMA**
-
-* **action:setState**: {{"type": "action:setState", "stateKey": "myVar", "newValue": "new-value"}}
-* **action:showAlert**: {{"type": "action:showAlert", "message": "Form submitted!"}}
-* **action:scrollTo**: {{"type": "action:scrollTo", "target": "#my-section-id"}}
-
-# **📚 STATE & EXPRESSIONS**
-
-* **State:** Add state variables to CURRENT_PAGE_AST at /state/myVar.
-  * `{{"op": "add", "path": "/state/myVar", "value": {{"type": "string", "defaultValue": "Hello"}}}}`
-* **Expressions:** To bind state, use an expression object.
-  * **Text Content:** `props: {{"content": {{"type": "expression", "value": "Thanks, ${{state.contactName}}!"}}}}`
-  * **Event Logic:** `newValue: {{"type": "expression", "value": "(${{state.currentSlide}} + 1) % 3"}}`
-  * **Input Binding:** `props: {{"modelValue": {{"type": "stateBinding", "stateKey": "contactName"}}}}`
-
-# **📚 CONDITIONAL RENDERING**
-
-To show/hide components (like popups or carousels), add a top-level v-if property to any component:
-
-* **By State Key:** `{{ ... , "v-if": {{"stateKey": "isMenuOpen"}}}}`
-* **By Expression:** `{{ ... , "v-if": {{"expression": "currentSlide === 0"}}}}` (State vars are used *without* ${{state.}} here).
-
-Now, based on the user's request and the current state, generate the JSON Patch array."""
+Examples:
+- "Add a button that says Click Me" → {{"action": "generate", "component_type": "Button"}}
+- "Make the title larger" → {{"action": "edit", "component_type": "Text"}}
+- "Create a hero section" → {{"action": "generate", "component_type": "Box"}}
+- "Change the button color to blue" → {{"action": "edit", "component_type": "Button"}}"""
 
     messages = [{"role": "user", "content": prompt}]
     
@@ -170,17 +104,165 @@ Now, based on the user's request and the current state, generate the JSON Patch 
         elif "```" in content:
             content = content.split("```")[1].split("```")[0].strip()
         
-        # Parse and validate it's a valid JSON array
-        patch_array = json.loads(content)
+        result = json.loads(content)
         
-        if not isinstance(patch_array, list):
-            raise ValueError("Response is not a JSON array")
+        # Validate required fields
+        if "action" not in result or "component_type" not in result:
+            raise ValueError("Missing required fields in response")
         
-        return patch_array
-    except (json.JSONDecodeError, IndexError, ValueError) as e:
-        # Return a fallback error patch
-        return [{
-            "error": f"Could not parse JSON Patch. Original response: {content[:200]}...",
-            "exception": str(e)
-        }]
+        return result
+    except (json.JSONDecodeError, ValueError) as e:
+        # Fallback
+        return {
+            "action": "generate",
+            "component_type": "Box",
+            "error": f"Could not parse decision: {str(e)}"
+        }
 
+
+def generate_or_edit_component(intent: str, context: str, action: str, component_manifest: dict, current_ast: dict = None) -> dict:
+    """
+    Step 2: Generate or edit the component based on the decision.
+    
+    Args:
+        intent: User's request with explanation
+        context: Previous actions/prompts for context
+        action: "generate" or "edit"
+        component_manifest: The specific component manifest to use
+        current_ast: Current page AST (required if action is "edit")
+    
+    Returns:
+        Component JSON object
+    """
+    client = get_k2_client()
+    
+    component_name = component_manifest.get("friendlyName", component_manifest.get("componentName", "Component"))
+    manifest_str = json.dumps(component_manifest, indent=2)
+    
+    if action == "edit":
+        ast_str = json.dumps(current_ast, indent=2) if current_ast else "{}"
+        prompt = f"""You are an expert AI component editor. Edit an existing {component_name} component based on the user's request.
+
+**USER_REQUEST**: {intent}
+
+**CONTEXT**: {context}
+
+**COMPONENT MANIFEST** ({component_name}):
+```json
+{manifest_str}
+```
+
+**CURRENT PAGE AST**:
+```json
+{ast_str}
+```
+
+**YOUR TASK**:
+Find the {component_name} component in the AST that the user wants to edit and generate the COMPLETE modified component JSON.
+
+**RULES**:
+- Output ONLY a valid JSON object for the component
+- Include all required fields: id, type, props, slots
+- The "type" field must match the componentName from the manifest
+- Generate a human-readable id (e.g., "hero-title", "submit-button")
+- All style properties must be camelCase (fontSize, backgroundColor, etc.)
+- If modifying styles, merge with existing styles
+- Preserve slots structure from the manifest
+
+**OUTPUT FORMAT**:
+{{
+  "id": "component-id",
+  "type": "{component_manifest.get('componentName', component_name)}",
+  "props": {{
+    "style": {{}},
+    ...other props from manifest
+  }},
+  "slots": {{}}
+}}
+
+Output ONLY the JSON object, no other text."""
+    else:  # action == "generate"
+        prompt = f"""You are an expert AI component generator. Create a new {component_name} component based on the user's request.
+
+**USER_REQUEST**: {intent}
+
+**CONTEXT**: {context}
+
+**COMPONENT MANIFEST** ({component_name}):
+```json
+{manifest_str}
+```
+
+**YOUR TASK**:
+Generate a complete component JSON object that fulfills the user's request.
+
+**RULES**:
+- Output ONLY a valid JSON object for the component
+- Include all required fields: id, type, props, slots
+- The "type" field must be: "{component_manifest.get('componentName', component_name)}"
+- Generate a unique, human-readable id (e.g., "hero-title", "submit-button", "contact-form")
+- All style properties must be camelCase (fontSize, backgroundColor, padding, margin, etc.)
+- Use professional, modern styling (think Apple, DeepMind websites)
+- For layouts: use display: "flex" or "grid"
+- For spacing: use padding and margin (e.g., "2rem", "20px")
+- For colors: use hex codes or modern color names
+- Preserve slots structure from the manifest
+
+**STYLE GUIDELINES**:
+- Make it look modern and professional
+- Use proper spacing (padding: "1rem 2rem")
+- Use readable fonts (fontSize: "16px" or "1.5rem")
+- Use appropriate colors for context
+
+**OUTPUT FORMAT**:
+{{
+  "id": "unique-component-id",
+  "type": "{component_manifest.get('componentName', component_name)}",
+  "props": {{
+    "style": {{
+      "fontSize": "16px",
+      "padding": "10px 20px"
+    }},
+    ...other props based on manifest
+  }},
+  "slots": {{}}
+}}
+
+Output ONLY the JSON object, no other text."""
+
+    messages = [{"role": "user", "content": prompt}]
+    
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=messages,
+        stream=False
+    )
+    
+    content = response.choices[0].message.content.strip()
+    
+    # Parse response handling <think> and <answer> tags
+    try:
+        if "<answer>" in content and "</answer>" in content:
+            content = content.split("<answer>")[1].split("</answer>")[0].strip()
+        elif "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0].strip()
+        
+        component = json.loads(content)
+        
+        if "id" not in component:
+            component["id"] = "generated-component"
+        if "type" not in component:
+            component["type"] = component_manifest.get("componentName", component_name)
+        
+        return component
+    except (json.JSONDecodeError, ValueError) as e:
+        # return minimal valid component
+        return {
+            "id": "error-component",
+            "type": component_manifest.get("componentName", component_name),
+            "props": {},
+            "slots": {},
+            "error": f"Could not parse component: {str(e)}"
+        }
