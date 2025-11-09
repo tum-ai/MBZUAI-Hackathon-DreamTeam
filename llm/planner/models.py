@@ -12,6 +12,7 @@ class StepType(str, Enum):
 class DecideRequest(BaseModel):
     sid: str
     text: str
+    step_id: Optional[str] = None
 
 
 class DecideResponse(BaseModel):
@@ -23,6 +24,8 @@ class DecideResponse(BaseModel):
 
 class TaskItem(BaseModel):
     """Individual task in the queue."""
+
+    step_id: str
     text: str
     step_type: str
     explanation: str
@@ -30,6 +33,7 @@ class TaskItem(BaseModel):
     queued_at: Optional[str] = None
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
+
 
 # {
 #   "text": "click submit button",
@@ -44,6 +48,7 @@ class TaskItem(BaseModel):
 
 class QueueStatus(BaseModel):
     """Status of a session's task queue."""
+
     sid: str
     pending: List[TaskItem]
     processing: List[TaskItem]
@@ -63,12 +68,15 @@ class QueueStatus(BaseModel):
 
 class PlanRequest(BaseModel):
     """Request for executing a full plan through the orchestrator."""
+
     sid: str
     text: str
+    step_id: Optional[str] = None
 
 
 class AgentResult(BaseModel):
     """Result from any agent (edit/act/clarify) in unified format."""
+
     session_id: str
     step_id: str
     intent: str
@@ -80,14 +88,16 @@ class AgentResult(BaseModel):
 
 class TimingMetadata(BaseModel):
     """Timing information for the orchestration pipeline."""
+
     planner_time_seconds: float
     total_agent_time_seconds: float
     total_time_seconds: float
-    task_timings: List[dict] 
+    task_timings: List[dict]
 
 
 class PlanResponse(BaseModel):
     """Response from the plan orchestrator with all agent results."""
+
     sid: str
     results: List[AgentResult]
     timing: Optional[TimingMetadata] = None

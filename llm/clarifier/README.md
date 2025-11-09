@@ -54,6 +54,10 @@ Accessible from the unified server at `/llm/server.py`
 }
 ```
 
+> **Tip:** The `step_id` should match the identifier emitted by the planner. When the clarifier
+> responds through the orchestrator, this same `step_id` is broadcast to the frontend so a
+> follow-up user reply can resume the task queue from the correct point.
+
 ### Response Format
 
 ```json
@@ -69,6 +73,7 @@ Accessible from the unified server at `/llm/server.py`
 ### Example cURL
 
 ```bash
+# Usually invoked automatically by the orchestrator, but can be called directly for testing.
 curl -X POST http://localhost:8000/clarify \
   -H "Content-Type: application/json" \
   -d '{
@@ -101,11 +106,11 @@ print(response.json()["reply"])
 
 ## Integration Flow
 
-1. **Planner Agent** (`/decide`) classifies user intent
-2. If `step_type == "clarify"`, the frontend calls **Clarifier Agent** (`/clarify`)
-3. Clarifier generates Jarvis-style question
-4. Reply is saved to session file and returned to user
-5. User provides clarification, which goes back to Planner Agent
+1. **Planner Agent** (`/plan` orchestrator) classifies user intent.
+2. If `step_type == "clarify"`, the orchestrator invokes the Clarifier Agent directly.
+3. Clarifier generates a Jarvis-style question, saves it to the session file, and returns the reply.
+4. The server broadcasts the clarification text (with `session_id`/`step_id`) over the DOM websocket bridge so the frontend can play TTS immediately.
+5. The frontend collects the user’s clarification and calls `/plan` again with the same `session_id` and the clarifier `step_id`, allowing the planner to resume the queue from that point.
 
 ## Session Storage
 

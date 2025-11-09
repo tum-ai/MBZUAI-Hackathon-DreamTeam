@@ -75,6 +75,12 @@ const DomSnapshotBridge = () => {
           safeSend(socket, { type: 'pong', timestamp: Date.now() })
         } else if (payload?.type === 'status') {
           setConnectionState((prev) => (prev === 'connected' ? prev : 'connected'))
+        } else if (payload?.type === 'tts_speak') {
+          window.dispatchEvent(
+            new CustomEvent('voice-assistant-tts', {
+              detail: payload
+            })
+          )
         }
       })
     }

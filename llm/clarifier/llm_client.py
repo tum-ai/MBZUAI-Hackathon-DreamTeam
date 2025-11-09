@@ -16,35 +16,32 @@ def get_k2_client():
     api_key = os.getenv("K2_API_KEY")
     if not api_key:
         raise ValueError("K2_API_KEY not found in environment variables")
-    
+
     # Create a custom httpx client without proxies to avoid compatibility issues
-    http_client = httpx.Client(
-        timeout=1200.0,
-        follow_redirects=True
-    )
-    
+    http_client = httpx.Client(timeout=1200.0, follow_redirects=True)
+
     return OpenAI(
         base_url=BASE_URL,
         api_key=api_key,
         timeout=1200.0,
         max_retries=2,
-        http_client=http_client
+        http_client=http_client,
     )
 
 
 def generate_clarification(intent: str, context: str) -> str:
     """
     Generate a Jarvis-style clarification reply based on intent and context.
-    
+
     Args:
         intent: The ambiguous user request with explanation
         context: Previous actions/prompts for context
-    
+
     Returns:
         A friendly, contextual clarification question in Jarvis style
     """
     client = get_k2_client()
-    
+
     prompt = f"""You are JARVIS - a confident, witty AI assistant helping users build websites through voice commands. You're like the JARVIS from Iron Man: professional, helpful, with a touch of tech bro humor.
 
 The user just said something ambiguous that needs clarification.
@@ -82,18 +79,15 @@ Keep it casual but clear. Reference the context naturally. Be helpful, not robot
 Respond with ONLY the clarification question - no JSON, no extra formatting. Just your natural Jarvis reply."""
 
     messages = [{"role": "user", "content": prompt}]
-    
+
     response = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=messages,
-        stream=False
+        model=MODEL_NAME, messages=messages, stream=False
     )
-    
+
     content = response.choices[0].message.content.strip()
-    
+
     # Handle potential XML tags from the model
     if "<answer>" in content and "</answer>" in content:
         content = content.split("<answer>")[1].split("</answer>")[0].strip()
-    
-    return content
 
+    return content

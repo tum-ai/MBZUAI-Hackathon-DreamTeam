@@ -491,6 +491,61 @@ async def fetch_dom_snapshot(
         ) from exc
 
 
+async def send_tts_message(
+    text: str,
+    session_id: str,
+    step_id: str,
+    ws_url: str = DOM_SNAPSHOT_WS_URL_DEFAULT,
+    target_client_id: Optional[str] = None,
+) -> None:
+    """
+    Broadcast a TTS message to the frontend via the websocket bridge.
+    """
+    if not text:
+        return
+
+    logger.info(
+        "Dispatching TTS message for session=%s step=%s (len=%d)",
+        session_id,
+        step_id,
+        len(text),
+    )
+
+    payload = {
+        "type": "tts_broadcast",
+        "text": text,
+        "sessionId": session_id,
+        "stepId": step_id,
+    }
+    if target_client_id:
+        payload["targetClientId"] = target_client_id
+
+    try:
+        async with websockets.connect(ws_url, ping_interval=None) as websocket:
+            await websocket.send(json.dumps({"type": "register", "role": "backend"}))
+
+            # Best-effort read of register acknowledgement
+            try:
+                await asyncio.wait_for(websocket.recv(), timeout=1.0)
+            except asyncio.TimeoutError:
+                pass
+
+            await websocket.send(json.dumps(payload))
+
+            # Best-effort read of acknowledgement
+            try:
+                await asyncio.wait_for(websocket.recv(), timeout=1.0)
+            except asyncio.TimeoutError:
+                pass
+    except Exception as exc:
+        logger.warning(
+            "Failed to dispatch TTS message for session %s step %s: %s",
+            session_id,
+            step_id,
+            exc,
+        )
+
+
 # ============================================================================
 # FastAPI Apps
 # ============================================================================
@@ -642,7 +697,7 @@ async def clarify(request: ClarifyRequest) -> ClarifyResponse:
     - reply: Jarvis-style clarification question
     """
     try:
-        response = process_clarification_request(request)
+        response = await process_clarification_request(request)
         return response
     except Exception as e:
         raise HTTPException(

@@ -37,8 +37,12 @@ Server: http://localhost:8000
 ```bash
 curl -X POST http://localhost:8000/decide \
   -H "Content-Type: application/json" \
-  -d '{"sid": "session-123", "text": "Add a hero section"}'
+  -d '{"sid": "session-123", "text": "Add a hero section", "step_id": "session-123-root-0"}'
 ```
+
+You can provide an optional `step_id` when calling `/decide`. If supplied, it will be used for the
+first task emitted for that request (useful when resuming a clarification thread from the
+frontend). Otherwise, the planner generates a new UUID for each task.
 
 Response: Array of `{step_id, step_type, intent, context}`
 
@@ -57,7 +61,7 @@ Response: `{sid, pending, processing, completed}`
 1. **Classifies intent**: edit/act/clarify using K2 Think LLM
 2. **Enriches prompt**: adds explanation for next agent
 3. **Manages context**: stores last 2 prompts, summarizes if >100 chars
-4. **Tracks steps**: generates unique step_id per request
+4. **Tracks steps**: generates unique step_id per request (or reuses a supplied `step_id` when provided)
 5. **Queue system**: splits multi-task requests and processes sequentially per session
 
 ## Queue System

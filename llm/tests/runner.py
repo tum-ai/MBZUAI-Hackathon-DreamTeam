@@ -8,6 +8,7 @@ import json
 import time
 from pathlib import Path
 import sys
+import uuid
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
@@ -57,12 +58,13 @@ def ensure_results_dir():
     RESULTS_DIR.mkdir(exist_ok=True)
 
 
-async def send_plan_request(client, sid, text):
+async def send_plan_request(client, sid, text, step_id):
     """Send request to /plan endpoint."""
     url = f"{API_BASE_URL}/plan"
     payload = {
         "sid": sid,
-        "text": text
+        "text": text,
+        "step_id": step_id,
     }
     
     try:
@@ -84,10 +86,13 @@ async def run_single_test(test, client):
     print(f"[{test['id']}] Running: {test['name']}")
     
     # Send request to /plan endpoint
+    request_step_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{test['sid']}-{test['id']}"))
+
     response = await send_plan_request(
         client,
         test["sid"],
-        test["text"]
+        test["text"],
+        request_step_id,
     )
     
     test_duration = time.time() - test_start
@@ -97,7 +102,8 @@ async def run_single_test(test, client):
         "sid": test["sid"],
         "text": test["text"],
         "expected_tasks": test.get("expected_tasks", 1),
-        "expected_agents": test.get("expected_agents", [])
+        "expected_agents": test.get("expected_agents", []),
+        "step_id": request_step_id,
     }
     
     # Validate response
