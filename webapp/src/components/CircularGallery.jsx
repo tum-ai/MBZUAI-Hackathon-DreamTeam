@@ -616,7 +616,7 @@ export default function CircularGallery({
         overlay.style.transform = 'translate(-50%, -50%)';
         overlay.style.width = `${imageWidth}px`;
         overlay.style.height = `${imageHeight}px`;
-        overlay.style.border = '3px solid #3B82F6';
+        overlay.style.border = '3px solid #EF5D2A';
         overlay.style.borderRadius = '8px';
         overlay.style.pointerEvents = 'none';
         overlay.style.zIndex = '1000';
