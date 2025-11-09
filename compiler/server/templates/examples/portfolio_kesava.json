@@ -1,0 +1,43 @@
+{
+  "name": "Kesava Prasad",
+  "tagline": "Student at TUM | Photography & Coding Enthusiast",
+  "palette": "professional",
+  "fonts": "modern",
+  "spacing": "normal",
+  "heroLayout": "split",
+  "image": "https://picsum.photos/600/600?random=1",
+  "about": "I am a student at the Technical University of Munich (TUM), actively pursuing my academic curriculum while nurturing a diverse range of hobbies and interests. My passions span creative and technical domains: I capture the beauty of moments through photography, craft solutions with coding, and engage in dynamic activities like driving, racing, and rifle practice. I also thrive in competitive environments such as cricket, chess, and hackathons, where strategy and quick thinking are key.",
+  "sections": ["about", "skills", "projects", "contact"],
+  "skills": [
+    "Photography",
+    "Coding",
+    "Driving",
+    "Racing",
+    "Rifle Practice",
+    "Cricket",
+    "Chess",
+    "Hackathons"
+  ],
+  "projects": [
+    {
+      "title": "AI Web Builder",
+      "description": "Voice-controlled web development platform",
+      "image": "https://picsum.photos/400/300?random=10"
+    },
+    {
+      "title": "Photography Portfolio",
+      "description": "Collection of my best shots",
+      "image": "https://picsum.photos/400/300?random=11"
+    },
+    {
+      "title": "Racing Analytics",
+      "description": "Data-driven racing performance tracker",
+      "image": "https://picsum.photos/400/300?random=12"
+    }
+  ],
+  "socialLinks": {
+    "github": "https://github.com/kesava89",
+    "linkedin": "https://linkedin.com/in/kesavaprasad",
+    "email": "mailto:kesava@example.com"
+  }
+}

@@ -1,155 +1,267 @@
 {
-  "state": {
-    "faqOpen": {
-      "type": "boolean",
-      "defaultValue": false
-    }
-  },
+  "state": {},
   "tree": {
-    "id": "page-root",
+    "id": "root",
     "type": "Box",
     "props": {
       "style": {
-        "maxWidth": "1200px",
-        "margin": "0 auto",
         "padding": "2rem"
       }
     },
     "slots": {
       "default": [
         {
-          "id": "hero-title",
-          "type": "GradientText",
+          "id": "title-1",
+          "type": "Text",
           "props": {
-            "content": "Welcome to the Future",
-            "as": "h1",
-            "variant": "sunset",
-            "style": {
-              "fontSize": "72px",
-              "textAlign": "center",
-              "marginBottom": "3rem"
-            }
-          }
+            "content": "New Page: Home",
+            "as": "h1"
+          },
+          "slots": {}
         },
         {
-          "id": "features-section",
+          "id": "hero-section",
           "type": "Box",
           "props": {
             "style": {
-              "marginTop": "4rem"
-            }
+              "height": "100vh",
+              "width": "100%",
+              "display": "flex",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "padding": "0 2rem"
+            },
+            "as": "section"
           },
           "slots": {
             "default": [
               {
-                "id": "features-heading",
+                "id": "hero-name",
                 "type": "Text",
                 "props": {
-                  "content": "Our Features",
+                  "content": "Dr. Sarah Martinez",
+                  "as": "h1",
+                  "style": {
+                    "fontSize": "6rem",
+                    "fontWeight": "900",
+                    "color": "#000000",
+                    "margin": "0"
+                  }
+                },
+                "slots": {
+                  "default": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "about-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "width": "100%",
+              "maxWidth": "1200px",
+              "margin": "4rem auto",
+              "padding": "2rem"
+            },
+            "as": "section"
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "about-title",
+                "type": "Text",
+                "props": {
+                  "content": "About Me",
                   "as": "h2",
                   "style": {
-                    "fontSize": "36px",
-                    "marginBottom": "2rem"
+                    "fontSize": "3rem",
+                    "fontWeight": "700",
+                    "color": "#000000",
+                    "borderBottom": "3px solid #4a4a4a",
+                    "paddingBottom": "1rem",
+                    "marginBottom": "1.5rem"
                   }
+                },
+                "slots": {
+                  "default": []
                 }
               },
               {
-                "id": "features-grid",
+                "id": "about-content",
+                "type": "Text",
+                "props": {
+                  "content": "Researching the intersection of artificial intelligence and human values. Published author and frequent speaker on responsible AI development.",
+                  "as": "p",
+                  "style": {
+                    "fontSize": "1.2rem",
+                    "color": "#000000",
+                    "lineHeight": "1.8",
+                    "textAlign": "justify"
+                  }
+                },
+                "slots": {
+                  "default": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "experience-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "width": "100%",
+              "maxWidth": "1200px",
+              "margin": "4rem auto",
+              "padding": "2rem"
+            },
+            "as": "section"
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "experience-title",
+                "type": "Text",
+                "props": {
+                  "content": "Experience",
+                  "as": "h2",
+                  "style": {
+                    "fontSize": "3rem",
+                    "fontWeight": "700",
+                    "color": "#000000",
+                    "borderBottom": "3px solid #4a4a4a",
+                    "paddingBottom": "1rem",
+                    "marginBottom": "1.5rem"
+                  }
+                },
+                "slots": {
+                  "default": []
+                }
+              },
+              {
+                "id": "experience-list",
                 "type": "Box",
                 "props": {
                   "style": {
-                    "display": "grid",
-                    "gridTemplateColumns": "repeat(3, 1fr)",
-                    "gap": "2rem"
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": "1.5rem"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "feature-performance",
+                      "id": "experience-0",
                       "type": "Card",
                       "props": {
-                        "variant": "elevated"
+                        "variant": "outlined"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "perf-title",
+                            "id": "experience-0-title",
                             "type": "Text",
                             "props": {
-                              "content": "\u00e2\u0161\u00a1 Lightning Fast",
+                              "content": "Senior Research Scientist",
                               "as": "h3",
                               "style": {
-                                "fontSize": "24px",
-                                "marginBottom": "1rem"
+                                "fontSize": "1.5rem",
+                                "color": "#000000"
                               }
+                            },
+                            "slots": {
+                              "default": []
                             }
                           },
                           {
-                            "id": "perf-desc",
+                            "id": "experience-0-company",
                             "type": "Text",
                             "props": {
-                              "content": "Optimized for maximum performance and speed"
+                              "content": "AI Ethics Lab | 2020-Present",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "experience-0-description",
+                            "type": "Text",
+                            "props": {
+                              "content": "Leading research on fairness and transparency in machine learning systems",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "id": "feature-design",
+                      "id": "experience-1",
                       "type": "Card",
                       "props": {
-                        "variant": "elevated"
+                        "variant": "outlined"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "design-title",
+                            "id": "experience-1-title",
                             "type": "Text",
                             "props": {
-                              "content": "\u00f0\u0178\u017d\u00a8 Beautiful Design",
+                              "content": "Assistant Professor",
                               "as": "h3",
                               "style": {
-                                "fontSize": "24px",
-                                "marginBottom": "1rem"
+                                "fontSize": "1.5rem",
+                                "color": "#000000"
                               }
+                            },
+                            "slots": {
+                              "default": []
                             }
                           },
                           {
-                            "id": "design-desc",
+                            "id": "experience-1-company",
                             "type": "Text",
                             "props": {
-                              "content": "Stunning visuals that capture attention"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "feature-easy",
-                      "type": "Card",
-                      "props": {
-                        "variant": "elevated"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "easy-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "\u00f0\u0178\u0161\u20ac Easy to Use",
-                              "as": "h3",
+                              "content": "Tech University | 2017-2020",
+                              "as": "p",
                               "style": {
-                                "fontSize": "24px",
-                                "marginBottom": "1rem"
+                                "fontSize": "1rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
                               }
+                            },
+                            "slots": {
+                              "default": []
                             }
                           },
                           {
-                            "id": "easy-desc",
+                            "id": "experience-1-description",
                             "type": "Text",
                             "props": {
-                              "content": "Intuitive interface anyone can master"
+                              "content": "Taught AI ethics and machine learning courses",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
                             }
                           }
                         ]
@@ -162,100 +274,557 @@
           }
         },
         {
-          "id": "tech-list",
+          "id": "education-section",
           "type": "Box",
           "props": {
             "style": {
-              "marginTop": "4rem"
-            }
+              "width": "100%",
+              "maxWidth": "1200px",
+              "margin": "4rem auto",
+              "padding": "2rem"
+            },
+            "as": "section"
           },
           "slots": {
             "default": [
               {
-                "id": "tech-heading",
+                "id": "education-title",
                 "type": "Text",
                 "props": {
-                  "content": "Technologies We Use",
+                  "content": "Education",
                   "as": "h2",
                   "style": {
-                    "fontSize": "36px",
-                    "marginBottom": "2rem"
+                    "fontSize": "3rem",
+                    "fontWeight": "700",
+                    "color": "#000000",
+                    "borderBottom": "3px solid #4a4a4a",
+                    "paddingBottom": "1rem",
+                    "marginBottom": "1.5rem"
                   }
+                },
+                "slots": {
+                  "default": []
                 }
               },
               {
-                "id": "tech-items",
-                "type": "List",
+                "id": "education-list",
+                "type": "Box",
                 "props": {
-                  "items": [
-                    "Vue.js 3 - Modern reactive framework",
-                    "TypeScript - Type-safe development",
-                    "Vite - Lightning fast build tool",
-                    "Tailwind CSS - Utility-first styling"
-                  ],
                   "style": {
-                    "fontSize": "18px",
-                    "lineHeight": "2"
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": "1.5rem"
                   }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "education-0",
+                      "type": "Card",
+                      "props": {
+                        "variant": "outlined"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "education-0-degree",
+                            "type": "Text",
+                            "props": {
+                              "content": "PhD in Computer Science",
+                              "as": "h3",
+                              "style": {
+                                "fontSize": "1.5rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "education-0-school",
+                            "type": "Text",
+                            "props": {
+                              "content": "Stanford University | 2017",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "education-0-description",
+                            "type": "Text",
+                            "props": {
+                              "content": "Dissertation on algorithmic fairness",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "education-1",
+                      "type": "Card",
+                      "props": {
+                        "variant": "outlined"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "education-1-degree",
+                            "type": "Text",
+                            "props": {
+                              "content": "MSc in AI",
+                              "as": "h3",
+                              "style": {
+                                "fontSize": "1.5rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "education-1-school",
+                            "type": "Text",
+                            "props": {
+                              "content": "MIT | 2013",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "education-1-description",
+                            "type": "Text",
+                            "props": {
+                              "content": "Focus on natural language processing",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "id": "faq-section",
+          "id": "blog-section",
           "type": "Box",
           "props": {
             "style": {
-              "marginTop": "4rem"
-            }
+              "width": "100%",
+              "maxWidth": "1200px",
+              "margin": "4rem auto",
+              "padding": "2rem"
+            },
+            "as": "section"
           },
           "slots": {
             "default": [
               {
-                "id": "faq-heading",
+                "id": "blog-title",
                 "type": "Text",
                 "props": {
-                  "content": "Frequently Asked Questions",
+                  "content": "Blog",
                   "as": "h2",
                   "style": {
-                    "fontSize": "36px",
-                    "marginBottom": "2rem"
+                    "fontSize": "3rem",
+                    "fontWeight": "700",
+                    "color": "#000000",
+                    "borderBottom": "3px solid #4a4a4a",
+                    "paddingBottom": "1rem",
+                    "marginBottom": "1.5rem"
                   }
+                },
+                "slots": {
+                  "default": []
                 }
               },
               {
-                "id": "faq-item-1",
-                "type": "Accordion",
+                "id": "blog-posts",
+                "type": "Box",
                 "props": {
-                  "title": "What is this project about?",
-                  "isOpen": {
-                    "type": "stateBinding",
-                    "stateKey": "faqOpen"
+                  "style": {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": "1.5rem"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "faq-answer",
-                      "type": "Text",
+                      "id": "blog-post-0",
+                      "type": "Card",
                       "props": {
-                        "content": "This is a demonstration of our enhanced component system with semantic IDs, variants, and advanced features."
+                        "variant": "elevated"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "blog-post-0-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "My First Blog Post",
+                              "as": "h3",
+                              "style": {
+                                "fontSize": "1.5rem",
+                                "color": "#000000",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-0-date",
+                            "type": "Text",
+                            "props": {
+                              "content": "Jan 2024",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "0.9rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-0-excerpt",
+                            "type": "Text",
+                            "props": {
+                              "content": "An introduction to my journey...",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
                       }
-                    }
-                  ]
-                },
-                "events": {
-                  "click": [
+                    },
                     {
-                      "type": "action:setState",
-                      "stateKey": "faqOpen",
-                      "newValue": {
-                        "type": "expression",
-                        "value": "!${state.faqOpen}"
+                      "id": "blog-post-1",
+                      "type": "Card",
+                      "props": {
+                        "variant": "elevated"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "blog-post-1-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "Learning New Technologies",
+                              "as": "h3",
+                              "style": {
+                                "fontSize": "1.5rem",
+                                "color": "#000000",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-1-date",
+                            "type": "Text",
+                            "props": {
+                              "content": "Feb 2024",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "0.9rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-1-excerpt",
+                            "type": "Text",
+                            "props": {
+                              "content": "Exploring the latest tools...",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "blog-post-2",
+                      "type": "Card",
+                      "props": {
+                        "variant": "elevated"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "blog-post-2-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "Design Principles",
+                              "as": "h3",
+                              "style": {
+                                "fontSize": "1.5rem",
+                                "color": "#000000",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-2-date",
+                            "type": "Text",
+                            "props": {
+                              "content": "Mar 2024",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "0.9rem",
+                                "color": "#6a6a6a",
+                                "marginBottom": "0.5rem"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          },
+                          {
+                            "id": "blog-post-2-excerpt",
+                            "type": "Text",
+                            "props": {
+                              "content": "What makes good design...",
+                              "as": "p",
+                              "style": {
+                                "fontSize": "1rem",
+                                "color": "#000000"
+                              }
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "contact-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "width": "100%",
+              "maxWidth": "1200px",
+              "margin": "4rem auto",
+              "padding": "2rem",
+              "textAlign": "center"
+            },
+            "as": "section"
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "contact-title",
+                "type": "Text",
+                "props": {
+                  "content": "Get In Touch",
+                  "as": "h2",
+                  "style": {
+                    "fontSize": "3rem",
+                    "fontWeight": "700",
+                    "color": "#000000",
+                    "marginBottom": "1.5rem"
+                  }
+                },
+                "slots": {
+                  "default": []
+                }
+              },
+              {
+                "id": "contact-description",
+                "type": "Text",
+                "props": {
+                  "content": "Feel free to reach out for collaborations or just a friendly hello",
+                  "as": "p",
+                  "style": {
+                    "fontSize": "1.2rem",
+                    "color": "#6a6a6a",
+                    "marginBottom": "1.5rem"
+                  }
+                },
+                "slots": {
+                  "default": []
+                }
+              },
+              {
+                "id": "contact-links",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "display": "flex",
+                    "gap": "1rem",
+                    "justifyContent": "center",
+                    "flexWrap": "wrap"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "social-linkedin",
+                      "type": "Link",
+                      "props": {
+                        "href": "https://linkedin.com/in/sarahmartinez",
+                        "target": "_blank",
+                        "style": {
+                          "padding": "0.8rem 1.5rem",
+                          "backgroundColor": "#000000",
+                          "color": "#ffffff",
+                          "borderRadius": "8px",
+                          "textDecoration": "none",
+                          "fontSize": "1.1rem",
+                          "fontWeight": "600",
+                          "transition": "all 0.3s ease"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "social-linkedin-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Linkedin",
+                              "as": "span"
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "social-scholar",
+                      "type": "Link",
+                      "props": {
+                        "href": "https://scholar.google.com/sarahmartinez",
+                        "target": "_blank",
+                        "style": {
+                          "padding": "0.8rem 1.5rem",
+                          "backgroundColor": "#000000",
+                          "color": "#ffffff",
+                          "borderRadius": "8px",
+                          "textDecoration": "none",
+                          "fontSize": "1.1rem",
+                          "fontWeight": "600",
+                          "transition": "all 0.3s ease"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "social-scholar-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Scholar",
+                              "as": "span"
+                            },
+                            "slots": {
+                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "footer-section",
+          "type": "Box",
+          "props": {
+            "style": {
+              "width": "100%",
+              "margin": "4rem 0 0 0",
+              "padding": "2rem",
+              "textAlign": "center",
+              "backgroundColor": "#f5f5f5",
+              "borderTop": "1px solid #e0e0e0"
+            },
+            "as": "footer"
+          },
+          "slots": {
+            "default": [
+              {
+                "id": "footer-copyright",
+                "type": "Text",
+                "props": {
+                  "content": "\u00a9 2024 Dr. Sarah Martinez. All rights reserved.",
+                  "as": "p",
+                  "style": {
+                    "fontSize": "1rem",
+                    "color": "#6a6a6a"
+                  }
+                },
+                "slots": {
+                  "default": []
                 }
               }
             ]

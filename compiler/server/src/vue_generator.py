@@ -3,6 +3,7 @@ import json
 import os
 import re
 from pathlib import Path
+import html
 
 class VueGenerator:
     """
@@ -354,7 +355,9 @@ class VueGenerator:
                     if tag == "button": 
                          continue
                     elif tag != "p": # Put prop on element (e.g., <h1 content="...">)
-                         props_map[key] = f'"{content}"'
+                         # Escape quotes in content for HTML attribute
+                         escaped_content = html.escape(content, quote=True)
+                         props_map[key] = f'"{escaped_content}"'
                     continue
                 
                 if key == 'style' and isinstance(value, dict):
