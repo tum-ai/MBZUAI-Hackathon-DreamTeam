@@ -58,33 +58,10 @@ for i in 0 1 2 3; do
     start_variation $i
 done
 
-# Start active project if it exists
-if [ -d "$ACTIVE_DIR" ]; then
-    echo ""
-    echo "📦 Active Project (Port 5177)"
-    
-    if [ ! -d "$ACTIVE_DIR/node_modules" ]; then
-        echo "   Installing dependencies..."
-        (cd "$ACTIVE_DIR" && npm install > /dev/null 2>&1)
-    fi
-    
-    echo "   Starting active project on port 5177..."
-    cd "$ACTIVE_DIR"
-    nohup npm run dev -- --port 5177 --host 0.0.0.0 > /tmp/active.log 2>&1 &
-    ACTIVE_PID=$!
-    cd - > /dev/null
-    echo "   PID: $ACTIVE_PID"
-    echo "   URL: http://localhost:5177"
-    echo "   Logs: /tmp/active.log"
-    echo $ACTIVE_PID >> /tmp/template-servers.pids
-    
-    echo ""
-    echo "🎯 Active project is the selected variation for editing"
-else
-    echo ""
-    echo "ℹ️  No active project yet. Select a variation via API:"
-    echo "   curl -X POST http://localhost:8000/select-template-variation -H 'Content-Type: application/json' -d '{\"variation_index\": 0}'"
-fi
+# NOTE: Active project (port 5177) is managed by active_server_controller.sh
+# Do NOT start it here to avoid conflicts
+echo ""
+echo "ℹ️  Active project (port 5177) is managed separately by active_server_controller.sh"
 
 echo ""
 echo "✅ All servers started!"

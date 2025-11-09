@@ -15,10 +15,10 @@ const resolveParentOrigin = () => {
   }
   
   if (typeof window !== 'undefined' && window.location) {
-    return `${window.location.protocol}//${window.location.hostname}:5173`
+    return `${window.location.protocol}//${window.location.hostname}:5178`
   }
   
-  return 'http://localhost:5173'
+  return 'http://localhost:5178'
 }
 
 const PARENT_ORIGIN = resolveParentOrigin()

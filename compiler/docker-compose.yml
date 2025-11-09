@@ -12,8 +12,6 @@ services:
     volumes:
       # Shared volume for template variations
       - template-variations:/tmp/selection
-      # Shared volume for active project
-      - active-project:/tmp/active
       # Mount server code for development (optional - remove in production)
       - ./server:/app/compiler/server
       - ./manifests:/app/compiler/manifests
@@ -31,7 +29,7 @@ services:
       retries: 5
       start_period: 10s
 
-  # Variations viewer service
+  # Variations viewer service (simplified - no active project, no restart)
   compiler-variations:
     build:
       context: ..  # Build from repo root
@@ -42,11 +40,9 @@ services:
       - "5174:5174"  # Variation 1 - Dark
       - "5175:5175"  # Variation 2 - Minimal
       - "5176:5176"  # Variation 3 - Energetic
-      - "5177:5177"  # Active project
     volumes:
-      # Same shared volumes as API server
+      # Shared volume for template variations (no more active-project)
       - template-variations:/tmp/selection
-      - active-project:/tmp/active
     environment:
       - NODE_ENV=development
     networks:
@@ -54,34 +50,7 @@ services:
     depends_on:
       compiler-api:
         condition: service_healthy
-    command: >
-      bash -c "
-        echo '🚀 Starting active project dev server on port 5177...';
-        cd /tmp/active;
-        if [ -f package.json ]; then
-          npm install;
-          npx vite --host 0.0.0.0 --port 5177 --strictPort &
-          ACTIVE_PID=\$!;
-          echo '✅ Active project server started (PID: '\$ACTIVE_PID')';
-        else
-          echo '⚠️  No package.json in /tmp/active, waiting for files...';
-          while [ ! -f /tmp/active/package.json ]; do sleep 2; done;
-          npm install;
-          npx vite --host 0.0.0.0 --port 5177 --strictPort &
-          ACTIVE_PID=\$!;
-          echo '✅ Active project server started (PID: '\$ACTIVE_PID')';
-        fi;
-        
-        echo '📦 Checking for template variations (optional)...';
-        if [ -d /tmp/selection/0 ] && [ -f /tmp/selection/0/package.json ]; then
-          echo '✅ Variations found, starting variation servers...';
-          /app/compiler/server/run_variations.sh &
-        else
-          echo 'ℹ️  No variations found, skipping variation servers';
-        fi;
-        
-        wait \$ACTIVE_PID;
-      "
+    command: /app/compiler/server/run_variations.sh
 
 
 networks:
@@ -90,6 +59,4 @@ networks:
 
 volumes:
   template-variations:
-    driver: local
-  active-project:
     driver: local

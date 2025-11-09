@@ -16,10 +16,10 @@ function TemplateSelection() {
   const [enlargedImage, setEnlargedImage] = useState(null)
 
   const options = [
-    { id: 'A' },
-    { id: 'B' },
-    { id: 'C' },
-    { id: 'D' }
+    { id: 'A', port: 5173, label: 'Professional' },
+    { id: 'B', port: 5174, label: 'Dark' },
+    { id: 'C', port: 5175, label: 'Minimal' },
+    { id: 'D', port: 5176, label: 'Energetic' }
   ]
 
   const handleOpenModal = (optionId) => {
@@ -27,12 +27,33 @@ function TemplateSelection() {
     setEditMode(false)
   }
 
-  const handleSelectDesign = () => {
+  const handleSelectDesign = async () => {
     // Transition from inspection to edit mode
     setEditMode(true)
-    // Simulate connection status changes for demo
-    setTimeout(() => setConnectionStatus('updating'), 2000)
-    setTimeout(() => setConnectionStatus('connected'), 4000)
+    setConnectionStatus('updating')
+    
+    // Find the variation index (0-3) for the selected option
+    const selectedIndex = options.findIndex(o => o.id === inspectingOption)
+    
+    try {
+      // Call the compiler API to select this variation as active
+      const response = await fetch('http://localhost:8000/select-template-variation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ variation_index: selectedIndex })
+      })
+      
+      if (response.ok) {
+        console.log(`Selected variation ${selectedIndex} (${options[selectedIndex].label}) as active`)
+        setConnectionStatus('connected')
+      } else {
+        console.error('Failed to select template variation:', await response.text())
+        setConnectionStatus('connected') // Still show connected, just log error
+      }
+    } catch (error) {
+      console.error('Error selecting template variation:', error)
+      setConnectionStatus('connected')
+    }
   }
 
   const handleCloseModal = () => {
@@ -129,9 +150,9 @@ function TemplateSelection() {
                 className="template-selection__card"
               >
                 <iframe
-                  src="http://localhost:5174"
+                  src={`http://localhost:${option.port}`}
                   className="template-selection__iframe"
-                  title={`Design Option ${option.id}`}
+                  title={`Design Option ${option.id} - ${option.label}`}
                   sandbox="allow-same-origin allow-scripts"
                   style={{ pointerEvents: 'none' }}
                 />
@@ -154,9 +175,9 @@ function TemplateSelection() {
             onMouseMove={handleModalMouseMove}
           >
             <iframe
-              src="http://localhost:5174"
+              src={`http://localhost:${options.find(o => o.id === inspectingOption)?.port || 5174}`}
               className="inspection-modal__iframe"
-              title={`${editMode ? 'Editing' : 'Inspecting'} Design Option ${inspectingOption}`}
+              title={`${editMode ? 'Editing' : 'Inspecting'} Design Option ${inspectingOption} - ${options.find(o => o.id === inspectingOption)?.label}`}
               sandbox="allow-same-origin allow-scripts"
             />
 

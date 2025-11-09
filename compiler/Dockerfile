@@ -25,9 +25,11 @@ COPY compiler/ /app/compiler/
 COPY compiler/docker-ref/start.sh /app/start.sh
 
 # Make scripts executable
-RUN chmod +x /app/compiler/server/run_server.py \
-    && chmod +x /app/compiler/server/run_variations.sh \
-    && chmod +x /app/compiler/server/stop_variations.sh
+RUN chmod a+x /app/compiler/server/run_server.py \
+    && chmod a+x /app/compiler/server/run_variations.sh \
+    && chmod a+x /app/compiler/server/stop_variations.sh \
+    && chmod a+x /app/compiler/server/active_server_controller.sh \
+    && chmod a+x /app/compiler/server/trigger_restart.sh
 
 # Create shared volume directories
 RUN mkdir -p /tmp/selection/0 /tmp/selection/1 /tmp/selection/2 /tmp/selection/3 \

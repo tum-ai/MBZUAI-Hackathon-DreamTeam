@@ -10,21 +10,34 @@ from .manifest_loader import load_all_manifests
 
 logger = logging.getLogger(__name__)
 
-# Hardcoded paths for AST and project config
-AST_PATH = Path(__file__).resolve().parents[2] / "compiler" / "server" / "inputs" / "home.json"
-
 # Compiler URL (check if compiler is on different port via env var)
 COMPILER_URL = os.getenv("COMPILER_URL", "http://localhost:8000")
 
 
 def load_current_ast() -> dict:
-    """Load the current page AST from home.json."""
+    """
+    Load the current page AST by querying the compiler for the selected variation.
+    The compiler now tracks which variation is selected and reads/writes directly to it.
+    """
     try:
-        with open(AST_PATH, 'r') as f:
-            return json.load(f)
+        # Ask compiler which variation is selected
+        with httpx.Client(timeout=10.0) as client:
+            response = client.get(f"{COMPILER_URL}/selected-variation")
+            if response.status_code == 200:
+                selection_info = response.json()
+                if selection_info["status"] == "selected":
+                    # Fetch AST from compiler (it will read from the selected variation)
+                    ast_response = client.get(f"{COMPILER_URL}/ast/home")
+                    if ast_response.status_code == 200:
+                        ast = ast_response.json()
+                        logger.info(f"Loaded AST from selected variation {selection_info['selected_variation']}")
+                        return ast
     except Exception as e:
-        logger.warning(f"Error loading AST: {e}")
-        return {"state": {}, "tree": {"id": "root", "type": "Box", "props": {}, "slots": {"default": []}}}
+        logger.warning(f"Error loading AST from selected variation: {e}")
+    
+    # Return empty AST if nothing exists
+    logger.warning("No selection or error, returning empty structure")
+    return {"state": {}, "tree": {"id": "root", "type": "Box", "props": {}, "slots": {"default": []}}}
 
 
 def extract_component_from_result(component: dict) -> dict:

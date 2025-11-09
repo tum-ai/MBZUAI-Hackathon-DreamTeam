@@ -464,7 +464,7 @@ def resolve_dom_snapshot_ws_url() -> str:
 
     scheme = os.getenv("DOM_SNAPSHOT_WS_SCHEME", "ws")
     host = os.getenv("DOM_SNAPSHOT_WS_HOST", "localhost")  # Changed from 0.0.0.0
-    port = os.getenv("DOM_SNAPSHOT_WS_PORT", "5173")  # Added default port
+    port = os.getenv("DOM_SNAPSHOT_WS_PORT", "5178")  # Added default port
     path = os.getenv("DOM_SNAPSHOT_WS_PATH", "/dom-snapshot")
 
     if not path.startswith("/"):

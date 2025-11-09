@@ -3,6 +3,7 @@ import json
 import shutil
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import jsonpatch
 
@@ -10,6 +11,15 @@ import config
 from .project_generator import ProjectGenerator
 
 app = FastAPI()
+
+# Add CORS middleware to allow all origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # --- Lock and Generation Task REMOVED ---
 # This server's only job is to apply patches and write files.
@@ -24,8 +34,11 @@ class TemplateSelectionRequest(BaseModel):
 
 # --- Template Generation Constants ---
 TEMPLATE_SELECTION_DIR = Path("/tmp/selection")
-ACTIVE_PROJECT_DIR = Path("/tmp/active")  # The selected/active template
+ACTIVE_PROJECT_DIR = Path("/tmp/active")  # DEPRECATED - no longer used
 PALETTE_VARIATIONS = ["professional", "dark", "minimal", "energetic"]  # 4 variations
+
+# Track which variation is selected (0-3, or None)
+SELECTED_VARIATION_INDEX = None
 
 # --- API Endpoints ---
 
@@ -146,8 +159,18 @@ async def patch_project_config(
 async def get_page_ast(page_name: str):
     """
     Returns the AST JSON for a single page (e.g., 'home.json').
+    V7: Reads from selected variation /tmp/selection/{index} when available.
     """
-    ast_file_path = config.AST_INPUT_DIR / f"{page_name.lower()}.json"
+    page_name_lower = page_name.lower()
+    
+    # Check if we have a selected variation
+    if SELECTED_VARIATION_INDEX is not None:
+        selected_ast_dir = TEMPLATE_SELECTION_DIR / str(SELECTED_VARIATION_INDEX) / "src" / "ast"
+        ast_file_path = selected_ast_dir / f"{page_name_lower}.json"
+        print(f"Reading AST from selected variation {SELECTED_VARIATION_INDEX}: {ast_file_path}")
+    else:
+        ast_file_path = config.AST_INPUT_DIR / f"{page_name_lower}.json"
+        print(f"Reading AST from default location: {ast_file_path}")
     
     if not ast_file_path.exists():
         print(f"Info: AST file not found: {ast_file_path.name}. Returning blank AST.")
@@ -184,10 +207,19 @@ async def patch_page_ast(
 ):
     """
     Applies a JSON patch to a specific page's AST file (e.g., 'home.json').
-    V5: REMOVED build trigger. This endpoint only writes files.
+    V7: Works with selected variation /tmp/selection/{index} when available.
+    Falls back to config.AST_INPUT_DIR for initial generation.
     """
     page_name_lower = page_name.lower()
-    ast_file_path = config.AST_INPUT_DIR / f"{page_name_lower}.json"
+    
+    # Check if we have a selected variation
+    if SELECTED_VARIATION_INDEX is not None:
+        selected_ast_dir = TEMPLATE_SELECTION_DIR / str(SELECTED_VARIATION_INDEX) / "src" / "ast"
+        ast_file_path = selected_ast_dir / f"{page_name_lower}.json"
+        print(f"Applying patch to selected variation {SELECTED_VARIATION_INDEX}: {ast_file_path}")
+    else:
+        ast_file_path = config.AST_INPUT_DIR / f"{page_name_lower}.json"
+        print(f"Applying patch to default location: {ast_file_path}")
     
     try:
         patch_ops = await patch.json()
@@ -218,34 +250,44 @@ async def patch_page_ast(
 
         patched_ast = jsonpatch.apply_patch(current_ast, patch_ops)
 
+        # Ensure parent directory exists
+        ast_file_path.parent.mkdir(parents=True, exist_ok=True)
+        
         with open(ast_file_path, 'w') as f:
             json.dump(patched_ast, f, indent=2)
 
-        # --- Run the generator SYNCHRONOUSLY ---
-        print(f"Patch applied to /ast/{page_name_lower}. Running generator...")
-        project_gen = ProjectGenerator()
-        project_gen.generate_project()
-        print("File generation complete.")
-        
-        # --- Copy generated files to active project (for live preview) ---
-        if ACTIVE_PROJECT_DIR.exists():
-            print(f"Copying generated files to active project: {ACTIVE_PROJECT_DIR}")
-            # Copy the generated views and updated files
+        # Regenerate the project from the updated AST
+        # For selected variations, this will regenerate directly in /tmp/selection/{index}
+        if SELECTED_VARIATION_INDEX is not None:
+            print(f"Regenerating selected variation {SELECTED_VARIATION_INDEX}...")
+            # Temporarily copy AST to inputs for generator
+            input_ast_path = config.AST_INPUT_DIR / f"{page_name_lower}.json"
+            input_ast_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ast_file_path, input_ast_path)
+            
+            # Generate
+            project_gen = ProjectGenerator()
+            project_gen.generate_project()
+            
+            # Copy regenerated files back to selected variation (excluding build artifacts)
+            variation_dir = TEMPLATE_SELECTION_DIR / str(SELECTED_VARIATION_INDEX)
+            print(f"Copying regenerated files to: {variation_dir}")
             for item in config.OUTPUT_DIR.iterdir():
                 if item.name in ['node_modules', 'dist', '.vite', 'package-lock.json']:
                     continue
-                dest = ACTIVE_PROJECT_DIR / item.name
+                dest = variation_dir / item.name
                 if item.is_dir():
                     shutil.copytree(item, dest, dirs_exist_ok=True)
                 else:
                     shutil.copy2(item, dest)
-            # Also copy project.json and jsrepo.json if they exist in the server directory
-            for config_file in ['project.json', 'jsrepo.json']:
-                src_config = config.BASE_DIR / config_file
-                if src_config.exists():
-                    shutil.copy2(src_config, ACTIVE_PROJECT_DIR / config_file)
-            print("✓ Active project updated")
-        # --- End V5 change ---
+            
+            print(f"✓ Variation {SELECTED_VARIATION_INDEX} updated (Vite hot-reload will pick up changes)")
+        else:
+            # No selection yet - just regenerate for initial template generation
+            print(f"Patch applied to /ast/{page_name_lower}. Running generator...")
+            project_gen = ProjectGenerator()
+            project_gen.generate_project()
+            print("File generation complete.")
         
         return {"status": "success", "data": patched_ast}
 
@@ -425,16 +467,17 @@ async def generate_template_variations(request: TemplateGenerationRequest):
 @app.post("/select-template-variation", summary="Select a template variation as active")
 async def select_template_variation(request: TemplateSelectionRequest):
     """
-    Selects one of the 4 template variations and copies it to the active project directory.
-    This makes it the "5th" project that the user will edit.
-    The container should rebuild/restart the dev server for this active project.
+    Simplified: Just tracks which variation (0-3) is selected.
+    No copying, no restart. Patches will be applied directly to /tmp/selection/{index}.
     
     Args:
         variation_index: 0, 1, 2, or 3 (which variation to select)
     
     Returns:
-        Status and path to the active project
+        Status and selected variation info
     """
+    global SELECTED_VARIATION_INDEX
+    
     try:
         # Validate index
         if request.variation_index not in [0, 1, 2, 3]:
@@ -444,43 +487,20 @@ async def select_template_variation(request: TemplateSelectionRequest):
             )
         
         # Check if variation exists
-        source_dir = TEMPLATE_SELECTION_DIR / str(request.variation_index)
-        if not source_dir.exists():
+        variation_dir = TEMPLATE_SELECTION_DIR / str(request.variation_index)
+        if not variation_dir.exists():
             raise HTTPException(
                 status_code=404,
-                detail=f"Variation {request.variation_index} not found at {source_dir}. Generate templates first."
+                detail=f"Variation {request.variation_index} not found at {variation_dir}. Generate templates first."
             )
         
-        print(f"\n=== Selecting variation {request.variation_index} as active ===")
+        print(f"\n=== Selecting variation {request.variation_index} ===")
         
-        # Clean active directory contents (but not the directory itself - it's a Docker volume mount)
-        if ACTIVE_PROJECT_DIR.exists():
-            print(f"Cleaning existing active project contents: {ACTIVE_PROJECT_DIR}")
-            for item in ACTIVE_PROJECT_DIR.iterdir():
-                if item.is_dir():
-                    shutil.rmtree(item)
-                else:
-                    item.unlink()
-        else:
-            # Create directory if it doesn't exist
-            ACTIVE_PROJECT_DIR.mkdir(parents=True, exist_ok=True)
-        
-        # Copy selected variation contents to active directory (skip node_modules)
-        print(f"Copying {source_dir} contents → {ACTIVE_PROJECT_DIR}")
-        for item in source_dir.iterdir():
-            # Skip node_modules and other build artifacts
-            if item.name in ['node_modules', 'dist', '.vite', 'package-lock.json']:
-                continue
-            dest = ACTIVE_PROJECT_DIR / item.name
-            if item.is_dir():
-                shutil.copytree(item, dest)
-            else:
-                shutil.copy2(item, dest)
-        
-        print(f"✓ Files copied (node_modules will be installed by dev server)")
+        # Just track the selection - no copying needed
+        SELECTED_VARIATION_INDEX = request.variation_index
         
         # Read metadata about the selected variation
-        project_file = ACTIVE_PROJECT_DIR / "project.json"
+        project_file = variation_dir / "project.json"
         with open(project_file, 'r') as f:
             project_config = json.load(f)
         
@@ -497,28 +517,29 @@ async def select_template_variation(request: TemplateSelectionRequest):
         # List pages
         pages = [p.get("name") for p in project_config.get("pages", [])]
         
-        print(f"✓ Active project set to variation {request.variation_index}")
-        print(f"  Path: {ACTIVE_PROJECT_DIR}")
+        print(f"✓ Selected variation {request.variation_index}")
+        print(f"  Path: {variation_dir}")
         print(f"  Palette: {palette}")
         print(f"  Font: {font}")
         print(f"  Pages: {', '.join(pages)}")
+        print(f"  Port: {5173 + request.variation_index}")
         
+        # No restart needed - we're editing the live variation directly
         return {
             "status": "success",
             "selected_variation": request.variation_index,
             "palette": palette,
             "font": font,
-            "active_project_path": str(ACTIVE_PROJECT_DIR),
+            "variation_path": str(variation_dir),
             "project_name": project_config.get("projectName", "Project"),
             "pages": pages,
-            "message": f"Variation {request.variation_index} ({palette}) is now active. Container should rebuild on port 5177.",
-            "container_port": 5177,
+            "message": f"Variation {request.variation_index} ({palette}) selected. Edits will apply directly to port {5173 + request.variation_index}.",
+            "port": 5173 + request.variation_index,
             "preview_ports": {
                 "variation_0": 5173,
                 "variation_1": 5174,
                 "variation_2": 5175,
-                "variation_3": 5176,
-                "active": 5177
+                "variation_3": 5176
             }
         }
     
@@ -531,35 +552,44 @@ async def select_template_variation(request: TemplateSelectionRequest):
         raise HTTPException(status_code=500, detail=error_detail)
 
 
-@app.get("/active-project", summary="Get information about the active project")
-async def get_active_project():
+@app.get("/selected-variation", summary="Get information about the selected variation")
+async def get_selected_variation():
     """
-    Returns information about the currently active project.
-    The container uses this to know what to serve on port 5177.
+    Returns information about the currently selected variation.
+    Replaces /active-project endpoint.
     """
-    if not ACTIVE_PROJECT_DIR.exists():
+    if SELECTED_VARIATION_INDEX is None:
         return {
-            "status": "no_active_project",
-            "message": "No active project. Select a template variation first.",
-            "active_project_path": None
+            "status": "no_selection",
+            "message": "No variation selected yet. Select a template variation first.",
+            "selected_variation": None,
+            "variation_path": None,
+            "port": None
         }
     
     try:
-        project_file = ACTIVE_PROJECT_DIR / "project.json"
+        variation_dir = TEMPLATE_SELECTION_DIR / str(SELECTED_VARIATION_INDEX)
+        project_file = variation_dir / "project.json"
         with open(project_file, 'r') as f:
             project_config = json.load(f)
         
+        palette = PALETTE_VARIATIONS[SELECTED_VARIATION_INDEX]
+        port = 5173 + SELECTED_VARIATION_INDEX
+        
         return {
-            "status": "active",
-            "active_project_path": str(ACTIVE_PROJECT_DIR),
+            "status": "selected",
+            "selected_variation": SELECTED_VARIATION_INDEX,
+            "variation_path": str(variation_dir),
+            "palette": palette,
+            "port": port,
             "project_name": project_config.get("projectName", "Project"),
             "pages": [p.get("name") for p in project_config.get("pages", [])],
-            "container_port": 5177,
-            "message": "Active project ready"
+            "message": f"Variation {SELECTED_VARIATION_INDEX} is selected (port {port})"
         }
     except Exception as e:
         return {
             "status": "error",
-            "message": f"Error reading active project: {str(e)}",
-            "active_project_path": str(ACTIVE_PROJECT_DIR)
+            "message": f"Error reading selected variation: {str(e)}",
+            "selected_variation": SELECTED_VARIATION_INDEX,
+            "variation_path": str(TEMPLATE_SELECTION_DIR / str(SELECTED_VARIATION_INDEX))
         }

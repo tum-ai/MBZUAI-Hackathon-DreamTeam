@@ -99,7 +99,7 @@ export function VoiceAssistantProvider({ children }) {
     if (typeof window !== 'undefined' && typeof window.__LLM_API_BASE_URL === 'string') {
       return window.__LLM_API_BASE_URL.replace(/\/$/, '');
     }
-    return 'http://localhost:8000';
+    return 'http://localhost:8002';
   }, []);
 
   const ensureSessionId = useCallback(() => {

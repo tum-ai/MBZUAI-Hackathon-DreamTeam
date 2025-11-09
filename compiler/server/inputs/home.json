@@ -1,267 +1,339 @@
 {
   "state": {},
   "tree": {
-    "id": "root",
+    "id": "root-container",
     "type": "Box",
     "props": {
-      "style": {
-        "padding": "2rem"
-      }
+      "class": "page-container"
     },
     "slots": {
       "default": [
         {
-          "id": "title-1",
-          "type": "Text",
+          "id": "sticky-header",
+          "type": "Box",
           "props": {
-            "content": "New Page: Home",
-            "as": "h1"
+            "style": {
+              "position": "sticky",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "display": "flex",
+              "justify-content": "space-between",
+              "align-items": "center",
+              "padding": "1rem 2rem",
+              "background": "rgba(11, 15, 20, 0.7)",
+              "backdrop-filter": "blur(10px)",
+              "-webkit-backdrop-filter": "blur(10px)",
+              "z-index": "1000",
+              "border-bottom": "1px solid #333",
+              "box-sizing": "border-box"
+            }
           },
-          "slots": {}
+          "slots": {
+            "default": [
+              {
+                "id": "header-logo",
+                "type": "Text",
+                "props": {
+                  "content": "K2Ink",
+                  "as": "h3",
+                  "style": {
+                    "font-weight": "700"
+                  }
+                }
+              },
+              {
+                "id": "header-links",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "display": "flex"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "nav-link-how",
+                      "type": "Link",
+                      "props": {
+                        "href": "#how-it-works",
+                        "text": "How It Works",
+                        "style": {
+                          "padding": "0 1rem",
+                          "font-size": "14px",
+                          "font-weight": "500",
+                          "color": "#ccc",
+                          "text-decoration": "none"
+                        }
+                      }
+                    },
+                    {
+                      "id": "nav-link-features",
+                      "type": "Link",
+                      "props": {
+                        "href": "#features",
+                        "text": "Features",
+                        "style": {
+                          "padding": "0 1rem",
+                          "font-size": "14px",
+                          "font-weight": "500",
+                          "color": "#ccc",
+                          "text-decoration": "none"
+                        }
+                      }
+                    },
+                    {
+                      "id": "nav-link-compare",
+                      "type": "Link",
+                      "props": {
+                        "href": "#compare",
+                        "text": "Compare",
+                        "style": {
+                          "padding": "0 1rem",
+                          "font-size": "14px",
+                          "font-weight": "500",
+                          "color": "#ccc",
+                          "text-decoration": "none"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "header-signup-btn",
+                "type": "Button",
+                "props": {
+                  "text": "Join Waitlist",
+                  "class": "btn-primary",
+                  "style": {
+                    "padding": "8px 16px",
+                    "font-size": "14px"
+                  }
+                }
+              }
+            ]
+          }
         },
         {
           "id": "hero-section",
           "type": "Box",
           "props": {
+            "id": "hero",
             "style": {
-              "height": "100vh",
+              "height": "80vh",
               "width": "100%",
+              "position": "relative",
               "display": "flex",
-              "justifyContent": "center",
-              "alignItems": "center",
-              "padding": "0 2rem"
-            },
-            "as": "section"
+              "flex-direction": "column",
+              "justify-content": "center",
+              "align-items": "center",
+              "text-align": "center",
+              "padding": "0 2rem",
+              "box-sizing": "border-box"
+            }
           },
           "slots": {
             "default": [
               {
-                "id": "hero-name",
-                "type": "Text",
+                "id": "hero-title",
+                "type": "GradientText",
                 "props": {
-                  "content": "Dr. Sarah Martinez",
+                  "content": "Build at the Speed of Thought.",
                   "as": "h1",
                   "style": {
-                    "fontSize": "6rem",
-                    "fontWeight": "900",
-                    "color": "#000000",
-                    "margin": "0"
-                  }
-                },
-                "slots": {
-                  "default": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "id": "about-section",
-          "type": "Box",
-          "props": {
-            "style": {
-              "width": "100%",
-              "maxWidth": "1200px",
-              "margin": "4rem auto",
-              "padding": "2rem"
-            },
-            "as": "section"
-          },
-          "slots": {
-            "default": [
-              {
-                "id": "about-title",
-                "type": "Text",
-                "props": {
-                  "content": "About Me",
-                  "as": "h2",
-                  "style": {
-                    "fontSize": "3rem",
-                    "fontWeight": "700",
-                    "color": "#000000",
-                    "borderBottom": "3px solid #4a4a4a",
-                    "paddingBottom": "1rem",
-                    "marginBottom": "1.5rem"
-                  }
-                },
-                "slots": {
-                  "default": []
+                    "font-size": "72px",
+                    "margin-bottom": "1rem"
+                  },
+                  "gradient": "linear-gradient(to right, #6AA8FF, #D67CFF)"
                 }
               },
               {
-                "id": "about-content",
+                "id": "hero-subtitle",
                 "type": "Text",
                 "props": {
-                  "content": "Researching the intersection of artificial intelligence and human values. Published author and frequent speaker on responsible AI development.",
+                  "content": "A voice-first generative platform that compiles natural language into a deterministic UI Abstract Syntax Tree.",
                   "as": "p",
                   "style": {
-                    "fontSize": "1.2rem",
-                    "color": "#000000",
-                    "lineHeight": "1.8",
-                    "textAlign": "justify"
+                    "font-size": "20px",
+                    "color": "#ccc",
+                    "max-width": "700px",
+                    "margin-bottom": "2rem"
                   }
-                },
-                "slots": {
-                  "default": []
+                }
+              },
+              {
+                "id": "hero-cta-btn",
+                "type": "Button",
+                "props": {
+                  "text": "Join the Private Beta",
+                  "class": "btn-primary"
                 }
               }
             ]
           }
         },
         {
-          "id": "experience-section",
+          "id": "how-it-works-section",
           "type": "Box",
           "props": {
-            "style": {
-              "width": "100%",
-              "maxWidth": "1200px",
-              "margin": "4rem auto",
-              "padding": "2rem"
-            },
-            "as": "section"
+            "id": "how-it-works",
+            "class": "content-width"
           },
           "slots": {
             "default": [
               {
-                "id": "experience-title",
+                "id": "how-title",
                 "type": "Text",
                 "props": {
-                  "content": "Experience",
+                  "content": "From Voice to Code. Deterministically.",
                   "as": "h2",
                   "style": {
-                    "fontSize": "3rem",
-                    "fontWeight": "700",
-                    "color": "#000000",
-                    "borderBottom": "3px solid #4a4a4a",
-                    "paddingBottom": "1rem",
-                    "marginBottom": "1.5rem"
+                    "font-size": "48px",
+                    "text-align": "center",
+                    "margin-bottom": "3rem"
                   }
-                },
-                "slots": {
-                  "default": []
                 }
               },
               {
-                "id": "experience-list",
+                "id": "how-grid",
                 "type": "Box",
                 "props": {
                   "style": {
-                    "display": "flex",
-                    "flexDirection": "column",
+                    "display": "grid",
+                    "grid-template-columns": "repeat(4, 1fr)",
                     "gap": "1.5rem"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "experience-0",
-                      "type": "Card",
+                      "id": "how-card-1",
+                      "type": "Box",
                       "props": {
-                        "variant": "outlined"
+                        "class": "glass-card"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "experience-0-title",
+                            "id": "how-card-1-title",
                             "type": "Text",
                             "props": {
-                              "content": "Senior Research Scientist",
+                              "content": "1. Intent",
                               "as": "h3",
                               "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000"
+                                "color": "#6AA8FF",
+                                "margin-bottom": "1rem"
                               }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           },
                           {
-                            "id": "experience-0-company",
+                            "id": "how-card-1-text",
                             "type": "Text",
                             "props": {
-                              "content": "AI Ethics Lab | 2020-Present",
-                              "as": "p",
+                              "content": "Speak your request. Our agentic system (Planner & Clarifier) understands your natural language intent.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
+                                "color": "#eee"
                               }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "experience-0-description",
-                            "type": "Text",
-                            "props": {
-                              "content": "Leading research on fairness and transparency in machine learning systems",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
-                              }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "id": "experience-1",
-                      "type": "Card",
+                      "id": "how-card-2",
+                      "type": "Box",
                       "props": {
-                        "variant": "outlined"
+                        "class": "glass-card"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "experience-1-title",
+                            "id": "how-card-2-title",
                             "type": "Text",
                             "props": {
-                              "content": "Assistant Professor",
+                              "content": "2. Compile",
                               "as": "h3",
                               "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000"
+                                "color": "#6AA8FF",
+                                "margin-bottom": "1rem"
                               }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           },
                           {
-                            "id": "experience-1-company",
+                            "id": "how-card-2-text",
                             "type": "Text",
                             "props": {
-                              "content": "Tech University | 2017-2020",
-                              "as": "p",
+                              "content": "The 'LLM AST Compiler' generates a structured JSON Patch, not raw code. This is a safe, abstract command.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
+                                "color": "#eee"
                               }
-                            },
-                            "slots": {
-                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "how-card-3",
+                      "type": "Box",
+                      "props": {
+                        "class": "glass-card"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "how-card-3-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "3. Update AST",
+                              "as": "h3",
+                              "style": {
+                                "color": "#6AA8FF",
+                                "margin-bottom": "1rem"
+                              }
                             }
                           },
                           {
-                            "id": "experience-1-description",
+                            "id": "how-card-3-text",
                             "type": "Text",
                             "props": {
-                              "content": "Taught AI ethics and machine learning courses",
-                              "as": "p",
+                              "content": "Your 'ui-tree.json' (the AST) is updated. This file is now the single source of truth for your entire application.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
+                                "color": "#eee"
                               }
-                            },
-                            "slots": {
-                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "how-card-4",
+                      "type": "Box",
+                      "props": {
+                        "class": "glass-card"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "how-card-4-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "4. Generate",
+                              "as": "h3",
+                              "style": {
+                                "color": "#6AA8FF",
+                                "margin-bottom": "1rem"
+                              }
+                            }
+                          },
+                          {
+                            "id": "how-card-4-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "A 100% deterministic Python generator compiles the new AST into perfect, framework-native code (React, Vue, etc).",
+                              "style": {
+                                "color": "#eee"
+                              }
                             }
                           }
                         ]
@@ -274,159 +346,166 @@
           }
         },
         {
-          "id": "education-section",
+          "id": "features-section",
           "type": "Box",
           "props": {
-            "style": {
-              "width": "100%",
-              "maxWidth": "1200px",
-              "margin": "4rem auto",
-              "padding": "2rem"
-            },
-            "as": "section"
+            "id": "features",
+            "class": "content-width"
           },
           "slots": {
             "default": [
               {
-                "id": "education-title",
+                "id": "feat-title",
                 "type": "Text",
                 "props": {
-                  "content": "Education",
+                  "content": "An Unprecedented Workflow.",
                   "as": "h2",
                   "style": {
-                    "fontSize": "3rem",
-                    "fontWeight": "700",
-                    "color": "#000000",
-                    "borderBottom": "3px solid #4a4a4a",
-                    "paddingBottom": "1rem",
-                    "marginBottom": "1.5rem"
+                    "font-size": "48px",
+                    "text-align": "center",
+                    "margin-bottom": "3rem"
                   }
-                },
-                "slots": {
-                  "default": []
                 }
               },
               {
-                "id": "education-list",
+                "id": "feat-grid",
                 "type": "Box",
                 "props": {
                   "style": {
-                    "display": "flex",
-                    "flexDirection": "column",
+                    "display": "grid",
+                    "grid-template-columns": "1fr 1fr",
                     "gap": "1.5rem"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "education-0",
-                      "type": "Card",
+                      "id": "feat-card-1",
+                      "type": "Box",
                       "props": {
-                        "variant": "outlined"
+                        "class": "glass-card"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "education-0-degree",
+                            "id": "feat-card-1-title",
                             "type": "Text",
                             "props": {
-                              "content": "PhD in Computer Science",
+                              "content": "Voice-First Agentic System",
                               "as": "h3",
                               "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000"
+                                "margin-bottom": "1rem"
                               }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           },
                           {
-                            "id": "education-0-school",
+                            "id": "feat-card-1-text",
                             "type": "Text",
                             "props": {
-                              "content": "Stanford University | 2017",
-                              "as": "p",
+                              "content": "Use natural language to build. Our 'Bixby-like' assistant uses Planner, Editor, and Clarifier agents to handle ambiguity and execute complex tasks.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
+                                "color": "#ccc",
+                                "line-height": "1.6"
                               }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "education-0-description",
-                            "type": "Text",
-                            "props": {
-                              "content": "Dissertation on algorithmic fairness",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
-                              }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "id": "education-1",
-                      "type": "Card",
+                      "id": "feat-card-2",
+                      "type": "Box",
                       "props": {
-                        "variant": "outlined"
+                        "class": "glass-card"
                       },
                       "slots": {
                         "default": [
                           {
-                            "id": "education-1-degree",
+                            "id": "feat-card-2-title",
                             "type": "Text",
                             "props": {
-                              "content": "MSc in AI",
+                              "content": "AST as Source of Truth",
                               "as": "h3",
                               "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000"
+                                "margin-bottom": "1rem"
                               }
-                            },
-                            "slots": {
-                              "default": []
                             }
                           },
                           {
-                            "id": "education-1-school",
+                            "id": "feat-card-2-text",
                             "type": "Text",
                             "props": {
-                              "content": "MIT | 2013",
-                              "as": "p",
+                              "content": "Eliminate state drift and brittle code. Your UI is 100% defined by the 'ui-tree.json' AST. To change the UI, you must change the AST.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
+                                "color": "#ccc",
+                                "line-height": "1.6"
                               }
-                            },
-                            "slots": {
-                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "feat-card-3",
+                      "type": "Box",
+                      "props": {
+                        "class": "glass-card"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feat-card-3-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "Deterministic Generation",
+                              "as": "h3",
+                              "style": {
+                                "margin-bottom": "1rem"
+                              }
                             }
                           },
                           {
-                            "id": "education-1-description",
+                            "id": "feat-card-3-text",
                             "type": "Text",
                             "props": {
-                              "content": "Focus on natural language processing",
-                              "as": "p",
+                              "content": "Our generator is a 'pure function'. The same AST input will always produce the exact same code output, making your UI predictable and testable.",
                               "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
+                                "color": "#ccc",
+                                "line-height": "1.6"
                               }
-                            },
-                            "slots": {
-                              "default": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "feat-card-4",
+                      "type": "Box",
+                      "props": {
+                        "class": "glass-card"
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "feat-card-4-title",
+                            "type": "Text",
+                            "props": {
+                              "content": "Framework-Agnostic",
+                              "as": "h3",
+                              "style": {
+                                "margin-bottom": "1rem"
+                              }
+                            }
+                          },
+                          {
+                            "id": "feat-card-4-text",
+                            "type": "Text",
+                            "props": {
+                              "content": "Use Component Manifests (schema-driven JSON) to teach the generator. Target React, Vue, Angular, and more, all from the same abstract AST.",
+                              "style": {
+                                "color": "#ccc",
+                                "line-height": "1.6"
+                              }
                             }
                           }
                         ]
@@ -439,224 +518,89 @@
           }
         },
         {
-          "id": "blog-section",
+          "id": "comparison-section",
           "type": "Box",
           "props": {
-            "style": {
-              "width": "100%",
-              "maxWidth": "1200px",
-              "margin": "4rem auto",
-              "padding": "2rem"
-            },
-            "as": "section"
+            "id": "compare",
+            "class": "content-width"
           },
           "slots": {
             "default": [
               {
-                "id": "blog-title",
+                "id": "compare-title",
                 "type": "Text",
                 "props": {
-                  "content": "Blog",
+                  "content": "Compare Our Approach",
                   "as": "h2",
                   "style": {
-                    "fontSize": "3rem",
-                    "fontWeight": "700",
-                    "color": "#000000",
-                    "borderBottom": "3px solid #4a4a4a",
-                    "paddingBottom": "1rem",
-                    "marginBottom": "1.5rem"
+                    "font-size": "48px",
+                    "text-align": "center",
+                    "margin-bottom": "1rem"
                   }
-                },
-                "slots": {
-                  "default": []
                 }
               },
               {
-                "id": "blog-posts",
-                "type": "Box",
+                "id": "compare-subtitle",
+                "type": "Text",
                 "props": {
+                  "content": "K2Ink isn't just another 'AI website builder'. It's a deterministic compiler.",
+                  "as": "p",
                   "style": {
-                    "display": "flex",
-                    "flexDirection": "column",
-                    "gap": "1.5rem"
+                    "font-size": "18px",
+                    "color": "#ccc",
+                    "text-align": "center",
+                    "margin-bottom": "2rem"
                   }
-                },
-                "slots": {
-                  "default": [
-                    {
-                      "id": "blog-post-0",
-                      "type": "Card",
-                      "props": {
-                        "variant": "elevated"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "blog-post-0-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "My First Blog Post",
-                              "as": "h3",
-                              "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-0-date",
-                            "type": "Text",
-                            "props": {
-                              "content": "Jan 2024",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "0.9rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-0-excerpt",
-                            "type": "Text",
-                            "props": {
-                              "content": "An introduction to my journey...",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "blog-post-1",
-                      "type": "Card",
-                      "props": {
-                        "variant": "elevated"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "blog-post-1-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "Learning New Technologies",
-                              "as": "h3",
-                              "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-1-date",
-                            "type": "Text",
-                            "props": {
-                              "content": "Feb 2024",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "0.9rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-1-excerpt",
-                            "type": "Text",
-                            "props": {
-                              "content": "Exploring the latest tools...",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "blog-post-2",
-                      "type": "Card",
-                      "props": {
-                        "variant": "elevated"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "blog-post-2-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "Design Principles",
-                              "as": "h3",
-                              "style": {
-                                "fontSize": "1.5rem",
-                                "color": "#000000",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-2-date",
-                            "type": "Text",
-                            "props": {
-                              "content": "Mar 2024",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "0.9rem",
-                                "color": "#6a6a6a",
-                                "marginBottom": "0.5rem"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          },
-                          {
-                            "id": "blog-post-2-excerpt",
-                            "type": "Text",
-                            "props": {
-                              "content": "What makes good design...",
-                              "as": "p",
-                              "style": {
-                                "fontSize": "1rem",
-                                "color": "#000000"
-                              }
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          }
-                        ]
-                      }
-                    }
+                }
+              },
+              {
+                "id": "compare-table",
+                "type": "Table",
+                "props": {
+                  "class": "comparison-table",
+                  "headers": [
+                    "Feature",
+                    "K2Ink (AST Compiler)",
+                    "Gen-AI Tools (e.g., Lovable)",
+                    "Manual Coding"
+                  ],
+                  "rows": [
+                    [
+                      "Source of Truth",
+                      "Deterministic AST (ui-tree.json)",
+                      "Proprietary UI (Black Box)",
+                      "Raw Code Files (.tsx, .vue)"
+                    ],
+                    [
+                      "Output",
+                      "Deterministic, framework-native code",
+                      "LLM-generated, brittle code",
+                      "Human-written (slow, error-prone)"
+                    ],
+                    [
+                      "Modification",
+                      "Safe JSON Patch on AST",
+                      "Ambiguous 'prompt-to-edit' (Risky)",
+                      "Manual Refactoring"
+                    ],
+                    [
+                      "State Management",
+                      "Abstracted in AST (e.g., 'action:setState')",
+                      "Handled by Platform",
+                      "Manual (e.g., useState, Pinia)"
+                    ],
+                    [
+                      "Extensibility",
+                      "Via Component Manifests (JSON)",
+                      "Limited by Platform Features",
+                      "Unlimited (but complex)"
+                    ],
+                    [
+                      "Workflow",
+                      "Voice -> AST -> Code",
+                      "Voice -> Code",
+                      "Keyboard -> Code"
+                    ]
                   ]
                 }
               }
@@ -664,286 +608,32 @@
           }
         },
         {
-          "id": "contact-section",
+          "id": "footer",
           "type": "Box",
           "props": {
             "style": {
-              "width": "100%",
-              "maxWidth": "1200px",
-              "margin": "4rem auto",
-              "padding": "2rem",
-              "textAlign": "center"
-            },
-            "as": "section"
+              "text-align": "center",
+              "padding": "3rem",
+              "margin-top": "3rem",
+              "border-top": "1px solid #333"
+            }
           },
           "slots": {
             "default": [
               {
-                "id": "contact-title",
+                "id": "footer-text",
                 "type": "Text",
                 "props": {
-                  "content": "Get In Touch",
-                  "as": "h2",
-                  "style": {
-                    "fontSize": "3rem",
-                    "fontWeight": "700",
-                    "color": "#000000",
-                    "marginBottom": "1.5rem"
-                  }
-                },
-                "slots": {
-                  "default": []
-                }
-              },
-              {
-                "id": "contact-description",
-                "type": "Text",
-                "props": {
-                  "content": "Feel free to reach out for collaborations or just a friendly hello",
+                  "content": "Copyright \u00a9 2025 TUM.ai DreamTeam. All rights reserved.",
                   "as": "p",
                   "style": {
-                    "fontSize": "1.2rem",
-                    "color": "#6a6a6a",
-                    "marginBottom": "1.5rem"
+                    "font-size": "14px",
+                    "color": "#888"
                   }
-                },
-                "slots": {
-                  "default": []
-                }
-              },
-              {
-                "id": "contact-links",
-                "type": "Box",
-                "props": {
-                  "style": {
-                    "display": "flex",
-                    "gap": "1rem",
-                    "justifyContent": "center",
-                    "flexWrap": "wrap"
-                  }
-                },
-                "slots": {
-                  "default": [
-                    {
-                      "id": "social-linkedin",
-                      "type": "Link",
-                      "props": {
-                        "href": "https://linkedin.com/in/sarahmartinez",
-                        "target": "_blank",
-                        "style": {
-                          "padding": "0.8rem 1.5rem",
-                          "backgroundColor": "#000000",
-                          "color": "#ffffff",
-                          "borderRadius": "8px",
-                          "textDecoration": "none",
-                          "fontSize": "1.1rem",
-                          "fontWeight": "600",
-                          "transition": "all 0.3s ease"
-                        }
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "social-linkedin-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Linkedin",
-                              "as": "span"
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "social-scholar",
-                      "type": "Link",
-                      "props": {
-                        "href": "https://scholar.google.com/sarahmartinez",
-                        "target": "_blank",
-                        "style": {
-                          "padding": "0.8rem 1.5rem",
-                          "backgroundColor": "#000000",
-                          "color": "#ffffff",
-                          "borderRadius": "8px",
-                          "textDecoration": "none",
-                          "fontSize": "1.1rem",
-                          "fontWeight": "600",
-                          "transition": "all 0.3s ease"
-                        }
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "social-scholar-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Scholar",
-                              "as": "span"
-                            },
-                            "slots": {
-                              "default": []
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
                 }
               }
             ]
           }
-        },
-        {
-          "id": "footer-section",
-          "type": "Box",
-          "props": {
-            "style": {
-              "width": "100%",
-              "margin": "4rem 0 0 0",
-              "padding": "2rem",
-              "textAlign": "center",
-              "backgroundColor": "#f5f5f5",
-              "borderTop": "1px solid #e0e0e0"
-            },
-            "as": "footer"
-          },
-          "slots": {
-            "default": [
-              {
-                "id": "footer-copyright",
-                "type": "Text",
-                "props": {
-                  "content": "\u00a9 2024 Dr. Sarah Martinez. All rights reserved.",
-                  "as": "p",
-                  "style": {
-                    "fontSize": "1rem",
-                    "color": "#6a6a6a"
-                  }
-                },
-                "slots": {
-                  "default": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "id": "click-me-button",
-          "type": "Button",
-          "props": {
-            "text": "Click Me",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#ff0000",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "click-me-button",
-          "type": "Button",
-          "props": {
-            "text": "Click Me",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#ff0000",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "learn-more-button",
-          "type": "Button",
-          "props": {
-            "text": "Learn More",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#007bff",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "learn-more-button",
-          "type": "Button",
-          "props": {
-            "text": "Learn More",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#007bff",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "learn-more-button-2",
-          "type": "Button",
-          "props": {
-            "text": "Learn More",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#007bff",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "learn-more-button-2",
-          "type": "Button",
-          "props": {
-            "text": "Learn More",
-            "style": {
-              "fontSize": "1.2rem",
-              "padding": "0.8rem 1.5rem",
-              "backgroundColor": "#007bff",
-              "color": "#ffffff",
-              "borderRadius": "8px",
-              "border": "none",
-              "fontWeight": "600",
-              "transition": "all 0.3s ease"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "error-component",
-          "type": "Box",
-          "props": {},
-          "slots": {},
-          "error": "Could not parse component: Expecting property name enclosed in double quotes: line 735 column 57 (char 25723)"
         }
       ]
     }
