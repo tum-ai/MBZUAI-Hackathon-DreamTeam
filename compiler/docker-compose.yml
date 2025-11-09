@@ -22,6 +22,8 @@ services:
       - PYTHONUNBUFFERED=1
       - HOST=0.0.0.0
       - PORT=8000
+    networks:
+      - compiler-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/project"]
       interval: 10s
@@ -47,17 +49,27 @@ services:
       - active-project:/tmp/active
     environment:
       - NODE_ENV=development
+    networks:
+      - compiler-network
     depends_on:
       compiler-api:
         condition: service_healthy
     command: >
       bash -c "
         echo '⏳ Waiting for template variations to be generated...';
-        while [ ! -d /tmp/selection/0 ]; do sleep 2; done;
-        echo '✅ Variations found, starting dev servers...';
+        while [ ! -f /tmp/selection/0/package.json ]; do sleep 2; done;
+        echo '⏳ Waiting for all variations to be ready...';
+        while [ ! -f /tmp/selection/1/package.json ] || 
+              [ ! -f /tmp/selection/2/package.json ] || 
+              [ ! -f /tmp/selection/3/package.json ]; do sleep 1; done;
+        echo '✅ All variations ready, starting dev servers...';
         /app/compiler/server/run_variations.sh
       "
 
+
+networks:
+  compiler-network:
+    driver: bridge
 
 volumes:
   template-variations:
