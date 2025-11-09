@@ -394,6 +394,38 @@ const setupDomSnapshotBridge = (httpServer, options) => {
     }
   }
 
+  const handleTtsBroadcast = (backend, message) => {
+    const target = resolveFrontendTarget(message.targetClientId)
+    const requestId = message.requestId || createRequestId()
+
+    if (!target) {
+      backend.sendJson({
+        type: 'tts_ack',
+        requestId,
+        delivered: false,
+        error: 'no_frontend_connected'
+      })
+      return
+    }
+
+    target.sendJson({
+      type: 'tts_speak',
+      requestId,
+      text: message.text || '',
+      sessionId: message.sessionId || null,
+      stepId: message.stepId || null,
+      metadata: message.metadata || null,
+      timestamp: Date.now()
+    })
+
+    backend.sendJson({
+      type: 'tts_ack',
+      requestId,
+      delivered: true,
+      targetClientId: target.id
+    })
+  }
+
   const handleRegister = (connection, message) => {
     if (message.role !== 'frontend' && message.role !== 'backend') {
       connection.sendJson({ type: 'error', error: 'invalid_role' })
@@ -444,6 +476,13 @@ const setupDomSnapshotBridge = (httpServer, options) => {
         if (connection.role === 'frontend') {
           handleDomSnapshotResponse(connection, message)
         }
+        break
+      case 'tts_broadcast':
+        if (connection.role !== 'backend') {
+          connection.sendJson({ type: 'error', error: 'unauthorized' })
+          break
+        }
+        handleTtsBroadcast(connection, message)
         break
       case 'pong':
         connection.isAlive = true

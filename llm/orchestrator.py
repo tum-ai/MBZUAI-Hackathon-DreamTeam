@@ -53,7 +53,11 @@ async def execute_plan(request: PlanRequest) -> PlanResponse:
     logger.info(f"Plan request received for session: {request.sid}")
 
     # Time the planner
-    decide_request = DecideRequest(sid=request.sid, text=request.text)
+    decide_request = DecideRequest(
+        sid=request.sid,
+        text=request.text,
+        step_id=request.step_id,
+    )
     logger.info(f"Calling planner for session: {request.sid}")
 
     planner_start = time.time()
@@ -144,7 +148,7 @@ async def execute_plan(request: PlanRequest) -> PlanResponse:
             clarify_request = ClarifyRequest(
                 session_id=request.sid, step_id=step_id, intent=intent, context=context
             )
-            clarify_response = process_clarification_request(clarify_request)
+            clarify_response = await process_clarification_request(clarify_request)
 
             agent_duration = time.time() - agent_start
 

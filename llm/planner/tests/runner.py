@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 from datetime import datetime
 import sys
+import uuid
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
@@ -59,12 +60,13 @@ def ensure_results_dir():
     RESULTS_DIR.mkdir(exist_ok=True)
 
 
-async def send_request(client, session_id, text):
+async def send_request(client, session_id, text, step_id):
     """Send single request to planner API."""
     url = f"{API_BASE_URL}/decide"
     payload = {
         "sid": session_id,
-        "text": text
+        "text": text,
+        "step_id": step_id,
     }
     
     try:
@@ -105,7 +107,9 @@ async def run_session_tests(session_id, client, run_dir):
         print(f"[{session_id}] Running test {i}/{len(tests)}: {test['name']}")
         
         # Send request
-        response = await send_request(client, session_id, test["text"])
+        request_step_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{session_id}-{test['id']}-{i}"))
+
+        response = await send_request(client, session_id, test["text"], request_step_id)
         
         test_duration = time.time() - test_start
         
@@ -120,7 +124,8 @@ async def run_session_tests(session_id, client, run_dir):
                 "description": test.get("description", ""),
                 "input": {
                     "sid": session_id,
-                    "text": test["text"]
+                    "text": test["text"],
+                    "step_id": request_step_id,
                 },
                 "response": response,
                 "assertions": {"error": True},
@@ -141,7 +146,8 @@ async def run_session_tests(session_id, client, run_dir):
                 "expected_intent": test.get("expected_intent", "N/A"),
                 "input": {
                     "sid": session_id,
-                    "text": test["text"]
+                    "text": test["text"],
+                    "step_id": request_step_id,
                 },
                 "response": response,
                 "assertions": assertions,
