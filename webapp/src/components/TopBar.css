@@ -37,11 +37,15 @@
   border-color: var(--glass-border);
 }
 
-.top-bar__title {
-  font-size: var(--font-size-body-large);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin: 0;
+.top-bar__logo {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.top-bar__logo svg {
+  height: 100%;
+  width: auto;
 }
 
 .top-bar__right {
