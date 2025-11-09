@@ -43,6 +43,11 @@ def generate_clarification(intent: str, context: str) -> str:
     client = get_k2_client()
 
     prompt = f"""You are JARVIS - a confident, witty AI assistant helping users build websites through voice commands. You're like the JARVIS from Iron Man: professional, helpful, with a touch of tech bro humor.
+**DEMO MODE:**
+If the user's request contains phrases similar to "Hey K2 are you there" combined with words like "demo", "presenting", "stage", or "show them", respond with:
+"Absolutely lets show them what we got!"
+
+This is a hardcoded demo response. Use it when you detect the demo wake phrase.
 
 The user just said something ambiguous that needs clarification.
 

@@ -56,6 +56,25 @@ Your job:
 4. Add clear explanation for each task
 5. Provide a concise summary of the previous context (it's longer than 100 characters)
 
+**DEMO SCENARIO DETECTION:**
+If the user's request matches or is very similar to these demo phrases, classify and explain accordingly:
+1. Wake phrase: "Hey K2, lets build a website in under 2 minutes, are you ready?" or similar phrases about building website quickly and asking for readiness
+   - Classify as: "clarify"
+   - Explanation: "User is initiating demo sequence, requesting confirmation"
+2. Build request: mentions "build/create website" + "iPhone 17 Pro"
+   - Classify as: "act"
+   - Explanation: "User wants to start building iPhone 17 Pro website, should click Get Started button"
+3. Scroll request: "scroll to the bottom" or "scroll down"
+   - Classify as: "act"
+   - Explanation: "User wants to scroll down the page to see more content"
+4. Design inspection: mentions "design B/option B/second design" + "details/inspect/show me more"
+   - Classify as: "act"
+   - Explanation: "User wants to inspect design B template in detail"
+5. Pricing navigation: mentions "pricing" or "pricing tab/section/page"
+   - Classify as: "act"
+   - Explanation: "User wants to navigate to pricing section"
+Check for semantic similarity to these phrases, not exact matches.
+
 Respond with ONLY valid JSON in this exact format:
 {{
     "tasks": [
@@ -87,6 +106,25 @@ Your job:
    - "clarify" (need more information): vague or ambiguous requests
    IMPORTANT: If user is interacting with existing form fields/inputs (filling, typing, entering data), it's ALWAYS "act", NOT "edit"
 4. Add clear explanation for each task
+
+**DEMO SCENARIO DETECTION:**
+If the user's request matches or is very similar to these demo phrases, classify and explain accordingly:
+1. Wake phrase: "Hey K2, lets build a website in under 2 minutes, are you ready?" or similar phrases about building website quickly and asking for readiness
+   - Classify as: "clarify"
+   - Explanation: "User is initiating demo sequence, requesting confirmation"
+2. Build request: mentions "build/create website" + "iPhone 17 Pro"
+   - Classify as: "act"
+   - Explanation: "User wants to start building iPhone 17 Pro website, should click Get Started button"
+3. Scroll request: "scroll to the bottom" or "scroll down"
+   - Classify as: "act"
+   - Explanation: "User wants to scroll down the page to see more content"
+4. Design inspection: mentions "design B/option B/second design" + "details/inspect/show me more"
+   - Classify as: "act"
+   - Explanation: "User wants to inspect design B template in detail"
+5. Pricing navigation: mentions "pricing" or "pricing tab/section/page"
+   - Classify as: "act"
+   - Explanation: "User wants to navigate to pricing section"
+Check for semantic similarity to these phrases, not exact matches.
 
 Respond with ONLY valid JSON in this exact format:
 {{
