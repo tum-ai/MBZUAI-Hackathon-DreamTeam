@@ -1,0 +1,2427 @@
+{
+  "total_tests": 20,
+  "passed": 18,
+  "failed": 2,
+  "success_rate": "90.0%",
+  "total_duration_seconds": 104.833,
+  "average_test_duration": 5.242,
+  "average_per_task": 2.759,
+  "average_per_agent_type": {
+    "edit": 1.784,
+    "act": 1.338,
+    "clarify": 0.908
+  },
+  "average_planner_time": 2.18,
+  "total_planner_time": 43.609,
+  "total_tasks_executed": 38,
+  "routing_accuracy": "95.0%",
+  "agent_distribution": {
+    "edit": 26,
+    "act": 9,
+    "clarify": 3
+  },
+  "timing_breakdown": [
+    {
+      "test_id": "orch-edit-01",
+      "name": "Single EDIT - Create button",
+      "description": "Simple single-task EDIT workflow",
+      "duration_seconds": 2.05,
+      "task_count": 1,
+      "average_per_task": 2.05,
+      "planner_time_seconds": 0.945,
+      "total_agent_time_seconds": 1.1,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Create a blue button that says Submit",
+          "duration_seconds": 1.1
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edit-02",
+      "name": "Single EDIT - Style modification",
+      "description": "Simple style modification EDIT",
+      "duration_seconds": 3.177,
+      "task_count": 2,
+      "average_per_task": 1.589,
+      "planner_time_seconds": 0.892,
+      "total_agent_time_seconds": 2.281,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Make the heading larger",
+          "duration_seconds": 1.218
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "Make the heading bold",
+          "duration_seconds": 1.063
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edit-03",
+      "name": "Single EDIT - Complex component",
+      "description": "Complex single-task EDIT",
+      "duration_seconds": 5.174,
+      "task_count": 1,
+      "average_per_task": 5.174,
+      "planner_time_seconds": 1.201,
+      "total_agent_time_seconds": 3.97,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Add a navigation bar with logo on left and menu items on right",
+          "duration_seconds": 3.97
+        }
+      ]
+    },
+    {
+      "test_id": "orch-act-01",
+      "name": "Single ACT - Click action",
+      "description": "Simple single-task ACT workflow",
+      "duration_seconds": 2.118,
+      "task_count": 1,
+      "average_per_task": 2.118,
+      "planner_time_seconds": 0.738,
+      "total_agent_time_seconds": 1.375,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "act",
+          "intent": "Click the submit button",
+          "duration_seconds": 1.375
+        }
+      ]
+    },
+    {
+      "test_id": "orch-act-02",
+      "name": "Single ACT - Scroll action",
+      "description": "Scroll action ACT workflow",
+      "duration_seconds": 2.921,
+      "task_count": 1,
+      "average_per_task": 2.921,
+      "planner_time_seconds": 0.739,
+      "total_agent_time_seconds": 2.179,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "act",
+          "intent": "Scroll down to the footer",
+          "duration_seconds": 2.179
+        }
+      ]
+    },
+    {
+      "test_id": "orch-act-03",
+      "name": "Single ACT - Navigation",
+      "description": "Navigation ACT workflow",
+      "duration_seconds": 2.287,
+      "task_count": 1,
+      "average_per_task": 2.287,
+      "planner_time_seconds": 0.776,
+      "total_agent_time_seconds": 1.507,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "act",
+          "intent": "Navigate to the about page",
+          "duration_seconds": 1.507
+        }
+      ]
+    },
+    {
+      "test_id": "orch-clarify-01",
+      "name": "Single CLARIFY - Ambiguous reference",
+      "description": "Ambiguous request requiring clarification",
+      "duration_seconds": 1.86,
+      "task_count": 1,
+      "average_per_task": 1.86,
+      "planner_time_seconds": 0.809,
+      "total_agent_time_seconds": 1.047,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "clarify",
+          "intent": "Change the thing at the top",
+          "duration_seconds": 1.047
+        }
+      ]
+    },
+    {
+      "test_id": "orch-clarify-02",
+      "name": "Single CLARIFY - Vague instruction",
+      "description": "Vague request needing clarification",
+      "duration_seconds": 1.597,
+      "task_count": 1,
+      "average_per_task": 1.597,
+      "planner_time_seconds": 0.749,
+      "total_agent_time_seconds": 0.844,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "clarify",
+          "intent": "Make it better",
+          "duration_seconds": 0.844
+        }
+      ]
+    },
+    {
+      "test_id": "orch-multi-edit-01",
+      "name": "Multi EDIT - Two edits",
+      "description": "Two EDIT tasks in sequence",
+      "duration_seconds": 5.416,
+      "task_count": 2,
+      "average_per_task": 2.708,
+      "planner_time_seconds": 1.007,
+      "total_agent_time_seconds": 4.406,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Create a login form",
+          "duration_seconds": 2.888
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "make the submit button blue",
+          "duration_seconds": 1.518
+        }
+      ]
+    },
+    {
+      "test_id": "orch-multi-edit-02",
+      "name": "Multi EDIT - Three edits",
+      "description": "Three EDIT tasks in sequence",
+      "duration_seconds": 4.957,
+      "task_count": 3,
+      "average_per_task": 1.652,
+      "planner_time_seconds": 1.024,
+      "total_agent_time_seconds": 3.929,
+      "orchestrator_overhead_seconds": 0.002,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Add a hero section with title",
+          "duration_seconds": 1.737
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "Add a subtitle below it",
+          "duration_seconds": 1.055
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "Make both centered",
+          "duration_seconds": 1.137
+        }
+      ]
+    },
+    {
+      "test_id": "orch-multi-act-01",
+      "name": "Multi ACT - Two actions",
+      "description": "Two ACT tasks in sequence",
+      "duration_seconds": 3.255,
+      "task_count": 2,
+      "average_per_task": 1.627,
+      "planner_time_seconds": 0.851,
+      "total_agent_time_seconds": 2.4,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "act",
+          "intent": "Scroll down",
+          "duration_seconds": 1.658
+        },
+        {
+          "task_number": 2,
+          "agent_type": "act",
+          "intent": "click the contact button",
+          "duration_seconds": 0.742
+        }
+      ]
+    },
+    {
+      "test_id": "orch-mixed-01",
+      "name": "Mixed - EDIT then ACT",
+      "description": "EDIT followed by ACT",
+      "duration_seconds": 3.729,
+      "task_count": 2,
+      "average_per_task": 1.865,
+      "planner_time_seconds": 0.87,
+      "total_agent_time_seconds": 2.856,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Create a submit button",
+          "duration_seconds": 1.767
+        },
+        {
+          "task_number": 2,
+          "agent_type": "act",
+          "intent": "click it",
+          "duration_seconds": 1.089
+        }
+      ]
+    },
+    {
+      "test_id": "orch-mixed-02",
+      "name": "Mixed - ACT then EDIT",
+      "description": "ACT followed by EDIT",
+      "duration_seconds": 24.859,
+      "task_count": 2,
+      "average_per_task": 12.43,
+      "planner_time_seconds": 22.997,
+      "total_agent_time_seconds": 1.858,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "act",
+          "intent": "Scroll to footer",
+          "duration_seconds": 0.706
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "change its background to dark gray",
+          "duration_seconds": 1.152
+        }
+      ]
+    },
+    {
+      "test_id": "orch-mixed-03",
+      "name": "Mixed - EDIT, ACT, EDIT sequence",
+      "description": "Complex mixed workflow",
+      "duration_seconds": 12.863,
+      "task_count": 3,
+      "average_per_task": 4.288,
+      "planner_time_seconds": 3.257,
+      "total_agent_time_seconds": 9.598,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Add a pricing table",
+          "duration_seconds": 4.683
+        },
+        {
+          "task_number": 2,
+          "agent_type": "act",
+          "intent": "scroll to it",
+          "duration_seconds": 1.414
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "update the prices",
+          "duration_seconds": 3.501
+        }
+      ]
+    },
+    {
+      "test_id": "orch-mixed-04",
+      "name": "Mixed - All agent types",
+      "description": "EDIT, ACT, and potentially CLARIFY",
+      "duration_seconds": 4.711,
+      "task_count": 3,
+      "average_per_task": 1.57,
+      "planner_time_seconds": 1.016,
+      "total_agent_time_seconds": 3.689,
+      "orchestrator_overhead_seconds": 0.002,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Create a form",
+          "duration_seconds": 1.641
+        },
+        {
+          "task_number": 2,
+          "agent_type": "act",
+          "intent": "click the first field",
+          "duration_seconds": 1.37
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "adjust something about the layout",
+          "duration_seconds": 0.678
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edge-01",
+      "name": "Edge - Very short request",
+      "description": "Minimal request with limited context",
+      "duration_seconds": 2.783,
+      "task_count": 1,
+      "average_per_task": 2.783,
+      "planner_time_seconds": 1.946,
+      "total_agent_time_seconds": 0.833,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "clarify",
+          "intent": "Blue button",
+          "duration_seconds": 0.833
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edge-02",
+      "name": "Edge - Very long complex request",
+      "description": "Long complex multi-task request",
+      "duration_seconds": 8.37,
+      "task_count": 3,
+      "average_per_task": 2.79,
+      "planner_time_seconds": 0.937,
+      "total_agent_time_seconds": 7.43,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings",
+          "duration_seconds": 2.728
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "Add a top header with search bar and notifications",
+          "duration_seconds": 3.174
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "Add metric cards showing user count, revenue, and conversion rates",
+          "duration_seconds": 1.528
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edge-03",
+      "name": "Edge - Special characters",
+      "description": "Request with special characters",
+      "duration_seconds": 4.084,
+      "task_count": 2,
+      "average_per_task": 2.042,
+      "planner_time_seconds": 0.93,
+      "total_agent_time_seconds": 3.151,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Add a button with text 'Sign Up -> Start Free!'",
+          "duration_seconds": 2.423
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "make it 100% width",
+          "duration_seconds": 0.728
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edge-04",
+      "name": "Edge - Technical specifications",
+      "description": "Technical CSS specifications",
+      "duration_seconds": 3.234,
+      "task_count": 3,
+      "average_per_task": 1.078,
+      "planner_time_seconds": 0.939,
+      "total_agent_time_seconds": 2.292,
+      "orchestrator_overhead_seconds": 0.001,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Set container max-width to 1200px",
+          "duration_seconds": 0.77
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "Set container padding to 20px",
+          "duration_seconds": 0.722
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "Set container margin to auto",
+          "duration_seconds": 0.8
+        }
+      ]
+    },
+    {
+      "test_id": "orch-edge-05",
+      "name": "Edge - Sequential actions with context",
+      "description": "Multiple related edits building on each other",
+      "duration_seconds": 5.383,
+      "task_count": 3,
+      "average_per_task": 1.794,
+      "planner_time_seconds": 0.986,
+      "total_agent_time_seconds": 4.394,
+      "orchestrator_overhead_seconds": 0.0,
+      "tasks": [
+        {
+          "task_number": 1,
+          "agent_type": "edit",
+          "intent": "Add a card with pricing info",
+          "duration_seconds": 1.74
+        },
+        {
+          "task_number": 2,
+          "agent_type": "edit",
+          "intent": "make it have rounded corners",
+          "duration_seconds": 1.837
+        },
+        {
+          "task_number": 3,
+          "agent_type": "edit",
+          "intent": "add a shadow effect",
+          "duration_seconds": 0.817
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "test_id": "orch-edit-01",
+      "name": "Single EDIT - Create button",
+      "description": "Simple single-task EDIT workflow",
+      "passed": true,
+      "input": {
+        "sid": "orch-edit-01",
+        "text": "Create a blue button that says Submit",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edit-01",
+        "results": [
+          {
+            "session_id": "orch-edit-01",
+            "step_id": "0369bf75-4018-597b-97d6-b835209b922d",
+            "intent": "Create a blue button that says Submit | The task involves adding a new button element to the website structure with specific styling (blue color) and content (text 'Submit'). This is classified as 'edit' because it modifies the website's design and structure by creating a new component.",
+            "context": "Create a blue button that says Submit | Create a blue button that says Submit",
+            "result": "{\n  \"id\": \"submit-button\",\n  \"type\": \"Button\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"#007bff\",\n      \"color\": \"white\",\n      \"border\": \"none\",\n      \"borderRadius\": \"4px\",\n      \"padding\": \"8px 16px\",\n      \"cursor\": \"pointer\"\n    }\n  },\n  \"slots\": {\n    \"default\": [\n      {\n        \"type\": \"Text\",\n        \"props\": {\n          \"content\": \"Submit\",\n          \"style\": {\n            \"fontSize\": \"16px\"\n          }\n        }\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.1
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.945,
+          "total_agent_time_seconds": 1.1,
+          "total_time_seconds": 2.045,
+          "task_timings": [
+            {
+              "step_id": "0369bf75-4018-597b-97d6-b835209b922d",
+              "agent_type": "edit",
+              "duration_seconds": 1.1
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Create a blue button that says Submit",
+            "step_id": "0369bf75-4018-597b-97d6-b835209b922d",
+            "actual_duration_seconds": 1.1
+          }
+        ],
+        "planner_time_seconds": 0.945,
+        "total_agent_time_seconds": 1.1,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 2.05
+    },
+    {
+      "test_id": "orch-edit-02",
+      "name": "Single EDIT - Style modification",
+      "description": "Simple style modification EDIT",
+      "passed": false,
+      "input": {
+        "sid": "orch-edit-02",
+        "text": "Make the heading larger and bold",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edit-02",
+        "results": [
+          {
+            "session_id": "orch-edit-02",
+            "step_id": "2b95ddb4-4d21-51fa-b0bc-d94cc02c4d92",
+            "intent": "Make the heading larger | This task requires modifying the font size of the existing heading element, which is a style change to the website's design.",
+            "context": "Make the heading larger | Make the heading bold",
+            "result": "{\n  \"id\": \"heading\",\n  \"type\": \"Text\",\n  \"props\": {\n    \"style\": {\n      \"fontSize\": \"24px\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.218
+          },
+          {
+            "session_id": "orch-edit-02",
+            "step_id": "28ed8b69-f12b-5803-90dc-2ec53fb6cf3a",
+            "intent": "Make the heading bold | This task involves adjusting the font weight of the heading element to bold, another style modification affecting the website's appearance.",
+            "context": "Make the heading bold | Make the heading larger",
+            "result": "{\n  \"id\": \"heading\",\n  \"type\": \"Text\",\n  \"props\": {\n    \"style\": {\n      \"fontWeight\": \"bold\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.063
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.892,
+          "total_agent_time_seconds": 2.281,
+          "total_time_seconds": 3.174,
+          "task_timings": [
+            {
+              "step_id": "2b95ddb4-4d21-51fa-b0bc-d94cc02c4d92",
+              "agent_type": "edit",
+              "duration_seconds": 1.218
+            },
+            {
+              "step_id": "28ed8b69-f12b-5803-90dc-2ec53fb6cf3a",
+              "agent_type": "edit",
+              "duration_seconds": 1.063
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": false,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [
+        "Task count mismatch: expected 1, got 2"
+      ],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 2
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Make the heading larger",
+            "step_id": "2b95ddb4-4d21-51fa-b0bc-d94cc02c4d92",
+            "actual_duration_seconds": 1.218
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "Make the heading bold",
+            "step_id": "28ed8b69-f12b-5803-90dc-2ec53fb6cf3a",
+            "actual_duration_seconds": 1.063
+          }
+        ],
+        "planner_time_seconds": 0.892,
+        "total_agent_time_seconds": 2.281,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 3.177
+    },
+    {
+      "test_id": "orch-edit-03",
+      "name": "Single EDIT - Complex component",
+      "description": "Complex single-task EDIT",
+      "passed": true,
+      "input": {
+        "sid": "orch-edit-03",
+        "text": "Add a navigation bar with logo on left and menu items on right",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edit-03",
+        "results": [
+          {
+            "session_id": "orch-edit-03",
+            "step_id": "6751385f-71e8-53bf-8f23-6dde3ccbee04",
+            "intent": "Add a navigation bar with logo on left and menu items on right | This task requires modifying the website's structure by creating a new navigation bar component, positioning the logo on the left side of this bar, and arranging the menu items on the right side. It involves code changes to implement the layout and design of the navigation bar as specified.",
+            "context": "The previous context includes two repeated user requests, both instructing to add a navigation bar with the logo positioned on the left and menu items on the right.",
+            "result": "{\n  \"id\": \"error-component\",\n  \"type\": \"Box\",\n  \"props\": {},\n  \"slots\": {},\n  \"error\": \"Could not parse component: Expecting ',' delimiter: line 1 column 1103 (char 1102)\"\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 3.97
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 1.201,
+          "total_agent_time_seconds": 3.97,
+          "total_time_seconds": 5.172,
+          "task_timings": [
+            {
+              "step_id": "6751385f-71e8-53bf-8f23-6dde3ccbee04",
+              "agent_type": "edit",
+              "duration_seconds": 3.97
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Add a navigation bar with logo on left and menu items on right",
+            "step_id": "6751385f-71e8-53bf-8f23-6dde3ccbee04",
+            "actual_duration_seconds": 3.97
+          }
+        ],
+        "planner_time_seconds": 1.201,
+        "total_agent_time_seconds": 3.97,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 5.174
+    },
+    {
+      "test_id": "orch-act-01",
+      "name": "Single ACT - Click action",
+      "description": "Simple single-task ACT workflow",
+      "passed": true,
+      "input": {
+        "sid": "orch-act-01",
+        "text": "Click the submit button",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "act"
+        ]
+      },
+      "response": {
+        "sid": "orch-act-01",
+        "results": [
+          {
+            "session_id": "orch-act-01",
+            "step_id": "9b0f7904-723c-53a5-bf7b-34882f019349",
+            "intent": "Click the submit button | The task involves a direct user interaction with an existing UI element (submit button) by clicking it, which falls under the 'act' category as defined.",
+            "context": "Click the submit button | Click the submit button",
+            "result": "To generate a specific action, I need the intent and context provided. However, here\u2019s an example based on a hypothetical scenario:  \n\n**Intent**: \"Add a search bar to the top of the homepage.\"  \n**Context**: \"User is editing a Bootstrap-based HTML file named 'index.html' and previously mentioned building an e-commerce site.\"  \n\n**Action**:  \n1. Locate the 'index.html' file in the project directory.  \n2. Identify the header section (likely within a `<header>` or `<nav>` tag) using Bootstrap classes (e.g., `navbar`).  \n3. Insert a Bootstrap search bar component (using `<form class=\"d-flex\">` with `<input type=\"search\">` and `<button>` elements) immediately after the existing site title.  \n4. Apply responsive styling (e.g., `ms-3` margin class) to ensure the search bar aligns properly on mobile and desktop.  \n5. Save the modified 'index.html' file.  \n6. Generate voice feedback: *\"I\u2019ve added a Bootstrap search bar to the top of the homepage. It\u2019s responsive and includes a search input and button. Would you like me to customize its styling or add functionality like auto-complete?\"*  \n\n\\boxed{Add Bootstrap search bar to homepage header with responsive styling, save, and confirm via voice.}",
+            "agent_type": "act",
+            "execution_time_seconds": 1.375
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.738,
+          "total_agent_time_seconds": 1.375,
+          "total_time_seconds": 2.113,
+          "task_timings": [
+            {
+              "step_id": "9b0f7904-723c-53a5-bf7b-34882f019349",
+              "agent_type": "act",
+              "duration_seconds": 1.375
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "act",
+            "intent": "Click the submit button",
+            "step_id": "9b0f7904-723c-53a5-bf7b-34882f019349",
+            "actual_duration_seconds": 1.375
+          }
+        ],
+        "planner_time_seconds": 0.738,
+        "total_agent_time_seconds": 1.375,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 2.118
+    },
+    {
+      "test_id": "orch-act-02",
+      "name": "Single ACT - Scroll action",
+      "description": "Scroll action ACT workflow",
+      "passed": true,
+      "input": {
+        "sid": "orch-act-02",
+        "text": "Scroll down to the footer",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "act"
+        ]
+      },
+      "response": {
+        "sid": "orch-act-02",
+        "results": [
+          {
+            "session_id": "orch-act-02",
+            "step_id": "09c33bf9-101f-5b61-81b9-5357f7eb26be",
+            "intent": "Scroll down to the footer | The task requires interacting with the existing UI by performing a scroll action to move the viewport down until the footer section of the webpage is visible.",
+            "context": "Scroll down to the footer | Scroll down to the footer",
+            "result": "\\boxed{\"actionType\": \"createFile\", \"filePath\": \"PersonalPortfolio/about.html\", \"content\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>About</title>\\n</head>\\n<body>\\n    <h1>About Me</h1>\\n    <p>This is a placeholder paragraph for the about page. Please update with your content.</p>\\n</body>\\n</html>\", \"confirmationVoice\": \"Created about.html with a heading and paragraph in the PersonalPortfolio project.\"}}",
+            "agent_type": "act",
+            "execution_time_seconds": 2.179
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.739,
+          "total_agent_time_seconds": 2.179,
+          "total_time_seconds": 2.918,
+          "task_timings": [
+            {
+              "step_id": "09c33bf9-101f-5b61-81b9-5357f7eb26be",
+              "agent_type": "act",
+              "duration_seconds": 2.179
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "act",
+            "intent": "Scroll down to the footer",
+            "step_id": "09c33bf9-101f-5b61-81b9-5357f7eb26be",
+            "actual_duration_seconds": 2.179
+          }
+        ],
+        "planner_time_seconds": 0.739,
+        "total_agent_time_seconds": 2.179,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 2.921
+    },
+    {
+      "test_id": "orch-act-03",
+      "name": "Single ACT - Navigation",
+      "description": "Navigation ACT workflow",
+      "passed": true,
+      "input": {
+        "sid": "orch-act-03",
+        "text": "Navigate to the about page",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "act"
+        ]
+      },
+      "response": {
+        "sid": "orch-act-03",
+        "results": [
+          {
+            "session_id": "orch-act-03",
+            "step_id": "52fdf1a4-edaf-54ca-aa5c-3920cdcb74dd",
+            "intent": "Navigate to the about page | The user is requesting to perform the action of navigating to the 'about page', which involves interacting with existing UI elements (e.g., clicking a navigation link or selecting a menu option). This is classified as 'act' because it's a user interaction with the current website structure.",
+            "context": "Navigate to the about page | Navigate to the about page",
+            "result": "\\boxed{Generate a responsive contact form with name, email, and message fields, using HTML and CSS Flexbox for layout, and include voice-guided explanations of each code section to ensure the user understands the implementation.}",
+            "agent_type": "act",
+            "execution_time_seconds": 1.507
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.776,
+          "total_agent_time_seconds": 1.507,
+          "total_time_seconds": 2.284,
+          "task_timings": [
+            {
+              "step_id": "52fdf1a4-edaf-54ca-aa5c-3920cdcb74dd",
+              "agent_type": "act",
+              "duration_seconds": 1.507
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "act",
+            "intent": "Navigate to the about page",
+            "step_id": "52fdf1a4-edaf-54ca-aa5c-3920cdcb74dd",
+            "actual_duration_seconds": 1.507
+          }
+        ],
+        "planner_time_seconds": 0.776,
+        "total_agent_time_seconds": 1.507,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 2.287
+    },
+    {
+      "test_id": "orch-clarify-01",
+      "name": "Single CLARIFY - Ambiguous reference",
+      "description": "Ambiguous request requiring clarification",
+      "passed": true,
+      "input": {
+        "sid": "orch-clarify-01",
+        "text": "Change the thing at the top",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "clarify"
+        ]
+      },
+      "response": {
+        "sid": "orch-clarify-01",
+        "results": [
+          {
+            "session_id": "orch-clarify-01",
+            "step_id": "e7e27ed9-1135-52d2-a1da-3afb7ad8e552",
+            "intent": "Change the thing at the top | The request is ambiguous because 'the thing at the top' does not specify which UI element (e.g., header, logo, title) or what modification (e.g., color, content, layout) is needed. Additional details are required to determine the exact task (edit or act).",
+            "context": "Change the thing at the top | Change the thing at the top",
+            "result": "Quick clarification\u2014when you say \"change the thing at the top,\" are we tweaking the header, logo, title, or another element, and what exactly do you want to adjust?",
+            "agent_type": "clarify",
+            "execution_time_seconds": 1.047
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.809,
+          "total_agent_time_seconds": 1.047,
+          "total_time_seconds": 1.856,
+          "task_timings": [
+            {
+              "step_id": "e7e27ed9-1135-52d2-a1da-3afb7ad8e552",
+              "agent_type": "clarify",
+              "duration_seconds": 1.047
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "clarify": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "clarify",
+            "intent": "Change the thing at the top",
+            "step_id": "e7e27ed9-1135-52d2-a1da-3afb7ad8e552",
+            "actual_duration_seconds": 1.047
+          }
+        ],
+        "planner_time_seconds": 0.809,
+        "total_agent_time_seconds": 1.047,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 1.86
+    },
+    {
+      "test_id": "orch-clarify-02",
+      "name": "Single CLARIFY - Vague instruction",
+      "description": "Vague request needing clarification",
+      "passed": true,
+      "input": {
+        "sid": "orch-clarify-02",
+        "text": "Make it better",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "clarify"
+        ]
+      },
+      "response": {
+        "sid": "orch-clarify-02",
+        "results": [
+          {
+            "session_id": "orch-clarify-02",
+            "step_id": "262208a0-aafc-5820-ad43-0d89dc9f9eb5",
+            "intent": "Make it better | The request 'Make it better' is ambiguous as it does not specify what needs improvement (e.g., design, functionality, content) or what specific changes to implement. Additional details are required to determine the exact tasks needed.",
+            "context": "Make it better | Make it better",
+            "result": "Quick clarification, Stark\u2014when you say \"make it better,\" are we focusing on the design, functionality, content, or something else specific? Need the target to level up your site right.",
+            "agent_type": "clarify",
+            "execution_time_seconds": 0.844
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.749,
+          "total_agent_time_seconds": 0.844,
+          "total_time_seconds": 1.594,
+          "task_timings": [
+            {
+              "step_id": "262208a0-aafc-5820-ad43-0d89dc9f9eb5",
+              "agent_type": "clarify",
+              "duration_seconds": 0.844
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "clarify": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "clarify",
+            "intent": "Make it better",
+            "step_id": "262208a0-aafc-5820-ad43-0d89dc9f9eb5",
+            "actual_duration_seconds": 0.844
+          }
+        ],
+        "planner_time_seconds": 0.749,
+        "total_agent_time_seconds": 0.844,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 1.597
+    },
+    {
+      "test_id": "orch-multi-edit-01",
+      "name": "Multi EDIT - Two edits",
+      "description": "Two EDIT tasks in sequence",
+      "passed": true,
+      "input": {
+        "sid": "orch-multi-edit-01",
+        "text": "Create a login form and make the submit button blue",
+        "expected_tasks": 2,
+        "expected_agents": [
+          "edit",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-multi-edit-01",
+        "results": [
+          {
+            "session_id": "orch-multi-edit-01",
+            "step_id": "05caca53-026a-5e2f-b6fc-4bbef818b127",
+            "intent": "Create a login form | This task involves modifying the website structure by adding a new login form component, including elements like username/input fields, labels, and a submit button.",
+            "context": "Create a login form | Make the submit button blue",
+            "result": "{\n  \"id\": \"login-form-container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"padding\": \"20px\",\n      \"backgroundColor\": \"#ffffff\",\n      \"borderRadius\": \"8px\",\n      \"maxWidth\": \"400px\",\n      \"margin\": \"50px auto\",\n      \"boxShadow\": \"0 2px 4px rgba(0,0,0,0.1)\",\n      \"gap\": \"16px\",\n      \"display\": \"flex\",\n      \"flexDirection\": \"column\"\n    }\n  },\n  \"slots\": {\n    \"children\": [\n      {\n        \"id\": \"login-title\",\n        \"type\": \"Text\",\n        \"props\": {\n          \"text\": \"Login\",\n          \"style\": {\n            \"textAlign\": \"center\",\n            \"fontSize\": \"24px\",\n            \"fontWeight\": \"700\",\n            \"color\": \"#2d3436\"\n          }\n        }\n      },\n      {\n        \"id\": \"username-group\",\n        \"type\": \"Box\",\n        \"props\": {\n          \"style\": {\n            \"display\": \"flex\",\n            \"flexDirection\": \"column\",\n            \"gap\": \"8px\"\n          }\n        },\n        \"slots\": {\n          \"children\": [\n            {\n              \"id\": \"username-label\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"text\": \"Username:\",\n                \"style\": {\n                  \"fontSize\": \"16px\",\n                  \"color\": \"#4a4a4a\"\n                }\n              }\n            },\n            {\n              \"id\": \"username-input\",\n              \"type\": \"Textbox\",\n              \"props\": {\n                \"placeholder\": \"Enter your username\",\n                \"style\": {\n                  \"width\": \"100%\",\n                  \"padding\": \"10px\",\n                  \"border\": \"1px solid #ced4da\",\n                  \"borderRadius\": \"4px\",\n                  \"fontSize\": \"16px\",\n                  \"boxSizing\": \"border-box\"\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"id\": \"password-group\",\n        \"type\": \"Box\",\n        \"props\": {\n          \"style\": {\n            \"display\": \"flex\",\n            \"flexDirection\": \"column\",\n            \"gap\": \"8px\"\n          }\n        },\n        \"slots\": {\n          \"children\": [\n            {\n              \"id\": \"password-label\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"text\": \"Password:\",\n                \"style\": {\n                  \"fontSize\": \"16px\",\n                  \"color\": \"#4a4a4a\"\n                }\n              }\n            },\n            {\n              \"id\": \"password-input\",\n              \"type\": \"Textbox\",\n              \"props\": {\n                \"type\": \"password\",\n                \"placeholder\": \"Enter your password\",\n                \"style\": {\n                  \"width\": \"100%\",\n                  \"padding\": \"10px\",\n                  \"border\": \"1px solid #ced4da\",\n                  \"borderRadius\": \"4px\",\n                  \"fontSize\": \"16px\",\n                  \"boxSizing\": \"border-box\"\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"id\": \"login-button\",\n        \"type\": \"Button\",\n        \"props\": {\n          \"text\": \"Login\",\n          \"style\": {\n            \"width\": \"100%\",\n            \"padding\": \"12px\",\n            \"backgroundColor\": \"#007bff\",\n            \"color\": \"white\",\n            \"border\": \"none\",\n            \"borderRadius\": \"4px\",\n            \"cursor\": \"pointer\",\n            \"fontSize\": \"16px\",\n            \"marginTop\": \"16px\"\n          },\n          \"onClick\": \"handleLogin\"\n        }\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 2.888
+          },
+          {
+            "session_id": "orch-multi-edit-01",
+            "step_id": "b7e8d6ab-071a-5c71-b271-dd83ccdb448a",
+            "intent": "make the submit button blue | This task requires changing the style of the submit button (specifically its color) to blue, which involves modifying CSS properties such as background-color for the button element.",
+            "context": "Make the submit button blue | Create a login form",
+            "result": "{\n  \"id\": \"submit-button\",\n  \"type\": \"Button\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"blue\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.518
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 1.007,
+          "total_agent_time_seconds": 4.406,
+          "total_time_seconds": 5.414,
+          "task_timings": [
+            {
+              "step_id": "05caca53-026a-5e2f-b6fc-4bbef818b127",
+              "agent_type": "edit",
+              "duration_seconds": 2.888
+            },
+            {
+              "step_id": "b7e8d6ab-071a-5c71-b271-dd83ccdb448a",
+              "agent_type": "edit",
+              "duration_seconds": 1.518
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 2
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Create a login form",
+            "step_id": "05caca53-026a-5e2f-b6fc-4bbef818b127",
+            "actual_duration_seconds": 2.888
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "make the submit button blue",
+            "step_id": "b7e8d6ab-071a-5c71-b271-dd83ccdb448a",
+            "actual_duration_seconds": 1.518
+          }
+        ],
+        "planner_time_seconds": 1.007,
+        "total_agent_time_seconds": 4.406,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 5.416
+    },
+    {
+      "test_id": "orch-multi-edit-02",
+      "name": "Multi EDIT - Three edits",
+      "description": "Three EDIT tasks in sequence",
+      "passed": true,
+      "input": {
+        "sid": "orch-multi-edit-02",
+        "text": "Add a hero section with title, then add a subtitle below it, and make both centered",
+        "expected_tasks": 3,
+        "expected_agents": [
+          "edit",
+          "edit",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-multi-edit-02",
+        "results": [
+          {
+            "session_id": "orch-multi-edit-02",
+            "step_id": "441aec98-86df-5456-9343-6495450741b9",
+            "intent": "Add a hero section with title | The user wants to create a new hero section component (commonly a prominent top section) and include a title within it. This involves modifying the website structure by adding HTML elements for the hero section and its title, possibly with initial styling.",
+            "context": "Add a subtitle below it | Make both centered",
+            "result": "{\n  \"id\": \"hero-section\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"#f0f0f0\",\n      \"padding\": \"4rem 2rem\",\n      \"textAlign\": \"center\",\n      \"minHeight\": \"100vh\"\n    }\n  },\n  \"slots\": {\n    \"content\": {\n      \"id\": \"hero-title\",\n      \"type\": \"Text\",\n      \"props\": {\n        \"style\": {\n          \"fontSize\": \"2.5rem\",\n          \"fontWeight\": \"700\",\n          \"color\": \"#333333\"\n        },\n        \"children\": \"The Hero Title\"\n      }\n    }\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.737
+          },
+          {
+            "session_id": "orch-multi-edit-02",
+            "step_id": "dd3f8901-e952-5bc9-85a2-bc0be3bb25fc",
+            "intent": "Add a subtitle below it | After the hero section title is added, the user requests placing a subtitle directly below the title. This requires modifying the structure by adding a subtitle element (e.g., <p>, <div>) and ensuring it is positioned beneath the title within the hero section.",
+            "context": "Make both centered | Add a hero section with title",
+            "result": "{\n  \"id\": \"hero-subtitle\",\n  \"type\": \"Text\",\n  \"props\": {\n    \"style\": {\n      \"margin-top\": \"16px\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.055
+          },
+          {
+            "session_id": "orch-multi-edit-02",
+            "step_id": "26736d58-f4c0-5274-b062-84e2397921cc",
+            "intent": "Make both centered | The user wants both the hero section title and subtitle to be horizontally centered. This involves applying CSS styling (e.g., text-align: center; or flexbox justify-content: center) to their parent container or directly to the elements to achieve the centered layout.",
+            "context": "Add a hero section with title | Add a subtitle below it",
+            "result": "{\n  \"id\": \"hero-section-container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"textAlign\": \"center\"\n    }\n  },\n  \"slots\": {\n    \"title\": {\n      \"type\": \"Text\",\n      \"props\": {}\n    },\n    \"subtitle\": {\n      \"type\": \"Text\",\n      \"props\": {}\n    }\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.137
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 1.024,
+          "total_agent_time_seconds": 3.929,
+          "total_time_seconds": 4.955,
+          "task_timings": [
+            {
+              "step_id": "441aec98-86df-5456-9343-6495450741b9",
+              "agent_type": "edit",
+              "duration_seconds": 1.737
+            },
+            {
+              "step_id": "dd3f8901-e952-5bc9-85a2-bc0be3bb25fc",
+              "agent_type": "edit",
+              "duration_seconds": 1.055
+            },
+            {
+              "step_id": "26736d58-f4c0-5274-b062-84e2397921cc",
+              "agent_type": "edit",
+              "duration_seconds": 1.137
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_correct_agent": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 3,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 3
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Add a hero section with title",
+            "step_id": "441aec98-86df-5456-9343-6495450741b9",
+            "actual_duration_seconds": 1.737
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "Add a subtitle below it",
+            "step_id": "dd3f8901-e952-5bc9-85a2-bc0be3bb25fc",
+            "actual_duration_seconds": 1.055
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "Make both centered",
+            "step_id": "26736d58-f4c0-5274-b062-84e2397921cc",
+            "actual_duration_seconds": 1.137
+          }
+        ],
+        "planner_time_seconds": 1.024,
+        "total_agent_time_seconds": 3.929,
+        "orchestrator_overhead_seconds": 0.002
+      },
+      "duration_seconds": 4.957
+    },
+    {
+      "test_id": "orch-multi-act-01",
+      "name": "Multi ACT - Two actions",
+      "description": "Two ACT tasks in sequence",
+      "passed": true,
+      "input": {
+        "sid": "orch-multi-act-01",
+        "text": "Scroll down and then click the contact button",
+        "expected_tasks": 2,
+        "expected_agents": [
+          "act",
+          "act"
+        ]
+      },
+      "response": {
+        "sid": "orch-multi-act-01",
+        "results": [
+          {
+            "session_id": "orch-multi-act-01",
+            "step_id": "45d9b26d-ec32-55e6-a440-52b3b4a39e8a",
+            "intent": "Scroll down | The user wants to perform a scroll action to move the viewport down, interacting with the existing UI.",
+            "context": "Scroll down | click the contact button",
+            "result": "\\boxed{Action: Upon receiving the intent to \"create a basic landing page\" with the context of the user being a beginner starting a new project, generate an HTML template including a header, hero section, features grid, and footer. Embed inline CSS for minimal styling (e.g., centering content, adding padding) and JavaScript for a simple scroll effect. Save the file as 'index.html' in the project directory, then audibly confirm completion and ask if the user needs help modifying any section.}",
+            "agent_type": "act",
+            "execution_time_seconds": 1.658
+          },
+          {
+            "session_id": "orch-multi-act-01",
+            "step_id": "e95afa97-e12c-58b0-b294-f5ff140deee6",
+            "intent": "click the contact button | The user wants to interact with the existing 'contact button' UI element by clicking it.",
+            "context": "click the contact button | Scroll down",
+            "result": "Could you please share the intent and context you'd like me to act on? I need that information to generate the appropriate action for the voice-first web development tool.",
+            "agent_type": "act",
+            "execution_time_seconds": 0.742
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.851,
+          "total_agent_time_seconds": 2.4,
+          "total_time_seconds": 3.252,
+          "task_timings": [
+            {
+              "step_id": "45d9b26d-ec32-55e6-a440-52b3b4a39e8a",
+              "agent_type": "act",
+              "duration_seconds": 1.658
+            },
+            {
+              "step_id": "e95afa97-e12c-58b0-b294-f5ff140deee6",
+              "agent_type": "act",
+              "duration_seconds": 0.742
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "act": 2
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "act",
+            "intent": "Scroll down",
+            "step_id": "45d9b26d-ec32-55e6-a440-52b3b4a39e8a",
+            "actual_duration_seconds": 1.658
+          },
+          {
+            "task_number": 2,
+            "agent_type": "act",
+            "intent": "click the contact button",
+            "step_id": "e95afa97-e12c-58b0-b294-f5ff140deee6",
+            "actual_duration_seconds": 0.742
+          }
+        ],
+        "planner_time_seconds": 0.851,
+        "total_agent_time_seconds": 2.4,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 3.255
+    },
+    {
+      "test_id": "orch-mixed-01",
+      "name": "Mixed - EDIT then ACT",
+      "description": "EDIT followed by ACT",
+      "passed": true,
+      "input": {
+        "sid": "orch-mixed-01",
+        "text": "Create a submit button and then click it",
+        "expected_tasks": 2,
+        "expected_agents": [
+          "edit",
+          "act"
+        ]
+      },
+      "response": {
+        "sid": "orch-mixed-01",
+        "results": [
+          {
+            "session_id": "orch-mixed-01",
+            "step_id": "caaeb48a-66e7-56b5-a7c9-addf9dabee3c",
+            "intent": "Create a submit button | This task involves adding a new submit button element to the website's UI, which requires modifying the website's structure or content through code or design changes.",
+            "context": "Create a submit button | click it",
+            "result": "{\n  \"id\": \"submit-button\",\n  \"type\": \"Button\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"#007bff\",\n      \"color\": \"white\",\n      \"padding\": \"8px 16px\",\n      \"border\": \"none\",\n      \"borderRadius\": \"4px\",\n      \"fontSize\": \"14px\",\n      \"cursor\": \"pointer\",\n      \":hover\": {\n        \"backgroundColor\": \"#0056b3\"\n      }\n    },\n    \"type\": \"submit\"\n  },\n  \"slots\": {\n    \"default\": \"Submit\"\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.767
+          },
+          {
+            "session_id": "orch-mixed-01",
+            "step_id": "b61ffd89-bfe4-583f-ba15-61d409861d9d",
+            "intent": "click it | This task involves interacting with the existing submit button (created in the previous step) by performing a click action, which is a user interaction with UI elements.",
+            "context": "click it | Create a submit button",
+            "result": "To generate an action, I need specific intent and context. However, here\u2019s a hypothetical example:\n\n**Intent**: \"Create a basic HTML webpage with a header, main content, and footer.\"  \n**Context**: \"User is developing a personal blog, prefers minimal styling, and mentions using VS Code.\"  \n\n**Action**:  \n\"Open VS Code, create a new file named 'index.html'. Use voice commands to dictate the following structure: Start with the doctype declaration, then the html tag with lang attribute. Inside the head, add a title tag with 'My Personal Blog' and a meta tag for viewport. In the body, insert a header section with a heading tag 'Welcome to My Blog', a main section with a placeholder paragraph 'Start writing your first post here...', and a footer with '\u00a9 2024 Your Name'. Save the file and confirm by saying, 'Page created with header, main, and footer. Open preview to view changes?'.\"",
+            "agent_type": "act",
+            "execution_time_seconds": 1.089
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.87,
+          "total_agent_time_seconds": 2.856,
+          "total_time_seconds": 3.726,
+          "task_timings": [
+            {
+              "step_id": "caaeb48a-66e7-56b5-a7c9-addf9dabee3c",
+              "agent_type": "edit",
+              "duration_seconds": 1.767
+            },
+            {
+              "step_id": "b61ffd89-bfe4-583f-ba15-61d409861d9d",
+              "agent_type": "act",
+              "duration_seconds": 1.089
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 1,
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Create a submit button",
+            "step_id": "caaeb48a-66e7-56b5-a7c9-addf9dabee3c",
+            "actual_duration_seconds": 1.767
+          },
+          {
+            "task_number": 2,
+            "agent_type": "act",
+            "intent": "click it",
+            "step_id": "b61ffd89-bfe4-583f-ba15-61d409861d9d",
+            "actual_duration_seconds": 1.089
+          }
+        ],
+        "planner_time_seconds": 0.87,
+        "total_agent_time_seconds": 2.856,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 3.729
+    },
+    {
+      "test_id": "orch-mixed-02",
+      "name": "Mixed - ACT then EDIT",
+      "description": "ACT followed by EDIT",
+      "passed": true,
+      "input": {
+        "sid": "orch-mixed-02",
+        "text": "Scroll to footer and change its background to dark gray",
+        "expected_tasks": 2,
+        "expected_agents": [
+          "act",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-mixed-02",
+        "results": [
+          {
+            "session_id": "orch-mixed-02",
+            "step_id": "0af1802f-066c-57fb-a3d9-152dafbb996a",
+            "intent": "Scroll to footer | This task requires the agent to perform a scrolling action to bring the footer section of the webpage into the visible area of the viewport.",
+            "context": "Scroll to footer | change its background to dark gray",
+            "result": "Please provide the user's intent and the current context so I can generate the corresponding action.",
+            "agent_type": "act",
+            "execution_time_seconds": 0.706
+          },
+          {
+            "session_id": "orch-mixed-02",
+            "step_id": "4e9bd82a-70d0-5dd0-bdbe-05af018fbfd4",
+            "intent": "change its background to dark gray | This task involves modifying the website's style by adjusting the background color of the footer element to dark gray, which would typically require editing CSS or related styling code.",
+            "context": "change its background to dark gray | Scroll to footer",
+            "result": "{\n  \"id\": \"footer\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"darkgray\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.152
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 22.997,
+          "total_agent_time_seconds": 1.858,
+          "total_time_seconds": 24.855,
+          "task_timings": [
+            {
+              "step_id": "0af1802f-066c-57fb-a3d9-152dafbb996a",
+              "agent_type": "act",
+              "duration_seconds": 0.706
+            },
+            {
+              "step_id": "4e9bd82a-70d0-5dd0-bdbe-05af018fbfd4",
+              "agent_type": "edit",
+              "duration_seconds": 1.152
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "act": 1,
+          "edit": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "act",
+            "intent": "Scroll to footer",
+            "step_id": "0af1802f-066c-57fb-a3d9-152dafbb996a",
+            "actual_duration_seconds": 0.706
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "change its background to dark gray",
+            "step_id": "4e9bd82a-70d0-5dd0-bdbe-05af018fbfd4",
+            "actual_duration_seconds": 1.152
+          }
+        ],
+        "planner_time_seconds": 22.997,
+        "total_agent_time_seconds": 1.858,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 24.859
+    },
+    {
+      "test_id": "orch-mixed-03",
+      "name": "Mixed - EDIT, ACT, EDIT sequence",
+      "description": "Complex mixed workflow",
+      "passed": true,
+      "input": {
+        "sid": "orch-mixed-03",
+        "text": "Add a pricing table, scroll to it, and then update the prices",
+        "expected_tasks": 3,
+        "expected_agents": [
+          "edit",
+          "act",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-mixed-03",
+        "results": [
+          {
+            "session_id": "orch-mixed-03",
+            "step_id": "a40d2fe1-0ac9-51a1-b83e-93be8de8decc",
+            "intent": "Add a pricing table | This task requires creating a new pricing table component, which involves modifying the website's structure or content.",
+            "context": "scroll to it | update the prices",
+            "result": "{\n  \"id\": \"pricing-table\",\n  \"type\": \"Table\",\n  \"props\": {\n    \"style\": {\n      \"width\": \"100%\",\n      \"maxWidth\": \"800px\",\n      \"margin\": \"20px auto\",\n      \"borderCollapse\": \"collapse\",\n      \"boxShadow\": \"0 4px 8px rgba(0, 0, 0, 0.1)\"\n    },\n    \"className\": \"\"\n  },\n  \"slots\": {\n    \"children\": [\n      {\n        \"type\": \"Box\",\n        \"props\": {\n          \"style\": {\n            \"backgroundColor\": \"#4CAF50\"\n          }\n        },\n        \"slots\": {\n          \"children\": [\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"Plan\",\n                \"style\": {\n                  \"fontWeight\": \"700\",\n                  \"color\": \"white\",\n                  \"padding\": \"12px\",\n                  \"textAlign\": \"center\"\n                }\n              }\n            },\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"Price\",\n                \"style\": {\n                  \"fontWeight\": \"700\",\n                  \"color\": \"white\",\n                  \"padding\": \"12px\",\n                  \"textAlign\": \"center\"\n                }\n              }\n            },\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"Features\",\n                \"style\": {\n                  \"fontWeight\": \"700\",\n                  \"color\": \"white\",\n                  \"padding\": \"12px\",\n                  \"textAlign\": \"center\"\n                }\n              }\n            },\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"Buy\",\n                \"style\": {\n                  \"fontWeight\": \"700\",\n                  \"color\": \"white\",\n                  \"padding\": \"12px\",\n                  \"textAlign\": \"center\"\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"type\": \"Box\",\n        \"props\": {\n          \"style\": {\n            \"borderTop\": \"1px solid #ddd\"\n          }\n        },\n        \"slots\": {\n          \"children\": [\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"Basic\",\n                \"style\": {\n                  \"fontWeight\": \"700\",\n                  \"textAlign\": \"center\",\n                  \"padding\": \"12px\",\n                  \"border\": \"1px solid #ddd\"\n                }\n              }\n            },\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"$9.99/month\",\n                \"style\": {\n                  \"textAlign\": \"center\",\n                  \"padding\": \"12px\",\n                  \"border\": \"1px solid #ddd\",\n                  \"color\": \"#4CAF50\"\n                }\n              }\n            },\n            {\n              \"type\": \"Text\",\n              \"props\": {\n                \"content\": \"1 User\\nBasic Support\",\n                \"style\": {\n                  \"textAlign\": \"center\",\n                  \"padding\": \"12px\",\n                  \"border\": \"1px solid #ddd\",\n                  \"lineHeight\": \"1.5\"\n                }\n              }\n            },\n            {\n              \"type\": \"Button\",\n              \"props\": {\n                \"content\": \"Sign Up\",\n                \"style\": {\n                  \"backgroundColor\": \"#4CAF50\",\n                  \"color\": \"white\",\n                  \"border\": \"none\",\n                  \"padding\": \"8px 16px\",\n                  \"borderRadius\": \"4px\",\n                  \"cursor\": \"pointer\",\n                  \"textAlign\": \"center\",\n                  \"width\": \"100%\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 4.683
+          },
+          {
+            "session_id": "orch-mixed-03",
+            "step_id": "f0c3b727-13a4-5a15-9a94-5a457f437f30",
+            "intent": "scroll to it | This task involves interacting with the existing UI by scrolling to the newly added pricing table.",
+            "context": "update the prices | Add a pricing table",
+            "result": "To generate a specific action, I need the intent and context. However, assuming a common scenario:  \n\n**Intent**: \"Create a basic HTML page with a heading and a paragraph.\"  \n**Context**: \"User is starting a new web project; no files exist yet; voice command received.\"  \n\n**Action**:  \n\\boxed{Generate an HTML file named 'index.html' with the structure: <!DOCTYPE html><html><head><title>New Page</title></head><body><h1>Welcome to My Website</h1><p>This is a sample paragraph.</p></body></html> and confirm: \"Your basic HTML page has been created as index.html. Would you like to add more elements?\"}",
+            "agent_type": "act",
+            "execution_time_seconds": 1.414
+          },
+          {
+            "session_id": "orch-mixed-03",
+            "step_id": "2e1f64e2-a6d4-5335-8e4a-2618df9839b9",
+            "intent": "update the prices | This task requires modifying the content of the pricing table by changing the displayed prices, which is an edit to the website's content.",
+            "context": "Add a pricing table | scroll to it",
+            "result": "{\n  \"id\": \"pricing-table\",\n  \"type\": \"Table\",\n  \"props\": {\n    \"style\": {}\n  },\n  \"slots\": {\n    \"rows\": [\n      {\n        \"cells\": [\n          \"Basic\",\n          \"$15/month\"\n        ]\n      },\n      {\n        \"cells\": [\n          \"Pro\",\n          \"$25/month\"\n        ]\n      },\n      {\n        \"cells\": [\n          \"Enterprise\",\n          \"$40/month\"\n        ]\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 3.501
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 3.257,
+          "total_agent_time_seconds": 9.598,
+          "total_time_seconds": 12.856,
+          "task_timings": [
+            {
+              "step_id": "a40d2fe1-0ac9-51a1-b83e-93be8de8decc",
+              "agent_type": "edit",
+              "duration_seconds": 4.683
+            },
+            {
+              "step_id": "f0c3b727-13a4-5a15-9a94-5a457f437f30",
+              "agent_type": "act",
+              "duration_seconds": 1.414
+            },
+            {
+              "step_id": "2e1f64e2-a6d4-5335-8e4a-2618df9839b9",
+              "agent_type": "edit",
+              "duration_seconds": 3.501
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_correct_agent": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 3,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 2,
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Add a pricing table",
+            "step_id": "a40d2fe1-0ac9-51a1-b83e-93be8de8decc",
+            "actual_duration_seconds": 4.683
+          },
+          {
+            "task_number": 2,
+            "agent_type": "act",
+            "intent": "scroll to it",
+            "step_id": "f0c3b727-13a4-5a15-9a94-5a457f437f30",
+            "actual_duration_seconds": 1.414
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "update the prices",
+            "step_id": "2e1f64e2-a6d4-5335-8e4a-2618df9839b9",
+            "actual_duration_seconds": 3.501
+          }
+        ],
+        "planner_time_seconds": 3.257,
+        "total_agent_time_seconds": 9.598,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 12.863
+    },
+    {
+      "test_id": "orch-mixed-04",
+      "name": "Mixed - All agent types",
+      "description": "EDIT, ACT, and potentially CLARIFY",
+      "passed": true,
+      "input": {
+        "sid": "orch-mixed-04",
+        "text": "Create a form, click the first field, and adjust something about the layout",
+        "expected_tasks": 3,
+        "expected_agents": [
+          "edit",
+          "act",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-mixed-04",
+        "results": [
+          {
+            "session_id": "orch-mixed-04",
+            "step_id": "739a3751-b4cf-53a9-ae01-90c51c15e821",
+            "intent": "Create a form | The user is requesting to add a new form component to the website, which involves modifying the website's structure by creating a new UI element.",
+            "context": "click the first field | adjust something about the layout",
+            "result": "{\n  \"id\": \"error-component\",\n  \"type\": \"Box\",\n  \"props\": {},\n  \"slots\": {},\n  \"error\": \"Could not parse component: Expecting ',' delimiter: line 1 column 1569 (char 1568)\"\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.641
+          },
+          {
+            "session_id": "orch-mixed-04",
+            "step_id": "f784f889-75ee-53fc-a15c-687f132b1872",
+            "intent": "click the first field | The user wants to perform a click action on the first field of the form, which is an interaction with an existing UI element.",
+            "context": "adjust something about the layout | Create a form",
+            "result": "\\boxed{Action: \"Given the intent to 'Create a responsive navigation bar' and context that the project is a vanilla JavaScript site using HTML/CSS, instruct the tool to generate a nav bar with logo, links, and mobile hamburger menu. Include media queries for responsiveness, flexbox for layout, and basic CSS styling. Insert the HTML structure into the header section of index.html and link the CSS in the head. Validate by checking responsiveness on different screen sizes.\"}",
+            "agent_type": "act",
+            "execution_time_seconds": 1.37
+          },
+          {
+            "session_id": "orch-mixed-04",
+            "step_id": "fab5cdbf-db41-5b85-a8c5-e29c178a1fbf",
+            "intent": "adjust something about the layout | The user is asking to modify the layout of the website or the form, which involves changing the structure or style of the existing components.",
+            "context": "Create a form | click the first field",
+            "result": "{\n  \"id\": \"main-container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"padding\": \"20px\",\n      \"backgroundColor\": \"#f0f0f0\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.678
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 1.016,
+          "total_agent_time_seconds": 3.689,
+          "total_time_seconds": 4.707,
+          "task_timings": [
+            {
+              "step_id": "739a3751-b4cf-53a9-ae01-90c51c15e821",
+              "agent_type": "edit",
+              "duration_seconds": 1.641
+            },
+            {
+              "step_id": "f784f889-75ee-53fc-a15c-687f132b1872",
+              "agent_type": "act",
+              "duration_seconds": 1.37
+            },
+            {
+              "step_id": "fab5cdbf-db41-5b85-a8c5-e29c178a1fbf",
+              "agent_type": "edit",
+              "duration_seconds": 0.678
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_correct_agent": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 3,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 2,
+          "act": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Create a form",
+            "step_id": "739a3751-b4cf-53a9-ae01-90c51c15e821",
+            "actual_duration_seconds": 1.641
+          },
+          {
+            "task_number": 2,
+            "agent_type": "act",
+            "intent": "click the first field",
+            "step_id": "f784f889-75ee-53fc-a15c-687f132b1872",
+            "actual_duration_seconds": 1.37
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "adjust something about the layout",
+            "step_id": "fab5cdbf-db41-5b85-a8c5-e29c178a1fbf",
+            "actual_duration_seconds": 0.678
+          }
+        ],
+        "planner_time_seconds": 1.016,
+        "total_agent_time_seconds": 3.689,
+        "orchestrator_overhead_seconds": 0.002
+      },
+      "duration_seconds": 4.711
+    },
+    {
+      "test_id": "orch-edge-01",
+      "name": "Edge - Very short request",
+      "description": "Minimal request with limited context",
+      "passed": true,
+      "input": {
+        "sid": "orch-edge-01",
+        "text": "Blue button",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edge-01",
+        "results": [
+          {
+            "session_id": "orch-edge-01",
+            "step_id": "bc4f6c2e-562e-5c20-ad02-18402336c04b",
+            "intent": "Blue button | The request 'Blue button' is ambiguous. It does not specify whether the user wants to create a new blue button (edit), modify the color of an existing button to blue (edit), or perform an action (e.g., click) on an existing blue button (act). Additional context is needed to clarify the intended task.",
+            "context": "Blue button | Blue button",
+            "result": "Hey, just to nail this down\u2014are you looking to create a new blue button, adjust the color of an existing one to blue, or perform an action (like clicking) on the existing blue button we were talking about?",
+            "agent_type": "clarify",
+            "execution_time_seconds": 0.833
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 1.946,
+          "total_agent_time_seconds": 0.833,
+          "total_time_seconds": 2.779,
+          "task_timings": [
+            {
+              "step_id": "bc4f6c2e-562e-5c20-ad02-18402336c04b",
+              "agent_type": "clarify",
+              "duration_seconds": 0.833
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": false,
+        "result_0_output_valid": true,
+        "correct_routing": false,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 1,
+        "correct_routing": false,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "clarify": 1
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "clarify",
+            "intent": "Blue button",
+            "step_id": "bc4f6c2e-562e-5c20-ad02-18402336c04b",
+            "actual_duration_seconds": 0.833
+          }
+        ],
+        "planner_time_seconds": 1.946,
+        "total_agent_time_seconds": 0.833,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 2.783
+    },
+    {
+      "test_id": "orch-edge-02",
+      "name": "Edge - Very long complex request",
+      "description": "Long complex multi-task request",
+      "passed": true,
+      "input": {
+        "sid": "orch-edge-02",
+        "text": "Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings, then add a top header with search bar and notifications, and finally add metric cards showing user count, revenue, and conversion rates",
+        "expected_tasks": 3,
+        "expected_agents": [
+          "edit",
+          "edit",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edge-02",
+        "results": [
+          {
+            "session_id": "orch-edge-02",
+            "step_id": "da1983da-dd98-5ba6-9ff0-dfa193bfc443",
+            "intent": "Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings | This task involves designing and implementing a new sidebar navigation component within the dashboard interface, including adding links to specified pages (dashboard, analytics, reports, settings). It requires modifying the website's structure to include this navigation element.",
+            "context": "Previous context includes user requests to add a top header with search bar and notifications, and to add metric cards showing user count, revenue, and conversion rates.",
+            "result": "{\n  \"id\": \"error-component\",\n  \"type\": \"Box\",\n  \"props\": {},\n  \"slots\": {},\n  \"error\": \"Could not parse component: Expecting ',' delimiter: line 1 column 3003 (char 3002)\"\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 2.728
+          },
+          {
+            "session_id": "orch-edge-02",
+            "step_id": "c167dab8-4873-50b4-be33-49405a36d929",
+            "intent": "Add a top header with search bar and notifications | This task involves integrating a top header section into the dashboard, which includes adding a search bar and notifications area. It requires modifying the UI layout and structure to include these new components.",
+            "context": "add metric cards showing user count, revenue, and conversion rates | Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings",
+            "result": "{\n  \"id\": \"dashboard-top-header\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"position\": \"fixed\",\n      \"top\": \"0\",\n      \"left\": \"0\",\n      \"right\": \"0\",\n      \"padding\": \"1rem 2rem\",\n      \"backgroundColor\": \"#ffffff\",\n      \"boxShadow\": \"0 2px 4px rgba(0,0,0,0.1)\",\n      \"display\": \"flex\",\n      \"alignItems\": \"center\",\n      \"justifyContent\": \"space-between\",\n      \"zIndex\": \"1000\"\n    }\n  },\n  \"slots\": {\n    \"children\": [\n      {\n        \"id\": \"dashboard-search-bar\",\n        \"type\": \"Textbox\",\n        \"props\": {\n          \"placeholder\": \"Search dashboard...\",\n          \"style\": {\n            \"padding\": \"0.5rem 1rem\",\n            \"border\": \"1px solid #e0e0e0\",\n            \"borderRadius\": \"8px\",\n            \"width\": \"300px\",\n            \"flexGrow\": \"1\"\n          }\n        },\n        \"slots\": {}\n      },\n      {\n        \"id\": \"notifications-container\",\n        \"type\": \"Box\",\n        \"props\": {\n          \"style\": {\n            \"display\": \"flex\",\n            \"alignItems\": \"center\",\n            \"gap\": \"0.5rem\",\n            \"cursor\": \"pointer\"\n          }\n        },\n        \"slots\": {\n          \"children\": [\n            {\n              \"id\": \"notification-icon\",\n              \"type\": \"Icon\",\n              \"props\": {\n                \"icon\": \"bell\",\n                \"style\": {\n                  \"fontSize\": \"1.5rem\",\n                  \"color\": \"#666666\"\n                }\n              },\n              \"slots\": {}\n            },\n            {\n              \"id\": \"notification-count\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"text\": \"3\",\n                \"style\": {\n                  \"color\": \"#dc3545\",\n                  \"fontWeight\": \"bold\",\n                  \"fontSize\": \"0.875rem\",\n                  \"padding\": \"0.25rem 0.5rem\",\n                  \"borderRadius\": \"4px\",\n                  \"backgroundColor\": \"#f8d7da\"\n                }\n              },\n              \"slots\": {}\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 3.174
+          },
+          {
+            "session_id": "orch-edge-02",
+            "step_id": "fbe8364a-8cbf-5b6a-868c-d146c052d705",
+            "intent": "Add metric cards showing user count, revenue, and conversion rates | This task involves creating and placing metric cards (visual elements) on the dashboard to display specific data points: user count, revenue, and conversion rates. It requires modifying the website's content and structure to include these cards.",
+            "context": "Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings | Add a top header with search bar and notifications",
+            "result": "{\n  \"id\": \"error-component\",\n  \"type\": \"Box\",\n  \"props\": {},\n  \"slots\": {},\n  \"error\": \"Could not parse component: Expecting property name enclosed in double quotes: line 1 column 350 (char 349)\"\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.528
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.937,
+          "total_agent_time_seconds": 7.43,
+          "total_time_seconds": 8.367,
+          "task_timings": [
+            {
+              "step_id": "da1983da-dd98-5ba6-9ff0-dfa193bfc443",
+              "agent_type": "edit",
+              "duration_seconds": 2.728
+            },
+            {
+              "step_id": "c167dab8-4873-50b4-be33-49405a36d929",
+              "agent_type": "edit",
+              "duration_seconds": 3.174
+            },
+            {
+              "step_id": "fbe8364a-8cbf-5b6a-868c-d146c052d705",
+              "agent_type": "edit",
+              "duration_seconds": 1.528
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_correct_agent": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 3,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 3
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Create a comprehensive dashboard with sidebar navigation containing links to dashboard, analytics, reports, and settings",
+            "step_id": "da1983da-dd98-5ba6-9ff0-dfa193bfc443",
+            "actual_duration_seconds": 2.728
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "Add a top header with search bar and notifications",
+            "step_id": "c167dab8-4873-50b4-be33-49405a36d929",
+            "actual_duration_seconds": 3.174
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "Add metric cards showing user count, revenue, and conversion rates",
+            "step_id": "fbe8364a-8cbf-5b6a-868c-d146c052d705",
+            "actual_duration_seconds": 1.528
+          }
+        ],
+        "planner_time_seconds": 0.937,
+        "total_agent_time_seconds": 7.43,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 8.37
+    },
+    {
+      "test_id": "orch-edge-03",
+      "name": "Edge - Special characters",
+      "description": "Request with special characters",
+      "passed": true,
+      "input": {
+        "sid": "orch-edge-03",
+        "text": "Add a button with text 'Sign Up -> Start Free!' and make it 100% width",
+        "expected_tasks": 2,
+        "expected_agents": [
+          "edit",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edge-03",
+        "results": [
+          {
+            "session_id": "orch-edge-03",
+            "step_id": "596b6c65-ff6d-591d-aa71-bc842f206bd4",
+            "intent": "Add a button with text 'Sign Up -> Start Free!' | The user is requesting the creation of a new button element within the website's UI structure. This involves modifying the HTML or component code to include the button with the specified text content.",
+            "context": "Add a button with text 'Sign Up -> Start Free!' | make it 100% width",
+            "result": "{\n  \"id\": \"signup-start-free-button\",\n  \"type\": \"Button\",\n  \"props\": {\n    \"style\": {\n      \"padding\": \"10px 20px\",\n      \"backgroundColor\": \"#28a745\",\n      \"color\": \"white\",\n      \"border\": \"none\",\n      \"borderRadius\": \"5px\",\n      \"cursor\": \"pointer\"\n    }\n  },\n  \"slots\": {\n    \"default\": \"Sign Up -> Start Free!\"\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 2.423
+          },
+          {
+            "session_id": "orch-edge-03",
+            "step_id": "6d6b969a-d796-56b5-b01f-67f4db1f2d1f",
+            "intent": "make it 100% width | The user wants to adjust the styling of the newly added button to set its width to 100% of its parent container. This requires modifying the CSS properties (e.g., width: 100%) associated with the button element.",
+            "context": "make it 100% width | Add a button with text 'Sign Up -> Start Free!'",
+            "result": "{\n  \"id\": \"button-1\",\n  \"type\": \"Button\",\n  \"props\": {\n    \"style\": {\n      \"width\": \"100%\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.728
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.93,
+          "total_agent_time_seconds": 3.151,
+          "total_time_seconds": 4.081,
+          "task_timings": [
+            {
+              "step_id": "596b6c65-ff6d-591d-aa71-bc842f206bd4",
+              "agent_type": "edit",
+              "duration_seconds": 2.423
+            },
+            {
+              "step_id": "6d6b969a-d796-56b5-b01f-67f4db1f2d1f",
+              "agent_type": "edit",
+              "duration_seconds": 0.728
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 2
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Add a button with text 'Sign Up -> Start Free!'",
+            "step_id": "596b6c65-ff6d-591d-aa71-bc842f206bd4",
+            "actual_duration_seconds": 2.423
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "make it 100% width",
+            "step_id": "6d6b969a-d796-56b5-b01f-67f4db1f2d1f",
+            "actual_duration_seconds": 0.728
+          }
+        ],
+        "planner_time_seconds": 0.93,
+        "total_agent_time_seconds": 3.151,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 4.084
+    },
+    {
+      "test_id": "orch-edge-04",
+      "name": "Edge - Technical specifications",
+      "description": "Technical CSS specifications",
+      "passed": false,
+      "input": {
+        "sid": "orch-edge-04",
+        "text": "Set container max-width to 1200px, padding to 20px, and margin to auto",
+        "expected_tasks": 1,
+        "expected_agents": [
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edge-04",
+        "results": [
+          {
+            "session_id": "orch-edge-04",
+            "step_id": "c62270c8-f701-58cf-9469-b1a54225a19f",
+            "intent": "Set container max-width to 1200px | The task requires modifying the CSS max-width property of the container element to 1200px, which is a style change",
+            "context": "Set container padding to 20px | Set container margin to auto",
+            "result": "{\n  \"id\": \"container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"maxWidth\": \"1200px\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.77
+          },
+          {
+            "session_id": "orch-edge-04",
+            "step_id": "c8d26adb-468f-568c-861a-4bd6f8e21dd9",
+            "intent": "Set container padding to 20px | The task requires modifying the CSS padding property of the container element to 20px, which is a style change",
+            "context": "Set container margin to auto | Set container max-width to 1200px",
+            "result": "{\n  \"id\": \"container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"padding\": \"20px\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.722
+          },
+          {
+            "session_id": "orch-edge-04",
+            "step_id": "ca605133-aa93-526d-8398-e068343e698b",
+            "intent": "Set container margin to auto | The task requires modifying the CSS margin property of the container element to auto, which is a style change",
+            "context": "Set container max-width to 1200px | Set container padding to 20px",
+            "result": "{\n  \"id\": \"container\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"margin\": \"auto\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.8
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.939,
+          "total_agent_time_seconds": 2.292,
+          "total_time_seconds": 3.232,
+          "task_timings": [
+            {
+              "step_id": "c62270c8-f701-58cf-9469-b1a54225a19f",
+              "agent_type": "edit",
+              "duration_seconds": 0.77
+            },
+            {
+              "step_id": "c8d26adb-468f-568c-861a-4bd6f8e21dd9",
+              "agent_type": "edit",
+              "duration_seconds": 0.722
+            },
+            {
+              "step_id": "ca605133-aa93-526d-8398-e068343e698b",
+              "agent_type": "edit",
+              "duration_seconds": 0.8
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": false,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [
+        "Task count mismatch: expected 1, got 3"
+      ],
+      "metrics": {
+        "expected_tasks": 1,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 3
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Set container max-width to 1200px",
+            "step_id": "c62270c8-f701-58cf-9469-b1a54225a19f",
+            "actual_duration_seconds": 0.77
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "Set container padding to 20px",
+            "step_id": "c8d26adb-468f-568c-861a-4bd6f8e21dd9",
+            "actual_duration_seconds": 0.722
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "Set container margin to auto",
+            "step_id": "ca605133-aa93-526d-8398-e068343e698b",
+            "actual_duration_seconds": 0.8
+          }
+        ],
+        "planner_time_seconds": 0.939,
+        "total_agent_time_seconds": 2.292,
+        "orchestrator_overhead_seconds": 0.001
+      },
+      "duration_seconds": 3.234
+    },
+    {
+      "test_id": "orch-edge-05",
+      "name": "Edge - Sequential actions with context",
+      "description": "Multiple related edits building on each other",
+      "passed": true,
+      "input": {
+        "sid": "orch-edge-05",
+        "text": "Add a card with pricing info, make it have rounded corners, and add a shadow effect",
+        "expected_tasks": 3,
+        "expected_agents": [
+          "edit",
+          "edit",
+          "edit"
+        ]
+      },
+      "response": {
+        "sid": "orch-edge-05",
+        "results": [
+          {
+            "session_id": "orch-edge-05",
+            "step_id": "29269a9d-f236-50b0-85c1-d324f746bf8a",
+            "intent": "Add a card with pricing info | This task involves creating a new card component on the website that includes pricing information, which modifies the website's structure by adding new content.",
+            "context": "make it have rounded corners | add a shadow effect",
+            "result": "{\n  \"id\": \"pricing-card\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"backgroundColor\": \"#f8f9fa\",\n      \"padding\": \"20px\",\n      \"borderRadius\": \"10px\",\n      \"boxShadow\": \"0 2px 4px rgba(0,0,0,0.1)\",\n      \"width\": \"100%\",\n      \"maxWidth\": \"300px\",\n      \"margin\": \"1rem\"\n    }\n  },\n  \"slots\": {\n    \"default\": [\n      {\n        \"id\": \"plan-name\",\n        \"type\": \"Text\",\n        \"props\": {\n          \"style\": {\n            \"fontSize\": \"1.5rem\",\n            \"fontWeight\": \"bold\",\n            \"textAlign\": \"center\"\n          },\n          \"content\": \"Premium Plan\"\n        }\n      },\n      {\n        \"id\": \"price\",\n        \"type\": \"Text\",\n        \"props\": {\n          \"style\": {\n            \"fontSize\": \"2.5rem\",\n            \"fontWeight\": \"700\",\n            \"color\": \"#2c3e50\",\n            \"textAlign\": \"center\",\n            \"margin\": \"1rem 0\"\n          },\n          \"content\": \"$49.99/month\"\n        }\n      },\n      {\n        \"id\": \"features-list\",\n        \"type\": \"List\",\n        \"props\": {\n          \"style\": {\n            \"listStyle\": \"none\",\n            \"paddingLeft\": \"0\",\n            \"margin\": \"1rem 0\"\n          }\n        },\n        \"slots\": {\n          \"default\": [\n            {\n              \"id\": \"feature-1\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"style\": {\n                  \"fontSize\": \"1rem\",\n                  \"color\": \"#666\",\n                  \"margin\": \"0.5rem 0\"\n                },\n                \"content\": \"Unlimited Access\"\n              }\n            },\n            {\n              \"id\": \"feature-2\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"style\": {\n                  \"fontSize\": \"1rem\",\n                  \"color\": \"#666\",\n                  \"margin\": \"0.5rem 0\"\n                },\n                \"content\": \"Priority Support\"\n              }\n            },\n            {\n              \"id\": \"feature-3\",\n              \"type\": \"Text\",\n              \"props\": {\n                \"style\": {\n                  \"fontSize\": \"1rem\",\n                  \"color\": \"#666\",\n                  \"margin\": \"0.5rem 0\"\n                },\n                \"content\": \"Monthly Updates\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"id\": \"signup-button\",\n        \"type\": \"Button\",\n        \"props\": {\n          \"style\": {\n            \"backgroundColor\": \"#3498db\",\n            \"color\": \"white\",\n            \"padding\": \"10px 20px\",\n            \"borderRadius\": \"5px\",\n            \"textTransform\": \"uppercase\",\n            \"fontSize\": \"0.9rem\",\n            \"fontWeight\": \"bold\",\n            \"cursor\": \"pointer\",\n            \"textAlign\": \"center\",\n            \"width\": \"100%\"\n          },\n          \"content\": \"Sign Up\"\n        }\n      }\n    ]\n  }\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.74
+          },
+          {
+            "session_id": "orch-edge-05",
+            "step_id": "e7028167-96a1-584d-a793-cf086009877b",
+            "intent": "make it have rounded corners | This task requires modifying the CSS style of the newly added card to apply rounded corners, typically by setting the border-radius property.",
+            "context": "add a shadow effect | Add a card with pricing info",
+            "result": "{\n  \"id\": \"card\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"borderRadius\": \"8px\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 1.837
+          },
+          {
+            "session_id": "orch-edge-05",
+            "step_id": "bdd55889-bffc-5ab1-bb41-93e92680d01b",
+            "intent": "add a shadow effect | This task involves applying a shadow effect to the card, which is a style modification using CSS properties like box-shadow.",
+            "context": "Add a card with pricing info | make it have rounded corners",
+            "result": "{\n  \"id\": \"shadow-card\",\n  \"type\": \"Box\",\n  \"props\": {\n    \"style\": {\n      \"box-shadow\": \"0 4px 8px rgba(0, 0, 0, 0.1)\"\n    }\n  },\n  \"slots\": {}\n}",
+            "agent_type": "edit",
+            "execution_time_seconds": 0.817
+          }
+        ],
+        "timing": {
+          "planner_time_seconds": 0.986,
+          "total_agent_time_seconds": 4.394,
+          "total_time_seconds": 5.38,
+          "task_timings": [
+            {
+              "step_id": "29269a9d-f236-50b0-85c1-d324f746bf8a",
+              "agent_type": "edit",
+              "duration_seconds": 1.74
+            },
+            {
+              "step_id": "e7028167-96a1-584d-a793-cf086009877b",
+              "agent_type": "edit",
+              "duration_seconds": 1.837
+            },
+            {
+              "step_id": "bdd55889-bffc-5ab1-bb41-93e92680d01b",
+              "agent_type": "edit",
+              "duration_seconds": 0.817
+            }
+          ]
+        }
+      },
+      "assertions": {
+        "response_structure_valid": true,
+        "correct_task_count": true,
+        "all_results_valid": true,
+        "result_0_valid": true,
+        "result_0_correct_agent": true,
+        "result_0_output_valid": true,
+        "result_1_valid": true,
+        "result_1_correct_agent": true,
+        "result_1_output_valid": true,
+        "result_2_valid": true,
+        "result_2_correct_agent": true,
+        "result_2_output_valid": true,
+        "correct_routing": true,
+        "all_fields_present": true
+      },
+      "errors": [],
+      "metrics": {
+        "expected_tasks": 3,
+        "actual_tasks": 3,
+        "correct_routing": true,
+        "all_fields_present": true,
+        "agent_distribution": {
+          "edit": 3
+        },
+        "task_details": [
+          {
+            "task_number": 1,
+            "agent_type": "edit",
+            "intent": "Add a card with pricing info",
+            "step_id": "29269a9d-f236-50b0-85c1-d324f746bf8a",
+            "actual_duration_seconds": 1.74
+          },
+          {
+            "task_number": 2,
+            "agent_type": "edit",
+            "intent": "make it have rounded corners",
+            "step_id": "e7028167-96a1-584d-a793-cf086009877b",
+            "actual_duration_seconds": 1.837
+          },
+          {
+            "task_number": 3,
+            "agent_type": "edit",
+            "intent": "add a shadow effect",
+            "step_id": "bdd55889-bffc-5ab1-bb41-93e92680d01b",
+            "actual_duration_seconds": 0.817
+          }
+        ],
+        "planner_time_seconds": 0.986,
+        "total_agent_time_seconds": 4.394,
+        "orchestrator_overhead_seconds": 0.0
+      },
+      "duration_seconds": 5.383
+    }
+  ]
+}

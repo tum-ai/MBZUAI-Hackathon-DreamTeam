@@ -415,14 +415,31 @@ async def select_template_variation(request: TemplateSelectionRequest):
         
         print(f"\n=== Selecting variation {request.variation_index} as active ===")
         
-        # Clean active directory
+        # Clean active directory contents (but not the directory itself - it's a Docker volume mount)
         if ACTIVE_PROJECT_DIR.exists():
-            print(f"Cleaning existing active project: {ACTIVE_PROJECT_DIR}")
-            shutil.rmtree(ACTIVE_PROJECT_DIR)
+            print(f"Cleaning existing active project contents: {ACTIVE_PROJECT_DIR}")
+            for item in ACTIVE_PROJECT_DIR.iterdir():
+                if item.is_dir():
+                    shutil.rmtree(item)
+                else:
+                    item.unlink()
+        else:
+            # Create directory if it doesn't exist
+            ACTIVE_PROJECT_DIR.mkdir(parents=True, exist_ok=True)
         
-        # Copy selected variation to active directory
-        print(f"Copying {source_dir} → {ACTIVE_PROJECT_DIR}")
-        shutil.copytree(source_dir, ACTIVE_PROJECT_DIR)
+        # Copy selected variation contents to active directory (skip node_modules)
+        print(f"Copying {source_dir} contents → {ACTIVE_PROJECT_DIR}")
+        for item in source_dir.iterdir():
+            # Skip node_modules and other build artifacts
+            if item.name in ['node_modules', 'dist', '.vite', 'package-lock.json']:
+                continue
+            dest = ACTIVE_PROJECT_DIR / item.name
+            if item.is_dir():
+                shutil.copytree(item, dest)
+            else:
+                shutil.copy2(item, dest)
+        
+        print(f"✓ Files copied (node_modules will be installed by dev server)")
         
         # Read metadata about the selected variation
         project_file = ACTIVE_PROJECT_DIR / "project.json"

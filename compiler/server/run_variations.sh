@@ -28,10 +28,12 @@ start_variation() {
         (cd "$dir" && npm install > /dev/null 2>&1)
     fi
     
-    # Start dev server in background
+    # Start dev server in background (bind to 0.0.0.0 for Docker)
     echo "   Starting dev server on port $port..."
-    (cd "$dir" && npm run dev -- --port $port > /tmp/variation-$index.log 2>&1) &
+    cd "$dir"
+    nohup npm run dev -- --port $port --host 0.0.0.0 > /tmp/variation-$index.log 2>&1 &
     local pid=$!
+    cd - > /dev/null
     echo "   PID: $pid"
     echo "   URL: http://localhost:$port"
     echo "   Logs: /tmp/variation-$index.log"
@@ -67,12 +69,14 @@ if [ -d "$ACTIVE_DIR" ]; then
     fi
     
     echo "   Starting active project on port 5177..."
-    (cd "$ACTIVE_DIR" && npm run dev -- --port 5177 > /tmp/active.log 2>&1) &
-    local pid=$!
-    echo "   PID: $pid"
+    cd "$ACTIVE_DIR"
+    nohup npm run dev -- --port 5177 --host 0.0.0.0 > /tmp/active.log 2>&1 &
+    ACTIVE_PID=$!
+    cd - > /dev/null
+    echo "   PID: $ACTIVE_PID"
     echo "   URL: http://localhost:5177"
     echo "   Logs: /tmp/active.log"
-    echo $pid >> /tmp/template-servers.pids
+    echo $ACTIVE_PID >> /tmp/template-servers.pids
     
     echo ""
     echo "🎯 Active project is the selected variation for editing"
@@ -102,8 +106,13 @@ echo ""
 echo "📝 View logs:"
 echo "  tail -f /tmp/variation-*.log /tmp/active.log"
 echo ""
-echo "Press Ctrl+C to stop this script (servers will keep running)"
+echo "🔄 Servers running in background. Container will stay alive."
+echo ""
 
-# Wait for user interrupt
-trap "echo ''; echo '⏹️  Servers are still running in background'; exit 0" SIGINT SIGTERM
-sleep infinity
+# Keep container alive by tailing logs
+tail -f /tmp/variation-*.log /tmp/active.log 2>/dev/null &
+TAIL_PID=$!
+
+# Wait forever (or until container stops)
+trap "echo '⏹️  Shutting down...'; kill $TAIL_PID 2>/dev/null; exit 0" SIGINT SIGTERM
+wait $TAIL_PID 2>/dev/null || sleep infinity
