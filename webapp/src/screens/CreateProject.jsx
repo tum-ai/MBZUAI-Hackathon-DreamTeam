@@ -13,7 +13,7 @@ function CreateProject() {
   return (
     <div className="create-project">
       <ColorBends
-                colors={['#ff5c7a', '#8a5cff', '#00ffd1']}
+                colors={['#EF5D2A', '#FF8F5A', '#FF6B4A']}
                 rotation={0}
                 speed={0.3}
                 scale={1.2}
