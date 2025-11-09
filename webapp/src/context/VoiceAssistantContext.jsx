@@ -1,6 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useVoiceAssistant } from '../hooks/useVoiceAssistant';
 import { speakText as playTTS } from '../lib/voice/tts';
+import { captureCombinedDOMSnapshot } from '../utils/domSnapshot';
+import { validateAction, parseActionPayload } from '../services/llmAgent';
+import { routeAndExecuteAction } from '../services/actionRouter';
 
 const VoiceAssistantContext = createContext(null);
 const SESSION_STORAGE_KEY = 'voice-assistant-session-id';
@@ -42,6 +45,7 @@ export function VoiceAssistantProvider({ children }) {
     }
   });
   const sessionIdRef = useRef(sessionId);
+  const [lastActionResult, setLastActionResult] = useState(null);
   const [lastPlanResponse, setLastPlanResponse] = useState(null);
   const [submissionError, setSubmissionError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -118,6 +122,13 @@ export function VoiceAssistantProvider({ children }) {
       setIsSubmitting(true);
 
       try {
+        console.log('[VoiceAssistant] Sending /plan request:', {
+          command: trimmed,
+          sessionId: sid,
+          stepId,
+          endpoint: `${llmApiBase}/plan`,
+        });
+
         const response = await fetch(`${llmApiBase}/plan`, {
           method: 'POST',
           headers: {
@@ -135,26 +146,112 @@ export function VoiceAssistantProvider({ children }) {
           throw new Error(message || `LLM request failed (${response.status})`);
         }
 
-        const json = await response.json();
-        setLastPlanResponse({
-          sessionId: sid,
+        const planJson = await response.json();
+        const planSessionId = planJson?.sid || sid;
+
+        if (planSessionId && planSessionId !== sessionIdRef.current) {
+          sessionIdRef.current = planSessionId;
+          setSessionId(planSessionId);
+        }
+
+        const planRecord = {
+          sessionId: planSessionId,
           stepId,
-          text: trimmed,
-          response: json,
+          command: trimmed,
+          response: planJson,
           timestamp: Date.now(),
+        };
+        setLastPlanResponse(planRecord);
+        notifyListeners('onPlanComplete', planRecord);
+
+        const planResults = Array.isArray(planJson?.results) ? planJson.results : [];
+        const actResults = planResults.filter(result => result?.agent_type === 'act');
+        const clarifierResults = planResults.filter(result => result?.agent_type === 'clarify');
+
+        clarifierResults.forEach(result => {
+          notifyListeners('onClarifyResult', result);
         });
-        return json;
+
+        const executionRecords = [];
+
+        let domSnapshot = null;
+        if (actResults.length > 0) {
+          console.log('[VoiceAssistant] Capturing DOM snapshot for ACT execution');
+          domSnapshot = await captureCombinedDOMSnapshot();
+        }
+
+        for (let index = 0; index < actResults.length; index += 1) {
+          const actResult = actResults[index];
+
+          let actionPayload;
+          try {
+            actionPayload = parseActionPayload(actResult.result);
+          } catch (parseError) {
+            console.error('[VoiceAssistant] Failed to parse planner action:', {
+              result: actResult.result,
+              error: parseError,
+            });
+            throw new Error('Planner returned an unparsable action payload');
+          }
+
+          if (!validateAction(actionPayload)) {
+            console.error('[VoiceAssistant] Planner returned invalid action:', actionPayload);
+            throw new Error('Planner returned an invalid action payload');
+          }
+
+          console.log('[VoiceAssistant] Executing planner action:', {
+            action: actionPayload,
+            stepId: actResult.step_id,
+          });
+
+          const executionResult = await routeAndExecuteAction(
+            actionPayload,
+            domSnapshot || { elements: [] },
+          );
+
+          const record = {
+            sessionId: actResult.session_id || planSessionId,
+            stepId: actResult.step_id,
+            command: trimmed,
+            action: actionPayload,
+            result: executionResult,
+            agentType: actResult.agent_type,
+            timestamp: Date.now(),
+          };
+
+          executionRecords.push(record);
+          setLastActionResult(record);
+          notifyListeners('onActionExecuted', record);
+
+          if (index < actResults.length - 1) {
+            try {
+              domSnapshot = await captureCombinedDOMSnapshot();
+            } catch (snapshotError) {
+              console.warn('[VoiceAssistant] Failed to refresh DOM snapshot between actions:', snapshotError);
+            }
+          }
+        }
+
+        if (executionRecords.length === 0) {
+          setLastActionResult(null);
+        }
+
+        return {
+          plan: planJson,
+          actions: executionRecords,
+        };
       } catch (err) {
         const normalized =
           err instanceof Error ? err : new Error('Voice assistant request failed.');
         setSubmissionError(normalized);
+        notifyListeners('onActionError', normalized);
         throw normalized;
       } finally {
         pendingClarifierStepRef.current = null;
         setIsSubmitting(false);
       }
     },
-    [ensureSessionId, llmApiBase],
+    [ensureSessionId, llmApiBase, notifyListeners],
   );
 
   const voice = useVoiceAssistant({
@@ -415,12 +512,8 @@ export function VoiceAssistantProvider({ children }) {
       submitUtterance,
       isSubmitting,
       submissionError,
+      lastActionResult,
       lastPlanResponse,
-      lastBackendPrompt,
-      clearLastBackendPrompt,
-      setBiasPhrases: phrases => {
-        setCustomBiasPhrases(Array.isArray(phrases) ? phrases : []);
-      },
     }),
     [
       voice,
@@ -434,6 +527,7 @@ export function VoiceAssistantProvider({ children }) {
       submitUtterance,
       isSubmitting,
       submissionError,
+      lastActionResult,
       lastPlanResponse,
     ],
   );

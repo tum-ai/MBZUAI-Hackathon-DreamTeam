@@ -46,6 +46,15 @@ load_dotenv(REPO_ROOT / ".env")
 load_dotenv(BASE_DIR / ".env", override=True)
 
 
+def _preview(text: Optional[str], length: int = 160) -> str:
+    if not text:
+        return ""
+    condensed = " ".join(text.split())
+    if len(condensed) <= length:
+        return condensed
+    return f"{condensed[:length]}..."
+
+
 def get_env_int(name: str, default: int) -> int:
     """Fetch an integer environment variable with a safe fallback."""
     raw_value = os.getenv(name)
@@ -78,7 +87,7 @@ def build_dynamic_sitemap(dom_snapshot: Dict[str, Any]) -> Dict[str, Any]:
     """
     sitemap = {
         "mainApp": {"sections": [], "elements": [], "navLinks": []},
-        "iframe": {"sections": [], "elements": []},
+        "iframe": {"sections": [], "elements": [], "navLinks": []},
     }
 
     elements = dom_snapshot.get("elements", [])
@@ -97,14 +106,13 @@ def build_dynamic_sitemap(dom_snapshot: Dict[str, Any]) -> Dict[str, Any]:
                 }
             )
         elif nav_id.startswith("nav-") and el.get("tagName") == "a":
-            if context == "main-app":
-                sitemap["mainApp"]["navLinks"].append(
-                    {
-                        "id": nav_id,
-                        "text": el.get("text", ""),
-                        "href": el.get("href", "unknown"),
-                    }
-                )
+            target["navLinks"].append(
+                {
+                    "id": nav_id,
+                    "text": el.get("text", ""),
+                    "href": el.get("href", "unknown"),
+                }
+            )
         else:
             target["elements"].append(
                 {
@@ -149,6 +157,12 @@ def get_system_prompt(dom_snapshot: Dict[str, Any]) -> str:
     nav_links = sitemap["mainApp"]["navLinks"]
     nav_links_str = (
         "\n".join([f"  - {link['id']}: \"{link['text']}\"" for link in nav_links])
+        or "  (none)"
+    )
+
+    iframe_nav_links = sitemap["iframe"]["navLinks"]
+    iframe_nav_links_str = (
+        "\n".join([f"  - {link['id']}: \"{link['text']}\"" for link in iframe_nav_links])
         or "  (none)"
     )
 
@@ -198,6 +212,9 @@ def get_system_prompt(dom_snapshot: Dict[str, Any]) -> str:
 
     Main App Navigation Links:
     {nav_links_str}
+
+    iframe Navigation Links:
+    {iframe_nav_links_str}
 
     Main App Sections:
     {main_app_sections_str}
@@ -417,6 +434,8 @@ def get_system_prompt(dom_snapshot: Dict[str, Any]) -> str:
     - Undo/redo don't need targetId, just set the action type
     - **iframe Canvas Actions**: When user says "click the create button", use action "navigate" with targetId "external-create-btn"
     - **iframe Canvas Actions**: When user says "click button 1", use action "navigate" with targetId "external-btn-{{number}}"
+    - **iframe Navigation Links**: Navigation links inside the iframe (including IDs starting with "nav-") are valid targets—use the "navigate" action instead of returning an error.
+    - **iframe Availability**: If an element exists in the iframe, prefer acting on it rather than returning the "error" action; only use "error" when no suitable element exists in either context.
     - **iframe Picture Dropdown Workflow**:
     - "Show me pictures" or "What pictures are available" → navigate to "external-show-pictures-btn" (opens dropdown)
     - "Select tiger" (when dropdown is open) → navigate to "picture-tiger"
@@ -752,10 +771,29 @@ async def action(request: ActionRequest) -> ActionResponse:
     - context: Previous actions/prompts
     - action: Generated action
     """
+    logger.info(
+        "API /action received: session=%s step=%s intent='%s' context='%s'",
+        request.session_id,
+        request.step_id,
+        _preview(request.intent),
+        _preview(request.context),
+    )
     try:
         response = await process_action_request(request)
+        logger.info(
+            "API /action completed: session=%s step=%s actionLength=%s",
+            response.session_id,
+            response.step_id,
+            len(response.action) if response.action else 0,
+        )
         return response
     except Exception as e:
+        logger.exception(
+            "API /action failed: session=%s step=%s error=%s",
+            request.session_id,
+            request.step_id,
+            e,
+        )
         raise HTTPException(
             status_code=500, detail=f"Error processing action request: {str(e)}"
         )
