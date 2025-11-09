@@ -101,6 +101,14 @@ const DomSnapshotBridge = () => {
       captureInProgressRef.current = true
       try {
         const snapshot = await captureCombinedDOMSnapshot()
+        
+        console.log('[DomSnapshotBridge] Captured snapshot:', {
+          totalElements: snapshot.totalElementCount,
+          mainApp: snapshot.elements?.filter(el => el.context === 'main-app').length || 0,
+          iframe: snapshot.iframeElementCount,
+          activeIframe: snapshot.activeIframe
+        })
+        
         safeSend(socket, {
           type: 'dom_snapshot_response',
           requestId: payload?.requestId || null,
@@ -108,6 +116,7 @@ const DomSnapshotBridge = () => {
           timestamp: Date.now()
         })
       } catch (error) {
+        console.error('[DomSnapshotBridge] Snapshot capture failed:', error)
         safeSend(socket, {
           type: 'dom_snapshot_response',
           requestId: payload?.requestId || null,
