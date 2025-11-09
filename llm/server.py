@@ -208,6 +208,29 @@ def get_system_prompt(dom_snapshot: Dict[str, Any]) -> str:
     **Current Page:** {dom_snapshot.get('currentUrl', '/')}
     **Viewport:** Height={dom_snapshot.get('viewportHeight', 0)}px, Scroll={dom_snapshot.get('scrollY', 0)}px{active_iframe_info}
 
+    **DEMO SCENARIOS - PRIORITY INSTRUCTIONS:**
+    If the user's intent matches these demo scenarios, follow these EXACT actions:
+
+    1. Build iPhone 17 Pro website:
+       - Keywords: "build", "create", "website", "iPhone 17 Pro", "get started"
+       - Action: {{"action": "navigate", "targetId": "create-project-cta", "reasoning": "Starting iPhone 17 Pro website creation"}}
+
+    2. Scroll to bottom:
+       - Keywords: "scroll", "bottom", "scroll down", "scroll to the bottom"
+       - Action: {{"action": "scroll", "direction": "down", "amount": 9999, "reasoning": "Scrolling to bottom of page"}}
+
+    3. Inspect Design B:
+       - Keywords: "design B", "option B", "second design/template", "details", "inspect", "show me more"
+       - Action: {{"action": "navigate", "targetId": "template-option-b", "reasoning": "Opening design B for detailed inspection"}}
+
+    4. Navigate to Pricing:
+       - Keywords: "pricing", "price", "pricing tab/section/page"
+       - Action: Look for navigation elements with "pricing" in their id or text
+       - If in iframe, look for: nav links with "pricing" or elements containing "pricing"
+       - Action: {{"action": "navigate", "targetId": "[pricing-nav-id]", "reasoning": "Navigating to pricing section"}}
+
+    These demo scenarios take PRIORITY. If the user's intent semantically matches these patterns, use the specified actions.
+
     **DYNAMIC SITE MAP:**
 
     Main App Navigation Links:
