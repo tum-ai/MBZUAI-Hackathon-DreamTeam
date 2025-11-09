@@ -41,7 +41,7 @@ export function VoiceAssistantProvider({ children }) {
 
   const voice = useVoiceAssistant({
     autoRestart: true,
-    wakeWordEnabled: false, // Temporarily disabled to prevent error loop
+    wakeWordEnabled: true,
     biasPhrases: combinedBiasPhrases,
     onFinalSegment: (joined, segments) => {
       notifyListeners('onFinal', joined, segments);
