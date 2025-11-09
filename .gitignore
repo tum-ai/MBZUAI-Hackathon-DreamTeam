@@ -213,3 +213,13 @@ llm/planner/tests/results/
 
 #Compiler
 compiler/output
+
+# Node.js
+node_modules/
+.npm/
+.yarn/
+package-lock.json
+
+# Vite build artifacts
+.vite/
+*/.vite/

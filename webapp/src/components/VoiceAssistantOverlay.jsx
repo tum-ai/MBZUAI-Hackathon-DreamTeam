@@ -13,53 +13,106 @@ function VoiceAssistantOverlay() {
     startListening,
     stopListening,
     error,
-    speakText,
     isSpeaking,
-    ttsError,
-    clearTtsError,
   } = useVoiceAssistantContext();
 
-  const [ttsInput, setTtsInput] = useState('');
   const orbRef = useRef(null);
-
-  useEffect(() => {
-    const node = orbRef.current;
-    if (!node) return undefined;
-    setAudioVisualizerContainer(node);
-    return () => {
-      if (orbRef.current === node) {
-        setAudioVisualizerContainer(null);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (ttsInput) {
-      clearTtsError?.();
-    }
-  }, [ttsInput, clearTtsError]);
-
   const disabled = !isSupported || !!error;
 
-  const handleSpeak = () => {
-    if (!ttsInput.trim()) return;
-    speakText(ttsInput);
+  // Check if we're on template selection screen or modal is open - MUST be declared before useEffects
+  const [shouldShowToolbar, setShouldShowToolbar] = useState(false);
+
+  const handleStart = () => {
+    startListening({ autoRestart: true });
   };
 
-  const handleKeyDown = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleSpeak();
+  // Set up audio visualizer container when toolbar becomes visible
+  useEffect(() => {
+    if (!shouldShowToolbar) {
+      console.log('[VoiceAssistant] Toolbar hidden, skipping orb setup');
+      return undefined;
+    }
+    
+    const node = orbRef.current;
+    if (!node) {
+      console.warn('[VoiceAssistant] Orb container ref is null');
+      return undefined;
+    }
+    console.log('[VoiceAssistant] Setting up audio visualizer container', {
+      node,
+      dimensions: { width: node.offsetWidth, height: node.offsetHeight },
+      computed: window.getComputedStyle(node)
+    });
+    setAudioVisualizerContainer(node);
+    return () => {
+      console.log('[VoiceAssistant] Cleaning up audio visualizer container');
+      setAudioVisualizerContainer(null);
+    };
+  }, [shouldShowToolbar]);
+
+  // Debug: log when isSpeaking changes
+  useEffect(() => {
+    console.log('[VoiceAssistant] isSpeaking changed:', isSpeaking);
+  }, [isSpeaking]);
+
+  useEffect(() => {
+    const checkVisibility = () => {
+      const modal = document.querySelector('.inspection-modal__content');
+      const templateSelection = document.querySelector('.template-selection');
+      setShouldShowToolbar(!!(modal || templateSelection));
+    };
+
+    // Initial check
+    checkVisibility();
+
+    // Watch for changes
+    const observer = new MutationObserver(checkVisibility);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClose = () => {
+    // Hierarchical closing: enlarged image → modal → template selection
+    if (window.__hasEnlargedImage && window.__hasEnlargedImage()) {
+      // Level 1: If an image is enlarged, close it first
+      window.__closeEnlargedImage?.();
+    } else if (window.__closeInspectionModal) {
+      // Level 2: Close the modal (if open)
+      window.__closeInspectionModal();
+    } else if (window.__navigateBackFromTemplates) {
+      // Level 3: Navigate back from template selection to create project
+      window.__navigateBackFromTemplates();
     }
   };
 
   return (
-    <div className="voice-assistant-overlay">
-      <div className="voice-assistant-overlay__panel">
-        <div className="voice-assistant-overlay__header">
-          <div className="voice-assistant-overlay__mic">
+    <>
+      {/* Toolbar - only show on template selection or when modal is open */}
+      {shouldShowToolbar && (
+        <div className="voice-assistant-toolbar">
+          {/* Button column */}
+          <div className="voice-assistant-toolbar__buttons">
+            {/* Close button */}
+            <button 
+              className="voice-toolbar-button voice-toolbar-button--close"
+              onClick={handleClose}
+              aria-label="Close modal"
+              data-nav-id="toolbar-close-btn"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+
+            {/* Mic button */}
             <VoiceControl
-              onStart={() => startListening({ autoRestart: true })}
+              onStart={handleStart}
               onStop={stopListening}
               isRecording={isListening}
               wakeActive={isWakeActive}
@@ -67,48 +120,16 @@ function VoiceAssistantOverlay() {
               disabled={disabled}
             />
           </div>
+
+          {/* Audio visualization orb - shows when TTS is speaking */}
           <div
             ref={orbRef}
-            className={`voice-assistant-overlay__orb ${
-              isSpeaking ? 'voice-assistant-overlay__orb--active' : ''
-            }`}
+            className={`voice-assistant-toolbar__orb ${isSpeaking ? 'voice-assistant-toolbar__orb--active' : ''}`}
             aria-hidden="true"
           />
         </div>
-
-        <div className="voice-assistant-overlay__tts-controls">
-          <input
-            type="text"
-            className="voice-assistant-overlay__tts-input"
-            placeholder="Enter text to speak"
-            value={ttsInput}
-            onChange={event => setTtsInput(event.target.value)}
-            onKeyDown={handleKeyDown}
-            data-nav-id="voice-tts-input"
-          />
-          <button
-            className="voice-assistant-overlay__tts-button"
-            onClick={handleSpeak}
-            disabled={!ttsInput.trim() || isSpeaking}
-            type="button"
-            data-nav-id="voice-tts-speak"
-          >
-            Speak
-          </button>
-        </div>
-
-        {error && (
-          <div className="voice-assistant-overlay__error" role="status">
-            Voice control unavailable
-          </div>
-        )}
-        {ttsError && (
-          <div className="voice-assistant-overlay__tts-error" role="alert">
-            {ttsError.message || 'TTS failed'}
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

@@ -10,6 +10,21 @@ import { captureDOMSnapshot } from '../utils/domSnapshot'
 
 // Test case sequences
 export const testSequences = {
+  // Test Case TTS: Test Text-to-Speech with sphere visualization
+  testTTS: async () => {
+    console.log('🧪 Test Case TTS: Testing Text-to-Speech with visualization')
+    const text = 'Hi my name is K2 and I am a language model'
+    
+    // Check if speakText is available from VoiceAssistantContext
+    if (window.__speakText) {
+      console.log('Speaking:', text)
+      await window.__speakText(text)
+      console.log('✅ TTS playback complete - sphere visualization should have animated')
+    } else {
+      console.error('❌ TTS function not available. Make sure VoiceAssistantContext is loaded.')
+    }
+  },
+
   // Test Case 1: Click "Get Started" button
   testCase1: async () => {
     console.log('🧪 Test Case 1: Click Get Started button')
@@ -45,8 +60,8 @@ export const testSequences = {
       },
       {
         action: 'navigate',
-        targetId: 'template-modal-close',
-        reasoning: 'Close the inspection modal'
+        targetId: 'toolbar-close-btn',
+        reasoning: 'Close the inspection modal using toolbar X button'
       }
     ])
   },
@@ -160,8 +175,8 @@ export const testSequences = {
       },
       {
         action: 'navigate',
-        targetId: 'gallery-close-enlarged',
-        reasoning: 'Close the enlarged image view'
+        targetId: 'toolbar-close-btn',
+        reasoning: 'Close the enlarged image view using toolbar X button'
       },
       {
         action: 'wait',
@@ -202,8 +217,8 @@ export const testSequences = {
       },
       {
         action: 'navigate',
-        targetId: 'template-modal-close',
-        reasoning: 'Close the inspection modal'
+        targetId: 'toolbar-close-btn',
+        reasoning: 'Close the inspection modal using toolbar X button'
       },
       {
         action: 'wait',
@@ -370,6 +385,7 @@ export const initializeTestHelpers = () => {
   console.log('  - window.scrollGallery(times, direction) - Scroll gallery wheel')
   console.log('')
   console.log('Test Sequences:')
+  console.log('  - window.testSequences.testTTS() - Test TTS with sphere visualization')
   console.log('  - window.testSequences.testCase1() - Simple: Click Get Started')
   console.log('  - window.testSequences.testCase2() - Medium: Open & close project B')
   console.log('  - window.testSequences.testCase3_galleryScroll() - Quick: Toggle + 1 scroll')

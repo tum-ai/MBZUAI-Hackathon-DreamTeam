@@ -1,16 +1,18 @@
 .voice-control {
   position: relative;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--space-3);
+  width: 48px;
+  height: 48px;
 }
 
 .voice-control__button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-1);
-  padding: var(--space-2);
+  padding: var(--space-3);
   background: var(--glass-bg-medium);
   backdrop-filter: blur(var(--blur-medium));
   -webkit-backdrop-filter: blur(var(--blur-medium));
@@ -23,6 +25,8 @@
   transition: all var(--duration-normal) var(--ease-out);
   position: relative;
   z-index: var(--z-elevated);
+  width: 48px;
+  height: 48px;
 }
 
 .voice-control__button:hover {
@@ -46,8 +50,8 @@
 }
 
 .voice-control__icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -98,3 +102,11 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(90, 152, 239, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(90, 152, 239, 0);
+  }
+}

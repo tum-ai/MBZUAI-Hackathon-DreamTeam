@@ -46,7 +46,13 @@ Previous context (last 2 prompts): "{previous_context}"
 Your job:
 1. Detect if the request contains multiple distinct tasks (e.g., "scroll down, click submit, and make it orange" is 3 tasks)
 2. Split into individual tasks in chronological order
-3. For each task, classify as: "edit" (modify website), "act" (perform action like scroll/click/navigate), or "clarify" (need more information)
+3. For each task, classify as:
+   - "act" (perform action): ANY user interaction with existing UI elements
+     Examples: scroll, click, navigate, hover, **fill in form fields**, enter text, type, press keys, check boxes, submit forms, select dropdowns, etc.
+   - "edit" (modify website structure/style): changing the website code, design, or content
+     Examples: change colors, add new components, modify layout, style changes, create elements, etc.
+   - "clarify" (need more information): vague or ambiguous requests
+   IMPORTANT: If user is interacting with existing form fields/inputs (filling, typing, entering data), it's ALWAYS "act", NOT "edit"
 4. Add clear explanation for each task
 5. Provide a concise summary of the previous context (it's longer than 100 characters)
 
@@ -73,7 +79,13 @@ Previous context (last 2 prompts): "{previous_context}"
 Your job:
 1. Detect if the request contains multiple distinct tasks (e.g., "scroll down, click submit, and make it orange" is 3 tasks)
 2. Split into individual tasks in chronological order
-3. For each task, classify as: "edit" (modify website), "act" (perform action like scroll/click/navigate), or "clarify" (need more information)
+3. For each task, classify as:
+   - "act" (perform action): ANY user interaction with existing UI elements
+     Examples: scroll, click, navigate, hover, **fill in form fields**, enter text, type, press keys, check boxes, submit forms, select dropdowns, etc.
+   - "edit" (modify website structure/style): changing the website code, design, or content
+     Examples: change colors, add new components, modify layout, style changes, create elements, etc.
+   - "clarify" (need more information): vague or ambiguous requests
+   IMPORTANT: If user is interacting with existing form fields/inputs (filling, typing, entering data), it's ALWAYS "act", NOT "edit"
 4. Add clear explanation for each task
 
 Respond with ONLY valid JSON in this exact format:

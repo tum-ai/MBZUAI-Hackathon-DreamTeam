@@ -32,28 +32,28 @@ function VoiceControl({
       >
         <svg
           className="voice-control__icon"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M10 13C11.933 13 13.5 11.433 13.5 9.5V5.5C13.5 3.567 11.933 2 10 2C8.067 2 6.5 3.567 6.5 5.5V9.5C6.5 11.433 8.067 13 10 13Z"
+            d="M12 15C14 15 15.5 13.5 15.5 11.5V7.5C15.5 5.5 14 4 12 4C10 4 8.5 5.5 8.5 7.5V11.5C8.5 13.5 10 15 12 15Z"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M16 9.5V10C16 13.314 13.314 16 10 16C6.686 16 4 13.314 4 10V9.5"
+            d="M19 11.5V12C19 15.866 15.866 19 12 19C8.134 19 5 15.866 5 12V11.5"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M10 16V18"
+            d="M12 19V21"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
