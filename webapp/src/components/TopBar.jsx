@@ -33,12 +33,16 @@ function TopBar({ title = 'Voice-First Platform', showBack = false, children }) 
         )}
         <div className="top-bar__logo">
           <svg viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* K2 geometric shape */}
-            <polygon points="10,17 89,17 89,35 40,35 59,87 40,87" fill="#EF5F3A"/>
+            {/* K2 geometric shape - complete */}
+            {/* Top horizontal bar */}
+            <rect x="25" y="17" width="89" height="18" fill="#EF5F3A"/>
+            {/* Diagonal piece */}
+            <polygon points="40,35 89,35 59,87 40,87 59,50" fill="#EF5F3A"/>
+            {/* Bottom left square */}
             <rect x="10" y="67" width="30" height="20" fill="#EF5F3A"/>
             
-            {/* K2 Ink text */}
-            <text x="123" y="70" fontFamily="Arial, sans-serif" fontSize="55" fontWeight="700" fill="#2B1F1A">K2 Ink</text>
+            {/* K2 Ink text in strong orange */}
+            <text x="123" y="70" fontFamily="Arial, sans-serif" fontSize="55" fontWeight="700" fill="#FF6B35">K2 Ink</text>
           </svg>
         </div>
       </div>
