@@ -17,9 +17,9 @@ function TemplateSelection() {
 
   const options = [
     { id: 'A', port: 5173, label: 'Professional' },
-    { id: 'B', port: 5174, label: 'Dark' },
-    { id: 'C', port: 5175, label: 'Minimal' },
-    { id: 'D', port: 5176, label: 'Energetic' }
+    { id: 'B', port: 5173, label: 'Dark' },
+    { id: 'C', port: 5173, label: 'Minimal' },
+    { id: 'D', port: 5173, label: 'Energetic' }
   ]
 
   const handleOpenModal = (optionId) => {

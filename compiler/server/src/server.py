@@ -33,7 +33,7 @@ class TemplateSelectionRequest(BaseModel):
     variation_index: int  # 0, 1, 2, or 3
 
 # --- Template Generation Constants ---
-TEMPLATE_SELECTION_DIR = Path("/tmp/selection")
+TEMPLATE_SELECTION_DIR = Path("/home/kesava89/Repos/MBZUAI-Hackathon-DreamTeam/compiler/server/inputs")
 ACTIVE_PROJECT_DIR = Path("/tmp/active")  # DEPRECATED - no longer used
 PALETTE_VARIATIONS = ["professional", "dark", "minimal", "energetic"]  # 4 variations
 

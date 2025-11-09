@@ -21,7 +21,7 @@
               "justify-content": "space-between",
               "align-items": "center",
               "padding": "1rem 2rem",
-              "background": "rgba(11, 15, 20, 0.7)",
+              "background": "rgba(0, 0, 0, 0.7)",
               "backdrop-filter": "blur(10px)",
               "-webkit-backdrop-filter": "blur(10px)",
               "z-index": "1000",
@@ -35,7 +35,7 @@
                 "id": "header-logo",
                 "type": "Text",
                 "props": {
-                  "content": "K2Ink",
+                  "content": "iPhone 17 Pro",
                   "as": "h3",
                   "style": {
                     "font-weight": "700"
@@ -53,61 +53,120 @@
                 "slots": {
                   "default": [
                     {
-                      "id": "nav-link-how",
+                      "id": "nav-link-home",
                       "type": "Link",
                       "props": {
-                        "href": "#how-it-works",
-                        "text": "How It Works",
+                        "href": "#/",
+                        "text": "Home",
                         "style": {
-                          "padding": "0 1rem",
-                          "font-size": "14px",
+                          "color": "#fff",
+                          "text-decoration": "none",
                           "font-weight": "500",
-                          "color": "#ccc",
-                          "text-decoration": "none"
+                          "padding": "0 1rem",
+                          "font-size": "14px"
                         }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-home",
+                            "type": "Text",
+                            "props": {
+                              "content": "Home"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
                       "id": "nav-link-features",
                       "type": "Link",
                       "props": {
-                        "href": "#features",
+                        "href": "#/features",
                         "text": "Features",
                         "style": {
-                          "padding": "0 1rem",
-                          "font-size": "14px",
+                          "color": "#888",
+                          "text-decoration": "none",
                           "font-weight": "500",
-                          "color": "#ccc",
-                          "text-decoration": "none"
+                          "padding": "0 1rem",
+                          "font-size": "14px"
                         }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-features",
+                            "type": "Text",
+                            "props": {
+                              "content": "Features"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
                       "id": "nav-link-compare",
                       "type": "Link",
                       "props": {
-                        "href": "#compare",
+                        "href": "#/compare",
                         "text": "Compare",
                         "style": {
-                          "padding": "0 1rem",
-                          "font-size": "14px",
+                          "color": "#888",
+                          "text-decoration": "none",
                           "font-weight": "500",
-                          "color": "#ccc",
-                          "text-decoration": "none"
+                          "padding": "0 1rem",
+                          "font-size": "14px"
                         }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-compare",
+                            "type": "Text",
+                            "props": {
+                              "content": "Compare"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "nav-link-pricing",
+                      "type": "Link",
+                      "props": {
+                        "href": "#/pricing",
+                        "text": "Pricing",
+                        "style": {
+                          "color": "#888",
+                          "text-decoration": "none",
+                          "font-weight": "500",
+                          "padding": "0 1rem",
+                          "font-size": "14px"
+                        }
+                      },
+                      "slots": {
+                        "default": [
+                          {
+                            "id": "nav-text-pricing",
+                            "type": "Text",
+                            "props": {
+                              "content": "Pricing"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
                 }
               },
               {
-                "id": "header-signup-btn",
+                "id": "header-buy-btn",
                 "type": "Button",
                 "props": {
-                  "text": "Join Waitlist",
+                  "text": "Buy",
                   "class": "btn-primary",
                   "style": {
-                    "padding": "8px 16px",
+                    "padding": "5px 15px",
                     "font-size": "14px"
                   }
                 }
@@ -119,9 +178,9 @@
           "id": "hero-section",
           "type": "Box",
           "props": {
-            "id": "hero",
+            "id": "hero-section",
             "style": {
-              "height": "80vh",
+              "height": "100vh",
               "width": "100%",
               "position": "relative",
               "display": "flex",
@@ -129,214 +188,75 @@
               "justify-content": "center",
               "align-items": "center",
               "text-align": "center",
-              "padding": "0 2rem",
-              "box-sizing": "border-box"
+              "overflow": "hidden"
             }
           },
           "slots": {
             "default": [
               {
-                "id": "hero-title",
-                "type": "GradientText",
+                "id": "hero-img",
+                "type": "Image",
                 "props": {
-                  "content": "Build at the Speed of Thought.",
-                  "as": "h1",
+                  "src": "https://picsum.photos/1920/1080?random=1",
+                  "alt": "iPhone Hero",
                   "style": {
-                    "font-size": "72px",
-                    "margin-bottom": "1rem"
-                  },
-                  "gradient": "linear-gradient(to right, #6AA8FF, #D67CFF)"
-                }
-              },
-              {
-                "id": "hero-subtitle",
-                "type": "Text",
-                "props": {
-                  "content": "A voice-first generative platform that compiles natural language into a deterministic UI Abstract Syntax Tree.",
-                  "as": "p",
-                  "style": {
-                    "font-size": "20px",
-                    "color": "#ccc",
-                    "max-width": "700px",
-                    "margin-bottom": "2rem"
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
                   }
                 }
               },
               {
-                "id": "hero-cta-btn",
-                "type": "Button",
-                "props": {
-                  "text": "Join the Private Beta",
-                  "class": "btn-primary"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "id": "how-it-works-section",
-          "type": "Box",
-          "props": {
-            "id": "how-it-works",
-            "class": "content-width"
-          },
-          "slots": {
-            "default": [
-              {
-                "id": "how-title",
-                "type": "Text",
-                "props": {
-                  "content": "From Voice to Code. Deterministically.",
-                  "as": "h2",
-                  "style": {
-                    "font-size": "48px",
-                    "text-align": "center",
-                    "margin-bottom": "3rem"
-                  }
-                }
-              },
-              {
-                "id": "how-grid",
+                "id": "hero-gradient",
                 "type": "Box",
                 "props": {
                   "style": {
-                    "display": "grid",
-                    "grid-template-columns": "repeat(4, 1fr)",
-                    "gap": "1.5rem"
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
+                  }
+                }
+              },
+              {
+                "id": "hero-text-box",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "how-card-1",
-                      "type": "Box",
+                      "id": "hero-title",
+                      "type": "Text",
                       "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "how-card-1-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "1. Intent",
-                              "as": "h3",
-                              "style": {
-                                "color": "#6AA8FF",
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "how-card-1-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Speak your request. Our agentic system (Planner & Clarifier) understands your natural language intent.",
-                              "style": {
-                                "color": "#eee"
-                              }
-                            }
-                          }
-                        ]
+                        "content": "iPhone 17 Pro",
+                        "as": "h1",
+                        "style": {
+                          "font-size": "80px"
+                        }
                       }
                     },
                     {
-                      "id": "how-card-2",
-                      "type": "Box",
+                      "id": "hero-subtitle",
+                      "type": "Text",
                       "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "how-card-2-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "2. Compile",
-                              "as": "h3",
-                              "style": {
-                                "color": "#6AA8FF",
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "how-card-2-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "The 'LLM AST Compiler' generates a structured JSON Patch, not raw code. This is a safe, abstract command.",
-                              "style": {
-                                "color": "#eee"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "how-card-3",
-                      "type": "Box",
-                      "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "how-card-3-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "3. Update AST",
-                              "as": "h3",
-                              "style": {
-                                "color": "#6AA8FF",
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "how-card-3-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Your 'ui-tree.json' (the AST) is updated. This file is now the single source of truth for your entire application.",
-                              "style": {
-                                "color": "#eee"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "how-card-4",
-                      "type": "Box",
-                      "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "how-card-4-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "4. Generate",
-                              "as": "h3",
-                              "style": {
-                                "color": "#6AA8FF",
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "how-card-4-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "A 100% deterministic Python generator compiles the new AST into perfect, framework-native code (React, Vue, etc).",
-                              "style": {
-                                "color": "#eee"
-                              }
-                            }
-                          }
-                        ]
+                        "content": "The Future. Now.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "32px",
+                          "color": "#ccc"
+                        }
                       }
                     }
                   ]
@@ -346,169 +266,87 @@
           }
         },
         {
-          "id": "features-section",
+          "id": "chip-section",
           "type": "Box",
           "props": {
-            "id": "features",
-            "class": "content-width"
+            "id": "chip-section",
+            "style": {
+              "height": "100vh",
+              "width": "100%",
+              "position": "relative",
+              "display": "flex",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            }
           },
           "slots": {
             "default": [
               {
-                "id": "feat-title",
-                "type": "Text",
+                "id": "chip-img",
+                "type": "Image",
                 "props": {
-                  "content": "An Unprecedented Workflow.",
-                  "as": "h2",
+                  "src": "https://picsum.photos/1920/1080?random=2",
+                  "alt": "A20 Bionic",
                   "style": {
-                    "font-size": "48px",
-                    "text-align": "center",
-                    "margin-bottom": "3rem"
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
                   }
                 }
               },
               {
-                "id": "feat-grid",
+                "id": "chip-gradient",
                 "type": "Box",
                 "props": {
                   "style": {
-                    "display": "grid",
-                    "grid-template-columns": "1fr 1fr",
-                    "gap": "1.5rem"
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
+                  }
+                }
+              },
+              {
+                "id": "chip-text",
+                "type": "Box",
+                "props": {
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3",
+                    "text-align": "center"
                   }
                 },
                 "slots": {
                   "default": [
                     {
-                      "id": "feat-card-1",
-                      "type": "Box",
+                      "id": "chip-title",
+                      "type": "Text",
                       "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "feat-card-1-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "Voice-First Agentic System",
-                              "as": "h3",
-                              "style": {
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "feat-card-1-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Use natural language to build. Our 'Bixby-like' assistant uses Planner, Editor, and Clarifier agents to handle ambiguity and execute complex tasks.",
-                              "style": {
-                                "color": "#ccc",
-                                "line-height": "1.6"
-                              }
-                            }
-                          }
-                        ]
+                        "content": "A20 Bionic",
+                        "as": "h2",
+                        "style": {
+                          "font-size": "60px"
+                        }
                       }
                     },
                     {
-                      "id": "feat-card-2",
-                      "type": "Box",
+                      "id": "chip-subtitle",
+                      "type": "Text",
                       "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "feat-card-2-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "AST as Source of Truth",
-                              "as": "h3",
-                              "style": {
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "feat-card-2-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Eliminate state drift and brittle code. Your UI is 100% defined by the 'ui-tree.json' AST. To change the UI, you must change the AST.",
-                              "style": {
-                                "color": "#ccc",
-                                "line-height": "1.6"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "feat-card-3",
-                      "type": "Box",
-                      "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "feat-card-3-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "Deterministic Generation",
-                              "as": "h3",
-                              "style": {
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "feat-card-3-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Our generator is a 'pure function'. The same AST input will always produce the exact same code output, making your UI predictable and testable.",
-                              "style": {
-                                "color": "#ccc",
-                                "line-height": "1.6"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "feat-card-4",
-                      "type": "Box",
-                      "props": {
-                        "class": "glass-card"
-                      },
-                      "slots": {
-                        "default": [
-                          {
-                            "id": "feat-card-4-title",
-                            "type": "Text",
-                            "props": {
-                              "content": "Framework-Agnostic",
-                              "as": "h3",
-                              "style": {
-                                "margin-bottom": "1rem"
-                              }
-                            }
-                          },
-                          {
-                            "id": "feat-card-4-text",
-                            "type": "Text",
-                            "props": {
-                              "content": "Use Component Manifests (schema-driven JSON) to teach the generator. Target React, Vue, Angular, and more, all from the same abstract AST.",
-                              "style": {
-                                "color": "#ccc",
-                                "line-height": "1.6"
-                              }
-                            }
-                          }
-                        ]
+                        "content": "The most powerful chip ever in an iPhone.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "24px",
+                          "color": "#ccc"
+                        }
                       }
                     }
                   ]
@@ -518,89 +356,89 @@
           }
         },
         {
-          "id": "comparison-section",
+          "id": "camera-section",
           "type": "Box",
           "props": {
-            "id": "compare",
-            "class": "content-width"
+            "id": "camera-section",
+            "style": {
+              "height": "100vh",
+              "width": "100%",
+              "position": "relative",
+              "display": "flex",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            }
           },
           "slots": {
             "default": [
               {
-                "id": "compare-title",
-                "type": "Text",
+                "id": "camera-img",
+                "type": "Image",
                 "props": {
-                  "content": "Compare Our Approach",
-                  "as": "h2",
+                  "src": "https://picsum.photos/1920/1080?random=3",
+                  "alt": "Pro Camera",
                   "style": {
-                    "font-size": "48px",
-                    "text-align": "center",
-                    "margin-bottom": "1rem"
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "100%",
+                    "object-fit": "cover",
+                    "z-index": "1"
                   }
                 }
               },
               {
-                "id": "compare-subtitle",
-                "type": "Text",
+                "id": "camera-gradient",
+                "type": "Box",
                 "props": {
-                  "content": "K2Ink isn't just another 'AI website builder'. It's a deterministic compiler.",
-                  "as": "p",
                   "style": {
-                    "font-size": "18px",
-                    "color": "#ccc",
-                    "text-align": "center",
-                    "margin-bottom": "2rem"
+                    "position": "absolute",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "height": "50%",
+                    "z-index": "2",
+                    "background": "linear-gradient(to top, #000 20%, transparent)"
                   }
                 }
               },
               {
-                "id": "compare-table",
-                "type": "Table",
+                "id": "camera-text",
+                "type": "Box",
                 "props": {
-                  "class": "comparison-table",
-                  "headers": [
-                    "Feature",
-                    "K2Ink (AST Compiler)",
-                    "Gen-AI Tools (e.g., Lovable)",
-                    "Manual Coding"
-                  ],
-                  "rows": [
-                    [
-                      "Source of Truth",
-                      "Deterministic AST (ui-tree.json)",
-                      "Proprietary UI (Black Box)",
-                      "Raw Code Files (.tsx, .vue)"
-                    ],
-                    [
-                      "Output",
-                      "Deterministic, framework-native code",
-                      "LLM-generated, brittle code",
-                      "Human-written (slow, error-prone)"
-                    ],
-                    [
-                      "Modification",
-                      "Safe JSON Patch on AST",
-                      "Ambiguous 'prompt-to-edit' (Risky)",
-                      "Manual Refactoring"
-                    ],
-                    [
-                      "State Management",
-                      "Abstracted in AST (e.g., 'action:setState')",
-                      "Handled by Platform",
-                      "Manual (e.g., useState, Pinia)"
-                    ],
-                    [
-                      "Extensibility",
-                      "Via Component Manifests (JSON)",
-                      "Limited by Platform Features",
-                      "Unlimited (but complex)"
-                    ],
-                    [
-                      "Workflow",
-                      "Voice -> AST -> Code",
-                      "Voice -> Code",
-                      "Keyboard -> Code"
-                    ]
+                  "style": {
+                    "position": "relative",
+                    "z-index": "3",
+                    "text-align": "center"
+                  }
+                },
+                "slots": {
+                  "default": [
+                    {
+                      "id": "camera-title",
+                      "type": "Text",
+                      "props": {
+                        "content": "Pro Camera System",
+                        "as": "h2",
+                        "style": {
+                          "font-size": "60px"
+                        }
+                      }
+                    },
+                    {
+                      "id": "camera-subtitle",
+                      "type": "Text",
+                      "props": {
+                        "content": "Capture your world like never before.",
+                        "as": "p",
+                        "style": {
+                          "font-size": "24px",
+                          "color": "#ccc"
+                        }
+                      }
+                    }
                   ]
                 }
               }
@@ -624,13 +462,70 @@
                 "id": "footer-text",
                 "type": "Text",
                 "props": {
-                  "content": "Copyright \u00a9 2025 TUM.ai DreamTeam. All rights reserved.",
+                  "content": "Copyright \u00a9 2025 GenAI Inc. All rights reserved.",
                   "as": "p",
                   "style": {
                     "font-size": "14px",
                     "color": "#888"
                   }
                 }
+              }
+            ]
+          }
+        },
+        {
+          "id": "android-product-name",
+          "type": "Text",
+          "props": {
+            "content": "Android",
+            "as": "h1",
+            "style": {
+              "fontSize": "2.5rem",
+              "color": "#2d3436",
+              "fontWeight": "600",
+              "margin": "0"
+            }
+          },
+          "slots": {}
+        },
+        {
+          "id": "root",
+          "type": "Box",
+          "props": {},
+          "slots": {
+            "default": [
+              {
+                "id": "android-product-title",
+                "type": "Text",
+                "props": {
+                  "content": "Android",
+                  "as": "h2",
+                  "style": {
+                    "fontSize": "24px",
+                    "fontWeight": "600",
+                    "margin": "0 0 16px 0"
+                  }
+                },
+                "slots": {}
+              },
+              {
+                "id": "explore-android-button",
+                "type": "Button",
+                "props": {
+                  "text": "Explore Android",
+                  "style": {
+                    "fontSize": "16px",
+                    "padding": "12px 24px",
+                    "backgroundColor": "#2c3e50",
+                    "color": "#ffffff",
+                    "border": "none",
+                    "borderRadius": "8px",
+                    "textAlign": "center",
+                    "cursor": "pointer",
+                    "transition": "background-color 0.2s ease"
+                  }
+                },
+                "slots": {}
               }
             ]
           }

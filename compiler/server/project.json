@@ -1,11 +1,26 @@
 {
-  "projectName": "K2Ink",
+  "projectName": "iPhone 17 Pro",
   "pages": [
     {
       "name": "Home",
       "path": "/",
       "astFile": "home.json"
+    },
+    {
+      "name": "Features",
+      "path": "/features",
+      "astFile": "features.json"
+    },
+    {
+      "name": "Compare",
+      "path": "/compare",
+      "astFile": "compare.json"
+    },
+    {
+      "name": "Pricing",
+      "path": "/pricing",
+      "astFile": "pricing.json"
     }
   ],
-  "globalStyles": "\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');\n\nbody {\n  font-family: 'Inter', sans-serif;\n  background-color: #0B0F14;\n  color: #fff;\n  margin: 0;\n  padding: 0;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n.page-container {\n  max-width: 100%;\n  margin: 0 auto;\n}\n\n.content-width {\n  max-width: 1100px;\n  margin: 0 auto;\n  padding: 4rem 2rem;\n}\n\nh1, h2, h3, h4 {\n  font-weight: 700;\n  margin: 0;\n  padding: 0;\n}\n\n/* --- Global Component Classes --- */\n.btn-primary {\n  background-color: #6AA8FF;\n  color: #0B0F14;\n  border: none;\n  padding: 12px 24px;\n  font-size: 16px;\n  font-weight: 700;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: all 0.2s ease-out;\n  text-decoration: none;\n}\n.btn-primary:hover {\n  filter: brightness(1.2);\n  transform: translateY(-2px);\n}\n\n.btn-secondary {\n  background-color: transparent;\n  color: #fff;\n  border: 1px solid #333;\n  padding: 10px 20px;\n  font-size: 14px;\n  font-weight: 500;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background-color 0.2s;\n  text-decoration: none;\n}\n.btn-secondary:hover {\n  background-color: #ffffff1a;\n}\n\n.glass-card {\n  background: rgba(14, 18, 20, 0.5); /* From your tokens */\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 12px;\n  padding: 1.5rem 2rem;\n  height: 100%;\n  box-sizing: border-box;\n}\n\n/* --- V4: Added Comparison Table Styles --- */\n.comparison-table {\n  width: 100%;\n  font-size: 16px;\n  border-collapse: collapse;\n  text-align: left;\n  margin-top: 2rem;\n}\n.comparison-table th, .comparison-table td {\n  border: 1px solid #333;\n  padding: 0.75rem 1rem;\n}\n.comparison-table th {\n  background-color: #ffffff1a;\n  font-weight: 700;\n}\n.comparison-table td:first-child {\n  font-weight: 500;\n  color: #eee;\n}\n"
+  "globalStyles": "\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');\n\nbody {\n  font-family: 'Inter', sans-serif;\n  background-color: #000;\n  color: #fff;\n  margin: 0;\n  padding: 0;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n/* V18: Removed hardcoded #nav styles, now part of AST */\n\n.page-container {\n  max-width: 100%; /* Full width for hero sections */\n  margin: 0 auto;\n}\n\n.content-width {\n  max-width: 980px;\n  margin: 0 auto;\n  padding: 2rem;\n}\n\nh1, h2, h3, h4 {\n  font-weight: 700;\n  margin: 0;\n  padding: 0;\n}\n\n/* --- Global Component Classes --- */\n.btn-primary {\n  background-color: #007aff;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  font-size: 16px;\n  font-weight: 500;\n  border-radius: 99px; /* Pill shape */\n  cursor: pointer;\n  transition: background-color 0.2s;\n  text-decoration: none;\n}\n.btn-primary:hover {\n  background-color: #0056b3;\n}\n/* V18: Added secondary button for pricing toggle */\n.btn-secondary {\n  background-color: #333;\n  color: #fff;\n  border: 1px solid #555;\n  padding: 10px 20px;\n  font-size: 16px;\n  font-weight: 500;\n  border-radius: 99px;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n.btn-secondary:hover {\n  background-color: #444;\n}\n\n.text-link {\n  color: #007aff;\n  text-decoration: none;\n}\n.text-link:hover {\n  text-decoration: underline;\n}\n\n.icon-check {\n  color: #34c759; /* Apple green */\n  width: 1.5em;\n  height: 1.5em;\n  margin-right: 0.5rem;\n}\n\n.icon-chevron {\n  width: 0.8em;\n  height: 0.8em;\n  margin-left: 0.25rem;\n}\n"
 }
