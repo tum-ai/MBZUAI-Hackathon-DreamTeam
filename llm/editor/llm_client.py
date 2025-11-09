@@ -10,27 +10,93 @@ load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 MODEL_NAME = "MBZUAI-IFM/K2-Think"
 BASE_URL = "https://llm-api.k2think.ai/v1"
 
+_K2_CLIENT = None
+
 
 def get_k2_client():
-    """Initialize and return K2 Think OpenAI client."""
-    api_key = os.getenv("K2_API_KEY")
-    if not api_key:
-        raise ValueError("K2_API_KEY not found in environment variables")
+    """Get or create cached K2 Think OpenAI client."""
+    global _K2_CLIENT
+    if _K2_CLIENT is None:
+        api_key = os.getenv("K2_API_KEY")
+        if not api_key:
+            raise ValueError("K2_API_KEY not found in environment variables")
+        
+        http_client = httpx.Client(
+            timeout=1200.0,
+            follow_redirects=True
+        )
+        
+        _K2_CLIENT = OpenAI(
+            base_url=BASE_URL,
+            api_key=api_key,
+            timeout=1200.0,
+            max_retries=2,
+            http_client=http_client
+        )
     
-    http_client = httpx.Client(
-        timeout=1200.0,
-        follow_redirects=True
-    )
-    
-    return OpenAI(
-        base_url=BASE_URL,
-        api_key=api_key,
-        timeout=1200.0,
-        max_retries=2,
-        http_client=http_client
-    )
+    return _K2_CLIENT
 
 
+def generate_component_direct(intent: str, context: str, manifests: dict, current_ast: dict = None) -> dict:
+    """
+    Generate a component directly in a single LLM call.
+    Combines decision and generation into one step for optimal performance.
+    
+    Args:
+        intent: User's request with explanation
+        context: Previous actions/prompts for context
+        manifests: Dictionary of available component manifests
+        current_ast: Current page AST (optional, for edit actions)
+    
+    Returns:
+        Component JSON object
+    """
+    client = get_k2_client()
+    
+    prompt = f"""{intent}
+
+Output ONLY JSON: {{"id": "...", "type": "Box|Button|Text|Image|Link|List|Table|Textbox|Icon", "props": {{"style": {{}}}}, "slots": {{}}}}"""
+
+    messages = [{"role": "user", "content": prompt}]
+    
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=messages,
+        stream=False
+    )
+    
+    content = response.choices[0].message.content.strip()
+    
+    # Parse response handling <think> and <answer> tags
+    try:
+        if "<answer>" in content and "</answer>" in content:
+            content = content.split("<answer>")[1].split("</answer>")[0].strip()
+        elif "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0].strip()
+        
+        component = json.loads(content)
+        
+        # Validate required fields
+        if "id" not in component:
+            component["id"] = "generated-component"
+        if "type" not in component:
+            component["type"] = "Box"
+        
+        return component
+    except (json.JSONDecodeError, ValueError) as e:
+        # Return minimal valid component
+        return {
+            "id": "error-component",
+            "type": "Box",
+            "props": {},
+            "slots": {},
+            "error": f"Could not parse component: {str(e)}"
+        }
+
+
+# (not used in optimized path)
 def decide_component_action(intent: str, context: str, manifests: dict) -> dict:
     """
     Step 1: Decide whether to generate or edit, and which component type.

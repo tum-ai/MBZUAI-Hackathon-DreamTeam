@@ -21,8 +21,8 @@ MANIFEST_FILES = [
 ]
 
 
-def load_all_manifests() -> Dict[str, Any]:
-    """Load all component manifests from the compiler/manifests directory."""
+def _load_manifests_from_disk() -> Dict[str, Any]:
+    """Internal function to load manifests from disk."""
     manifests = {}
     
     for filename in MANIFEST_FILES:
@@ -38,8 +38,16 @@ def load_all_manifests() -> Dict[str, Any]:
     return manifests
 
 
+# Module-level manifest cache (loaded once at import time)
+_MANIFEST_CACHE = _load_manifests_from_disk()
+
+
+def load_all_manifests() -> Dict[str, Any]:
+    """Get all component manifests from cache."""
+    return _MANIFEST_CACHE
+
+
 def get_component_manifest(component_type: str) -> Dict[str, Any]:
-    """Get a specific component manifest by component type."""
-    manifests = load_all_manifests()
-    return manifests.get(component_type, {})
+    """Get a specific component manifest by component type from cache."""
+    return _MANIFEST_CACHE.get(component_type, {})
 
