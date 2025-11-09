@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 from .models import EditRequest, EditResponse
-from .llm_client import decide_component_action, generate_or_edit_component
-from .manifest_loader import load_all_manifests, get_component_manifest
+from .llm_client import generate_component_direct
+from .manifest_loader import load_all_manifests
 
 
 # Hardcoded paths for AST and project config
@@ -21,15 +21,13 @@ def load_current_ast() -> dict:
 
 def process_edit_request(request: EditRequest) -> EditResponse:
     """
-    Process edit request through the editor agent using two-step LLM process.
+    Process edit request through the editor agent using optimized single-step LLM process.
     
     Steps:
-    1. Load all component manifests
-    2. Call LLM Step 1: Decide action (generate/edit) and component type
-    3. Get specific component manifest for that type
-    4. Load AST if action is "edit"
-    5. Call LLM Step 2: Generate or edit the component
-    6. Return EditResponse with component JSON as code
+    1. Load all component manifests (from cache)
+    2. Load current AST (provides context for edits)
+    3. Call LLM once to generate component directly
+    4. Return EditResponse with component JSON as code
     
     Args:
         request: EditRequest with session_id, step_id, intent, context
@@ -37,32 +35,17 @@ def process_edit_request(request: EditRequest) -> EditResponse:
     Returns:
         EditResponse with generated component JSON as string
     """
+    # Get cached manifests
     manifests = load_all_manifests()
-
-    decision = decide_component_action(
+    
+    # Load AST for context (helps LLM understand existing components)
+    current_ast = load_current_ast()
+    
+    # Single LLM call to generate component directly
+    component = generate_component_direct(
         intent=request.intent,
         context=request.context,
-        manifests=manifests
-    )
-    
-    action = decision.get("action", "generate")
-    component_type = decision.get("component_type", "Box")
-    
-    component_manifest = get_component_manifest(component_type)
-    
-    if not component_manifest:
-        component_manifest = get_component_manifest("Box")
-    
-    # AST if editing
-    current_ast = None
-    if action == "edit":
-        current_ast = load_current_ast()
-    
-    component = generate_or_edit_component(
-        intent=request.intent,
-        context=request.context,
-        action=action,
-        component_manifest=component_manifest,
+        manifests=manifests,
         current_ast=current_ast
     )
     

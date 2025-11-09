@@ -283,8 +283,8 @@
 }
 
 .inspection-modal__btn--primary:hover {
-  background: #5A98EF;
-  border-color: #5A98EF;
+  background: #FF7A4A;
+  border-color: #FF7A4A;
   transform: translateY(-2px);
   box-shadow: var(--shadow-large);
 }

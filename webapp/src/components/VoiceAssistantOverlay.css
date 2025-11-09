@@ -1,7 +1,7 @@
 /* Voice Assistant Toolbar - Glass morphism container with buttons */
 .voice-assistant-toolbar {
   position: fixed;
-  left: calc(50% - 640px - 30px); /* Left edge of modal + 8px padding */
+  left: calc(50% - 640px - 30px); /* Positioned on left side (aligned with modal when present) */
   top: 50%;
   transform: translateY(-50%);
   z-index: 2147483646;

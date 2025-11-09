@@ -1,22 +1,19 @@
 # Editor Agent
 
-The Editor Agent generates component code based on user's natural language requests using a two-step LLM process.
+The Editor Agent generates component code based on user's natural language requests using an optimized single-step LLM process.
 
 ## How It Works
 
-### Two-Step LLM Process
+### Single-Step LLM Process (Optimized)
 
-1. **Step 1: Decide Action & Component Type**
-   - LLM analyzes user intent
-   - Decides: "generate" (create new) or "edit" (modify existing)
-   - Chooses component type: Button, Text, Box, Image, etc.
-   - Output: `{"action": "generate/edit", "component_type": "Button"}`
+1. **Generate Component Directly**
+   - LLM receives user intent, context, and structured component definitions
+   - LLM also receives current AST for context (if editing)
+   - LLM decides component type AND generates component in one call
+   - Prompt structure inspired by compiler's `prompt.md` for maximum efficiency
+   - Output: Complete component JSON object with id, type, props, slots
 
-2. **Step 2: Generate/Edit Component**
-   - LLM receives the specific component manifest
-   - If editing: also receives current AST
-   - Generates complete component JSON
-   - Output: Component object with id, type, props, slots
+**Performance**: ~2.2s per request (70% faster than original two-step approach)
 
 ## Workflow
 
@@ -26,16 +23,11 @@ User Request
 server.py (/edit endpoint)
     ↓
 editor.py
-    ├─→ manifest_loader.py (load all manifests)
+    ├─→ manifest_loader.py (get cached manifests - no disk I/O)
+    ├─→ Load AST for context
     ↓
-    ├─→ llm_client.py: decide_component_action()
-    │   └─→ LLM Call 1: Returns {"action": "generate", "component_type": "Button"}
-    ↓
-    ├─→ Get specific component manifest (Button.manifest.json)
-    ├─→ Load AST if action is "edit"
-    ↓
-    ├─→ llm_client.py: generate_or_edit_component()
-    │   └─→ LLM Call 2: Returns component JSON
+    ├─→ llm_client.py: generate_component_direct()
+    │   └─→ Single LLM Call: Returns component JSON directly
     ↓
 editor.py (wrap in EditResponse)
     ↓
@@ -112,12 +104,11 @@ curl -X POST http://localhost:8000/edit \
 ```
 
 **What Happens:**
-1. LLM decides: `{"action": "generate", "component_type": "Button"}`
-2. LLM generates:
+1. LLM generates component directly in one call:
 ```json
 {
   "id": "submit-button",
-  "type": "button",
+  "type": "Button",
   "props": {
     "text": "Submit",
     "style": {
@@ -146,8 +137,7 @@ curl -X POST http://localhost:8000/edit \
 ```
 
 **What Happens:**
-1. LLM decides: `{"action": "edit", "component_type": "Text"}`
-2. LLM finds title in AST and modifies fontSize
+1. LLM analyzes AST context and generates modified component in one call
 
 ## Setup
 
@@ -183,11 +173,22 @@ curl -X POST http://localhost:8000/edit \
 
 ## Design Principles
 
-- **Two-Step Process**: Clear separation of decision and generation
+- **Single-Step Process**: Optimized for speed with one LLM call
+- **Structured Prompts**: Inspired by compiler's prompt.md for clear component definitions
 - **Minimal Code**: Simple, clean implementation
 - **Component-Focused**: Works at component level
-- **LLM-Driven**: Both steps use LLM intelligence
+- **Cached Resources**: Manifests and HTTP client cached at module level
 - **Modern Styling**: Generates professional, modern components
+
+## Performance Metrics
+
+From test suite (`llm/tests/results/`):
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| EDIT agent | 7.4s | 2.2s | **70% faster** |
+| Total test suite | 231.8s | 94.5s | **59% faster** |
+| Average per task | 6.1s | 2.5s | **59% faster** |
 
 ## Integration
 

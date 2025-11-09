@@ -103,11 +103,11 @@ export const highlightElement = (element, duration = 1000) => {
   
   // If the element has border-radius, use box-shadow with matching border-radius
   if (borderRadius && borderRadius !== '0px') {
-    element.style.boxShadow = `0 0 0 3px #3B82F6`
+    element.style.boxShadow = `0 0 0 3px #EF5D2A`
     element.style.borderRadius = borderRadius // Ensure border-radius is preserved
     element.style.outline = 'none'
   } else {
-    element.style.outline = '3px solid #3B82F6'
+    element.style.outline = '3px solid #EF5D2A'
     element.style.outlineOffset = '0px'
   }
   
