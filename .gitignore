@@ -217,3 +217,13 @@ compiler/output
 compiler/**/input
 
 **/vue-bits-demos
+
+# Node.js
+node_modules/
+.npm/
+.yarn/
+package-lock.json
+
+# Vite build artifacts
+.vite/
+*/.vite/

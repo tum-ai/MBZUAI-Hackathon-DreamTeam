@@ -126,29 +126,6 @@ async def get_queue_status(sid: str) -> QueueStatus:
         )
 
 
-@app.get("/queue/{sid}", response_model=QueueStatus)
-async def get_queue_status(sid: str) -> QueueStatus:
-    """
-    Get the current status of a session's task queue.
-
-    Input:
-    - sid: Session ID (path parameter)
-
-    Output:
-    - sid: Session ID
-    - pending: List of pending tasks
-    - processing: List of currently processing tasks
-    - completed: List of completed tasks
-    """
-    try:
-        queue_manager = get_queue_manager()
-        status = await queue_manager.get_queue_status(sid)
-        return QueueStatus(sid=sid, **status)
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error getting queue status: {str(e)}"
-        )
-
 @app.post("/edit", response_model=EditResponse)
 async def edit(request: EditRequest) -> EditResponse:
     """
