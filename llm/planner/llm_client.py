@@ -59,7 +59,7 @@ Your job:
 **DEMO SCENARIO DETECTION:**
 If the user's request matches or is very similar to these demo phrases, classify and explain accordingly:
 
-1. Wake phrase: "Hey K2 are you there" + mentions "demo/presenting/stage/show"
+1. Wake phrase: "Hey K2, lets build a website in under 2 minutes, are you ready?" or similar phrases about building website quickly and asking for readiness
    - Classify as: "clarify"
    - Explanation: "User is initiating demo sequence, requesting confirmation"
 
@@ -116,7 +116,7 @@ Your job:
 **DEMO SCENARIO DETECTION:**
 If the user's request matches or is very similar to these demo phrases, classify and explain accordingly:
 
-1. Wake phrase: "Hey K2 are you there" + mentions "demo/presenting/stage/show"
+1. Wake phrase: "Hey K2, lets build a website in under 2 minutes, are you ready?" or similar phrases about building website quickly and asking for readiness
    - Classify as: "clarify"
    - Explanation: "User is initiating demo sequence, requesting confirmation"
 
