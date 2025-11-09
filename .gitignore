@@ -214,3 +214,6 @@ llm/editor/tests/results/
 
 #Compiler
 compiler/output
+compiler/**/input
+
+**/vue-bits-demos
