@@ -1,95 +1,63 @@
 {
-  "componentName": "div",
+  "componentName": "ColorBends",
   "friendlyName": "ColorBends",
-  "description": "Animated background with flowing color gradients and bends",
+  "description": "Animated background with flowing color gradients (Vue Bits component)",
+  "requiresImport": true,
+  "importPath": "vue-bits",
+  "dependencies": ["three"],
   "props": {
-    "style": {
-      "type": "object",
-      "description": "Custom CSS styles"
+    "rotation": {
+      "type": "number",
+      "default": 0,
+      "description": "Initial rotation angle of the effect"
     },
-    "class": {
-      "type": "string",
-      "description": "CSS class name"
+    "autoRotate": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable automatic rotation"
     },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
+    "speed": {
+      "type": "number",
+      "default": 0.001,
+      "description": "Animation speed"
     },
     "colors": {
       "type": "array",
+      "items": {"type": "string"},
       "default": ["#667eea", "#764ba2", "#f093fb", "#4facfe"],
-      "description": "Array of colors for gradient bends"
+      "description": "Array of color hex codes for gradient"
     },
-    "speed": {
-      "type": "string",
-      "default": "15s",
-      "description": "Animation speed"
-    },
-    "variant": {
-      "type": "string",
-      "enum": ["default", "fast", "slow", "subtle", "vibrant"],
-      "default": "default",
-      "description": "Animation intensity variant"
-    },
-    "blur": {
-      "type": "string",
-      "default": "60px",
-      "description": "Blur amount for smooth color transitions"
-    },
-    "opacity": {
+    "scale": {
       "type": "number",
-      "default": 0.6,
-      "description": "Background opacity (0-1)"
+      "default": 1,
+      "description": "Scale of the effect"
+    },
+    "frequency": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Frequency of color waves"
+    },
+    "warpStrength": {
+      "type": "number",
+      "default": 2,
+      "description": "Strength of warp distortion"
+    },
+    "mouseInfluence": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Mouse interaction influence (0-1)"
+    },
+    "parallax": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable parallax effect"
+    },
+    "noise": {
+      "type": "number",
+      "default": 0,
+      "description": "Amount of noise texture"
     }
   },
-  "slots": ["default"],
-  "events": [],
-  "variants": {
-    "default": {
-      "description": "Standard flowing color bends",
-      "props": {
-        "speed": "15s",
-        "blur": "60px",
-        "opacity": 0.6
-      }
-    },
-    "fast": {
-      "description": "Quick, energetic color flow",
-      "props": {
-        "speed": "8s",
-        "blur": "50px",
-        "opacity": 0.7
-      }
-    },
-    "slow": {
-      "description": "Slow, calming color transitions",
-      "props": {
-        "speed": "30s",
-        "blur": "80px",
-        "opacity": 0.5
-      }
-    },
-    "subtle": {
-      "description": "Gentle, understated effect",
-      "props": {
-        "speed": "20s",
-        "blur": "100px",
-        "opacity": 0.3
-      }
-    },
-    "vibrant": {
-      "description": "Bold, intense colors",
-      "props": {
-        "speed": "12s",
-        "blur": "40px",
-        "opacity": 0.8
-      }
-    }
-  },
-  "animations": {
-    "color-flow": {
-      "description": "Animates color gradients with morphing effect",
-      "props": ["speed", "colors", "blur"]
-    }
-  }
+  "slots": [],
+  "events": []
 }

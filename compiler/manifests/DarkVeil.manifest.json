@@ -1,90 +1,47 @@
 {
-  "componentName": "div",
+  "componentName": "DarkVeil",
   "friendlyName": "DarkVeil",
-  "description": "Dark overlay with gradient veil effect, useful for creating depth and focus",
+  "description": "Dark animated veil effect (Vue Bits component)",
+  "requiresImport": true,
+  "importPath": "vue-bits",
+  "dependencies": ["ogl"],
   "props": {
-    "style": {
-      "type": "object",
-      "description": "Custom CSS styles"
+    "hueShift": {
+      "type": "number",
+      "default": 0,
+      "description": "Shifts the hue of the entire animation"
     },
-    "class": {
-      "type": "string",
-      "description": "CSS class name"
+    "noiseIntensity": {
+      "type": "number",
+      "default": 0,
+      "description": "Intensity of the noise/grain effect"
     },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
+    "scanlineIntensity": {
+      "type": "number",
+      "default": 0,
+      "description": "Intensity of the scanline effect"
     },
-    "opacity": {
+    "speed": {
       "type": "number",
       "default": 0.5,
-      "description": "Veil opacity (0-1)"
+      "description": "Speed of the animation"
     },
-    "direction": {
-      "type": "string",
-      "enum": ["top", "bottom", "left", "right", "radial"],
-      "default": "bottom",
-      "description": "Gradient direction"
+    "scanlineFrequency": {
+      "type": "number",
+      "default": 0,
+      "description": "Frequency of the scanlines"
     },
-    "variant": {
-      "type": "string",
-      "enum": ["default", "subtle", "strong", "center-focus", "edge-fade"],
-      "default": "default",
-      "description": "Veil style variant"
+    "warpAmount": {
+      "type": "number",
+      "default": 0,
+      "description": "Amount of warp distortion applied to the effect"
     },
-    "color": {
-      "type": "string",
-      "default": "#000000",
-      "description": "Base color of veil"
-    },
-    "blur": {
-      "type": "boolean",
-      "default": false,
-      "description": "Add backdrop blur effect"
+    "resolutionScale": {
+      "type": "number",
+      "default": 1,
+      "description": "Scale factor for the resolution"
     }
   },
-  "slots": ["default"],
-  "events": [],
-  "variants": {
-    "default": {
-      "description": "Standard dark veil overlay",
-      "props": {
-        "opacity": 0.5,
-        "direction": "bottom",
-        "blur": false
-      }
-    },
-    "subtle": {
-      "description": "Light veil overlay",
-      "props": {
-        "opacity": 0.3,
-        "direction": "bottom",
-        "blur": false
-      }
-    },
-    "strong": {
-      "description": "Heavy dark overlay",
-      "props": {
-        "opacity": 0.8,
-        "direction": "bottom",
-        "blur": false
-      }
-    },
-    "center-focus": {
-      "description": "Radial veil focusing attention to center",
-      "props": {
-        "opacity": 0.6,
-        "direction": "radial",
-        "blur": false
-      }
-    },
-    "edge-fade": {
-      "description": "Veil with blurred edges",
-      "props": {
-        "opacity": 0.5,
-        "direction": "radial",
-        "blur": true
-      }
-    }
-  }
+  "slots": [],
+  "events": []
 }

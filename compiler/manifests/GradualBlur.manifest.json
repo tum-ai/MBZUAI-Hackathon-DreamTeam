@@ -1,72 +1,60 @@
 {
-  "componentName": "div",
+  "componentName": "GradualBlur",
   "friendlyName": "GradualBlur",
-  "description": "Text or content with gradual blur effect from top to bottom or side to side",
+  "description": "Gradual blur effect (Vue Bits component)",
+  "requiresImport": true,
+  "importPath": "vue-bits",
+  "dependencies": ["mathjs"],
   "props": {
-    "content": {
+    "position": {
       "type": "string",
-      "description": "Text content to display"
-    },
-    "as": {
-      "type": "string",
-      "default": "div",
-      "enum": ["span", "h1", "h2", "h3", "h4", "h5", "h6", "p", "div"],
-      "description": "HTML tag to render as"
-    },
-    "style": {
-      "type": "object",
-      "description": "Custom CSS styles"
-    },
-    "class": {
-      "type": "string",
-      "description": "CSS class name"
-    },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
-    },
-    "direction": {
-      "type": "string",
-      "enum": ["bottom", "top", "left", "right"],
+      "enum": ["top", "bottom", "left", "right"],
       "default": "bottom",
-      "description": "Direction of blur gradient"
+      "description": "Position where blur originates"
     },
-    "intensity": {
-      "type": "string",
-      "default": "medium",
-      "enum": ["light", "medium", "heavy"],
-      "description": "Blur intensity"
+    "strength": {
+      "type": "number",
+      "default": 10,
+      "description": "Strength/intensity of the blur effect"
     },
-    "variant": {
+    "height": {
       "type": "string",
-      "enum": ["default", "fade-blur", "edge-blur"],
-      "default": "default",
-      "description": "Visual style variant"
+      "default": "200px",
+      "description": "Height of the blur area"
+    },
+    "divCount": {
+      "type": "number",
+      "default": 40,
+      "description": "Number of divisions for smooth blur gradient"
+    },
+    "exponential": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use exponential curve for blur intensity"
+    },
+    "curve": {
+      "type": "string",
+      "enum": ["linear", "bezier", "ease-in"],
+      "default": "linear",
+      "description": "Curve type for blur gradient"
+    },
+    "opacity": {
+      "type": "number",
+      "default": 1,
+      "description": "Opacity of the blur effect (0-1)"
+    },
+    "target": {
+      "type": "string",
+      "enum": ["parent", "page"],
+      "default": "parent",
+      "description": "Target element to apply blur to"
+    },
+    "animated": {
+      "type": ["boolean", "string"],
+      "default": false,
+      "description": "Enable animation (true/false or 'scroll' for scroll-based)"
     }
   },
   "slots": ["default"],
-  "events": [],
-  "variants": {
-    "default": {
-      "description": "Standard gradual blur",
-      "props": {
-        "direction": "bottom",
-        "intensity": "medium"
-      }
-    },
-    "fade-blur": {
-      "description": "Blur with fade-out effect",
-      "props": {
-        "direction": "bottom",
-        "intensity": "heavy"
-      }
-    },
-    "edge-blur": {
-      "description": "Blur on edges only",
-      "props": {
-        "direction": "bottom",
-        "intensity": "light"
-      }
-    }
-  }
+  "events": []
 }

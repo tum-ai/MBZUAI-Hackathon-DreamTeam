@@ -1,50 +1,36 @@
 {
-  "componentName": "div",
+  "componentName": "GradientText",
   "friendlyName": "GradientText",
-  "description": "Text with animated gradient effect",
+  "description": "Text with animated gradient effect (Vue Bits component)",
+  "requiresImport": true,
+  "importPath": "vue-bits",
   "props": {
-    "content": {
+    "text": {
       "type": "string",
       "required": true,
-      "description": "Text content to display"
+      "description": "Text content to display with gradient"
     },
-    "as": {
-      "type": "string",
-      "default": "span",
-      "enum": ["span", "h1", "h2", "h3", "h4", "h5", "h6", "p"],
-      "description": "HTML tag to render as"
+    "colors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": ["#ffaa40", "#9c40ff", "#ffaa40"],
+      "description": "Array of color hex codes for the gradient"
     },
-    "style": {
-      "type": "object",
-      "description": "Custom CSS styles"
+    "animationSpeed": {
+      "type": "number",
+      "default": 8,
+      "description": "Speed of gradient animation in seconds (higher = slower)"
     },
-    "class": {
-      "type": "string",
-      "description": "CSS class name"
-    },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
-    },
-    "gradientFrom": {
-      "type": "string",
-      "default": "#ff6b6b",
-      "description": "Start color of gradient"
-    },
-    "gradientTo": {
-      "type": "string",
-      "default": "#4ecdc4",
-      "description": "End color of gradient"
-    },
-    "animated": {
+    "showBorder": {
       "type": "boolean",
-      "default": true,
-      "description": "Enable gradient animation"
+      "default": false,
+      "description": "Show border around the text"
     },
-    "animationDuration": {
+    "className": {
       "type": "string",
-      "default": "3s",
-      "description": "Duration of one animation cycle"
+      "description": "Custom CSS class for the component"
     }
   },
   "slots": [],
@@ -53,36 +39,26 @@
     "sunset": {
       "description": "Warm sunset gradient",
       "props": {
-        "gradientFrom": "#ff6b6b",
-        "gradientTo": "#feca57"
+        "colors": ["#ff6b6b", "#feca57", "#ff6b6b"]
       }
     },
     "ocean": {
       "description": "Cool ocean gradient",
       "props": {
-        "gradientFrom": "#4ecdc4",
-        "gradientTo": "#556270"
+        "colors": ["#4ecdc4", "#556270", "#4ecdc4"]
       }
     },
     "neon": {
       "description": "Vibrant neon gradient",
       "props": {
-        "gradientFrom": "#f857a6",
-        "gradientTo": "#ff5858"
+        "colors": ["#f857a6", "#ff5858", "#f857a6"]
       }
     },
     "purple-haze": {
       "description": "Purple to pink gradient",
       "props": {
-        "gradientFrom": "#a18cd1",
-        "gradientTo": "#fbc2eb"
+        "colors": ["#a18cd1", "#fbc2eb", "#a18cd1"]
       }
-    }
-  },
-  "animations": {
-    "gradient-shift": {
-      "description": "Animates gradient colors in a loop",
-      "props": ["animated", "animationDuration", "gradientFrom", "gradientTo"]
     }
   }
 }

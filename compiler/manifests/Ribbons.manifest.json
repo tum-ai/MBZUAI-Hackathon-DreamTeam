@@ -1,90 +1,43 @@
 {
-  "componentName": "div",
+  "componentName": "Ribbons",
   "friendlyName": "Ribbons",
-  "description": "Animated ribbon background effect, ideal for landing page hero sections",
+  "description": "Animated ribbon background effect (Vue Bits component)",
+  "requiresImport": true,
+  "importPath": "vue-bits",
+  "dependencies": ["ogl"],
   "props": {
-    "style": {
-      "type": "object",
-      "description": "Custom CSS styles"
-    },
-    "class": {
-      "type": "string",
-      "description": "CSS class name"
-    },
-    "id": {
-      "type": "string",
-      "description": "Unique identifier"
-    },
     "colors": {
       "type": "array",
-      "default": ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f7b731"],
-      "description": "Array of colors for ribbons"
+      "items": {"type": "string"},
+      "required": true,
+      "description": "Array of color hex codes for ribbons"
     },
-    "ribbonCount": {
+    "baseThickness": {
       "type": "number",
-      "default": 5,
-      "description": "Number of ribbons to display"
+      "default": 30,
+      "description": "Base thickness of ribbons in pixels"
     },
-    "speed": {
-      "type": "string",
-      "default": "20s",
-      "description": "Animation speed"
-    },
-    "variant": {
-      "type": "string",
-      "enum": ["default", "fast", "slow", "diagonal", "vertical"],
-      "default": "default",
-      "description": "Animation style variant"
-    },
-    "opacity": {
+    "speedMultiplier": {
       "type": "number",
-      "default": 0.3,
-      "description": "Ribbon opacity (0-1)"
+      "default": 0.5,
+      "description": "Speed multiplier for ribbon animation"
+    },
+    "maxAge": {
+      "type": "number",
+      "default": 500,
+      "description": "Maximum age of ribbon particles"
+    },
+    "enableFade": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable fade effect on ribbons"
+    },
+    "enableShaderEffect": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable WebGL shader effects"
     }
   },
-  "slots": ["default"],
-  "events": [],
-  "variants": {
-    "default": {
-      "description": "Horizontal moving ribbons",
-      "props": {
-        "speed": "20s",
-        "opacity": 0.3
-      }
-    },
-    "fast": {
-      "description": "Fast-moving ribbons",
-      "props": {
-        "speed": "10s",
-        "opacity": 0.4
-      }
-    },
-    "slow": {
-      "description": "Slow, relaxed ribbons",
-      "props": {
-        "speed": "40s",
-        "opacity": 0.2
-      }
-    },
-    "diagonal": {
-      "description": "Diagonal ribbon movement",
-      "props": {
-        "speed": "25s",
-        "opacity": 0.3
-      }
-    },
-    "vertical": {
-      "description": "Vertical ribbon flow",
-      "props": {
-        "speed": "30s",
-        "opacity": 0.25
-      }
-    }
-  },
-  "animations": {
-    "ribbon-flow": {
-      "description": "Animates ribbons across the screen",
-      "props": ["speed", "colors", "ribbonCount"]
-    }
-  }
+  "slots": [],
+  "events": []
 }
