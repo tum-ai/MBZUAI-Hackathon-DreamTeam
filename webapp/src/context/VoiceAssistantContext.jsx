@@ -99,7 +99,7 @@ export function VoiceAssistantProvider({ children }) {
     if (typeof window !== 'undefined' && typeof window.__LLM_API_BASE_URL === 'string') {
       return window.__LLM_API_BASE_URL.replace(/\/$/, '');
     }
-    return 'http://localhost:8002';
+    return 'http://localhost:8000';
   }, []);
 
   const ensureSessionId = useCallback(() => {
@@ -270,7 +270,7 @@ export function VoiceAssistantProvider({ children }) {
   });
 
   const registerListener = useCallback(listener => {
-    if (!listener) return () => {};
+    if (!listener) return () => { };
     listenersRef.current.add(listener);
     return () => {
       listenersRef.current.delete(listener);
@@ -380,15 +380,15 @@ export function VoiceAssistantProvider({ children }) {
       if (!text || isSpeaking) return;
 
       try {
-      await playTTS(text, {
-        isListening: voice.isListening,
-        stopListening: voice.stopListening,
-        startListening: voice.startListening,
-        disarmWakeWord: voice.disarmWakeWord,
-        armWakeWord: voice.armWakeWord,
-        setSpeaking: value => setIsSpeaking(value),
-        setError: err => setTtsError(err),
-      });
+        await playTTS(text, {
+          isListening: voice.isListening,
+          stopListening: voice.stopListening,
+          startListening: voice.startListening,
+          disarmWakeWord: voice.disarmWakeWord,
+          armWakeWord: voice.armWakeWord,
+          setSpeaking: value => setIsSpeaking(value),
+          setError: err => setTtsError(err),
+        });
       } catch (err) {
         console.warn('[VoiceAssistant] ElevenLabs TTS failed, falling back to browser TTS.', err);
         try {

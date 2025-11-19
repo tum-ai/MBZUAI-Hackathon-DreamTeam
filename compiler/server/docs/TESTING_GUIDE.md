@@ -143,7 +143,7 @@ cd compiler\server
 ### "Server not responding"
 ```powershell
 # Check if server is running
-# Should see: "Server running at http://localhost:8002"
+# Should see: "Server running at http://localhost:8000"
 ```
 
 ### "AST file not found"

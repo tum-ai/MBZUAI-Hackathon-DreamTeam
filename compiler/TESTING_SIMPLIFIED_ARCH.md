@@ -7,7 +7,7 @@ This document provides steps to test the new simplified template selection flow.
 All services running:
 - ✅ Compiler API (port 8000)
 - ✅ Compiler Variations (ports 5173-5176)
-- ✅ LLM Server (port 8002)
+- ✅ LLM Server (port 8000)
 - ✅ Webapp (port 5178)
 
 ## Test Flow
@@ -124,7 +124,7 @@ Start Python shell:
 import httpx
 
 # Plan a UI change
-response = httpx.post("http://localhost:8002/plan", json={
+response = httpx.post("http://localhost:8000/plan", json={
     "request": "Add a contact form with name and email fields"
 })
 print(response.json())

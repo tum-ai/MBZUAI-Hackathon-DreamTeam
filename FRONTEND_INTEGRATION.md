@@ -42,7 +42,7 @@
 ```
 Frontend (VoiceControl/VoiceAssistantContext)
     ↓
-    POST /plan → LLM Server (port 8002)
+    POST /plan → LLM Server (port 8000)
     ↓
     Orchestrator (llm/orchestrator.py)
     ↓
@@ -82,7 +82,7 @@ Port 5177 updates
 #### 3. **Actor Agent** (`llm/actor/actor.py`)
 - ✅ Generates action string via LLM
 - ✅ Parses action string: `"scroll(direction='down')"` → `{"action": "scroll", "direction": "down"}`
-- ✅ Connects to WebSocket: `ws://localhost:8002/dom-snapshot`
+- ✅ Connects to WebSocket: `ws://localhost:8000/dom-snapshot`
 - ✅ Sends message: `{"type": "browser_action", "action": {...}}`
 - ✅ Returns `automation_status` in response
 
@@ -168,7 +168,7 @@ Port 5177 updates
 ### Edit Flow
 - [ ] Open http://localhost:5178
 - [ ] Open browser console
-- [ ] Run: `fetch('http://localhost:8002/plan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sid:'test-'+Date.now(), text:'Add a red button'})}).then(r=>r.json()).then(console.log)`
+- [ ] Run: `fetch('http://localhost:8000/plan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sid:'test-'+Date.now(), text:'Add a red button'})}).then(r=>r.json()).then(console.log)`
 - [ ] Check response: Should have `results` array with `agent_type: "edit"`
 - [ ] Check compiler logs: Should see JSON Patch POST
 - [ ] Refresh http://localhost:5177 → Should see changes
@@ -176,7 +176,7 @@ Port 5177 updates
 ### Action Flow
 - [ ] Open http://localhost:5178
 - [ ] Open browser console
-- [ ] Run: `fetch('http://localhost:8002/plan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sid:'test-'+Date.now(), text:'Scroll down'})}).then(r=>r.json()).then(console.log)`
+- [ ] Run: `fetch('http://localhost:8000/plan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sid:'test-'+Date.now(), text:'Scroll down'})}).then(r=>r.json()).then(console.log)`
 - [ ] Check response: Should have `results` array with `agent_type: "act"`
 - [ ] Check console: Should see `[DomSnapshotBridge] Executing browser action:`
 - [ ] Watch page: Should scroll automatically
@@ -213,15 +213,15 @@ Port 5177 updates
 
 **LLM Server** (`.env` or export):
 ```bash
-DOM_SNAPSHOT_WS_URL=ws://localhost:8002/dom-snapshot
+DOM_SNAPSHOT_WS_URL=ws://localhost:8000/dom-snapshot
 COMPILER_URL=http://localhost:8000
 ```
 
 **Webapp** (`.env`):
 ```bash
-VITE_LLM_API_BASE_URL=http://localhost:8002
+VITE_LLM_API_BASE_URL=http://localhost:8000
 VITE_DOM_WEBSOCKET_PATH=/dom-snapshot
-VITE_DOM_WEBSOCKET_HOST=localhost:8002
+VITE_DOM_WEBSOCKET_HOST=localhost:8000
 ```
 
 **Compiler Docker** (already configured):

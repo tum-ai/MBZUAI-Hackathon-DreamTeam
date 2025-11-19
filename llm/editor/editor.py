@@ -11,7 +11,7 @@ from .manifest_loader import load_all_manifests
 logger = logging.getLogger(__name__)
 
 # Compiler URL (check if compiler is on different port via env var)
-COMPILER_URL = os.getenv("COMPILER_URL", "http://localhost:8000")
+COMPILER_URL = os.getenv("COMPILER_URL", "http://localhost:8098")
 
 
 def load_current_ast() -> dict:

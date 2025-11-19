@@ -189,7 +189,7 @@ curl -X POST http://localhost:8000/select-template-variation \
 
 ```bash
 # Make an edit
-curl -X POST http://localhost:8002/plan \
+curl -X POST http://localhost:8000/plan \
   -H "Content-Type: application/json" \
   -d '{"sid":"test-123","text":"Add a contact button"}'
 

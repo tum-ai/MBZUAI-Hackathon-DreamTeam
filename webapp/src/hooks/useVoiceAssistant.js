@@ -99,7 +99,10 @@ export function useVoiceAssistant(options = {}) {
           });
           finalCallbackRef.current?.(joined, segments);
         },
-        onError: event => setError(event),
+        onError: event => {
+          console.warn('[VoiceAssistant] Controller error:', event);
+          setError(event);
+        },
         onPhraseBiasChange: supported => setPhraseBiasSupported(supported),
         onWakeTriggered: transcript => wakeTriggeredRef.current?.(transcript),
       },

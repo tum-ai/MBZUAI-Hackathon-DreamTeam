@@ -16,10 +16,10 @@ function TemplateSelection() {
   const [enlargedImage, setEnlargedImage] = useState(null)
 
   const options = [
-    { id: 'A', port: 5173, label: 'Professional' },
-    { id: 'B', port: 5173, label: 'Dark' },
-    { id: 'C', port: 5173, label: 'Minimal' },
-    { id: 'D', port: 5173, label: 'Energetic' }
+    { id: 'A', port: 5174, label: 'Professional' },
+    { id: 'B', port: 5174, label: 'Dark' },
+    { id: 'C', port: 5174, label: 'Minimal' },
+    { id: 'D', port: 5174, label: 'Energetic' }
   ]
 
   const handleOpenModal = (optionId) => {
@@ -31,10 +31,10 @@ function TemplateSelection() {
     // Transition from inspection to edit mode
     setEditMode(true)
     setConnectionStatus('updating')
-    
+
     // Find the variation index (0-3) for the selected option
     const selectedIndex = options.findIndex(o => o.id === inspectingOption)
-    
+
     try {
       // Call the compiler API to select this variation as active
       const response = await fetch('http://localhost:8000/select-template-variation', {
@@ -42,7 +42,7 @@ function TemplateSelection() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ variation_index: selectedIndex })
       })
-      
+
       if (response.ok) {
         console.log(`Selected variation ${selectedIndex} (${options[selectedIndex].label}) as active`)
         setConnectionStatus('connected')
@@ -88,15 +88,15 @@ function TemplateSelection() {
   const handleModalMouseMove = (e) => {
     // Only trigger gallery in edit mode
     if (!editMode) return
-    
+
     // If viewing enlarged image, keep gallery visible
     if (enlargedImage) return
-    
+
     const modalContent = e.currentTarget
     const rect = modalContent.getBoundingClientRect()
     const mouseX = e.clientX - rect.left
     const width = rect.width
-    
+
     // Show gallery when mouse is in right 20% of the modal
     const threshold = width * 0.8
     setShowGallery(mouseX > threshold)
@@ -114,7 +114,7 @@ function TemplateSelection() {
   return (
     <div className="template-selection">
       <TopBar title="Choose a Design" showBack={true} />
-      
+
       <div className="template-selection__content">
         <div className="template-selection__header">
           <h2 className="template-selection__title">
@@ -129,9 +129,8 @@ function TemplateSelection() {
           {options.map((option) => (
             <div
               key={option.id}
-              className={`template-selection__option ${
-                selectedOption === option.id ? 'template-selection__option--selected' : ''
-              }`}
+              className={`template-selection__option ${selectedOption === option.id ? 'template-selection__option--selected' : ''
+                }`}
               data-nav-id={`template-option-${option.id.toLowerCase()}`}
               onClick={() => handleOpenModal(option.id)}
               style={{ cursor: 'pointer', borderRadius: '16px' }}
@@ -165,12 +164,12 @@ function TemplateSelection() {
       {/* Inspection/Edit Modal */}
       {inspectingOption && (
         <div className="inspection-modal">
-          <div 
-            className="inspection-modal__backdrop" 
+          <div
+            className="inspection-modal__backdrop"
             onClick={editMode ? null : handleCloseModal}
             style={{ cursor: editMode ? 'default' : 'pointer' }}
           />
-          <div 
+          <div
             className="inspection-modal__content"
             onMouseMove={handleModalMouseMove}
           >
@@ -212,13 +211,13 @@ function TemplateSelection() {
             {/* Floating footer buttons - only in inspection mode */}
             {!editMode && (
               <div className="inspection-modal__footer">
-                <button 
+                <button
                   className="inspection-modal__btn inspection-modal__btn--secondary"
                   onClick={handleCloseModal}
                 >
                   Back to Options
                 </button>
-                <button 
+                <button
                   className="inspection-modal__btn inspection-modal__btn--primary"
                   onClick={handleSelectDesign}
                   data-nav-id="template-select-design"
@@ -230,7 +229,7 @@ function TemplateSelection() {
 
             {/* Circular Gallery - only in edit mode */}
             {editMode && showGallery && (
-              <div 
+              <div
                 className="inspection-modal__gallery-container"
                 style={{ pointerEvents: enlargedImage ? 'none' : 'auto' }}
               >
@@ -250,7 +249,7 @@ function TemplateSelection() {
             {editMode && enlargedImage && (
               <div className="enlarged-image-overlay">
                 <div className="enlarged-image-container">
-                  <img 
+                  <img
                     src={enlargedImage.image}
                     alt={enlargedImage.text}
                     className="enlarged-image"

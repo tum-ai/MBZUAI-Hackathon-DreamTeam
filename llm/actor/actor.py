@@ -16,7 +16,7 @@ from planner.session_manager import load_session, save_session
 logger = logging.getLogger(__name__)
 
 # Configuration for DOM WebSocket (same as in llm/server.py)
-DOM_SNAPSHOT_WS_URL = os.getenv("DOM_SNAPSHOT_WS_URL", "ws://localhost:8002/dom-snapshot")
+DOM_SNAPSHOT_WS_URL = os.getenv("DOM_SNAPSHOT_WS_URL", "ws://localhost:8000/dom-snapshot")
 
 
 def _preview(text: str, *, length: int = 160) -> str:

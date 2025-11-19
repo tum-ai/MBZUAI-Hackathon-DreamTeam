@@ -429,15 +429,34 @@ export class VoiceAssistantController {
       }
     };
 
-    this.wakeRecognition.onerror = () => {
+    this.wakeRecognition.onerror = event => {
       try {
-        console.warn('[VoiceAssistant] Wake onerror');
+        console.warn('[VoiceAssistant] Wake onerror:', event);
       } catch {
         /* noop */
       }
+
+      if (event?.error === 'phrases-not-supported') {
+        try {
+          console.warn('[VoiceAssistant] Phrase bias not supported, disabling and retrying.');
+        } catch {
+          /* noop */
+        }
+        this.phraseBiasSupported = false;
+        this.callbacks.onPhraseBiasChange?.(false);
+        this._rebuildWakeRecognition(forceLocal);
+        return;
+      }
+
+      this.callbacks.onError?.(event);
       this.wakeListening = false;
       if (!this.recognizing && this.wakeArmed) {
-        safeWakeRestart(this.wakeRecognition);
+        // Backoff for 2 seconds on error to avoid spamming
+        setTimeout(() => {
+          if (this.wakeArmed && !this.recognizing) {
+            safeWakeRestart(this.wakeRecognition);
+          }
+        }, 2000);
       }
     };
 

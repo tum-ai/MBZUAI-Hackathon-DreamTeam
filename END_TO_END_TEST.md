@@ -2,7 +2,7 @@
 
 ## 🚀 All Servers Running
 
-✅ **LLM Server**: http://localhost:8002  
+✅ **LLM Server**: http://localhost:8000  
 ✅ **Compiler API**: http://localhost:8000  
 ✅ **Template Variations**: http://localhost:5173-5177  
 ✅ **Main Webapp**: http://localhost:5178  
@@ -52,7 +52,7 @@ You should see the Alex Chen portfolio with professional palette.
 ### Step 5: Test LLM Planning (Editor Flow)
 ```javascript
 // Test Editor: Add a new button component
-fetch('http://localhost:8002/plan', {
+fetch('http://localhost:8000/plan', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -70,7 +70,7 @@ fetch('http://localhost:8002/plan', {
 ### Step 6: Test Actor (Browser Action Flow)
 ```javascript
 // Test Actor: Generate a scroll action
-fetch('http://localhost:8002/plan', {
+fetch('http://localhost:8000/plan', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -133,7 +133,7 @@ sudo docker logs compiler-variations -f
 ### Manual API Tests
 ```bash
 # Test LLM health
-curl http://localhost:8002/health
+curl http://localhost:8000/health
 
 # Test Compiler health
 curl http://localhost:8000/health
@@ -144,7 +144,7 @@ curl -X POST http://localhost:8000/generate-template-variations \
   -d '{"template_name":"portfolio","palette":"professional"}'
 
 # Test LLM plan
-curl -X POST http://localhost:8002/plan \
+curl -X POST http://localhost:8000/plan \
   -H "Content-Type: application/json" \
   -d '{"session_id":"test-123","user_request":"Add a button"}'
 ```
