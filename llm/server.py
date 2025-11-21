@@ -741,7 +741,7 @@ async def edit(request: EditRequest) -> EditResponse:
     - code: JSON Patch array as string
     """
     try:
-        response = process_edit_request(request)
+        response = await process_edit_request(request)
         return response
     except Exception as e:
         raise HTTPException(

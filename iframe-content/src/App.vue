@@ -92,6 +92,15 @@ h1, h2, h3, h4 {
 }
 
 /* --- End Global Styles --- */
-</style>
 
+
+/* --- V20: Animations for Advanced Components --- */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* --- End Animations --- */
+
+</style>
 

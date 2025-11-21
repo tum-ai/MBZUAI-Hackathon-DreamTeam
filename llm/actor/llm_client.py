@@ -60,7 +60,37 @@ def generate_action(
     content = response.choices[0].message.content.strip()
 
     # Handle potential XML tags from the model
+    # Handle potential XML tags from the model
+    import re
+    import json
+    
+    # Strip <think> tags and content
+    content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL)
+    # Strip orphan </think> if present
+    content = content.replace('</think>', '')
+    
     if "<answer>" in content and "</answer>" in content:
         content = content.split("<answer>")[1].split("</answer>")[0].strip()
+    elif "</answer>" in content:
+        content = content.split("</answer>")[0].strip()
+        content = content.replace('<answer>', '')
+    
+    # Clean up markdown code blocks if present
+    if "```json" in content:
+        content = content.split("```json")[1].split("```")[0].strip()
+    elif "```" in content:
+        content = content.split("```")[1].split("```")[0].strip()
+        
+    # Extract JSON object using brace counting
+    start_idx = content.find('{')
+    if start_idx != -1:
+        brace_count = 0
+        for i, char in enumerate(content[start_idx:], start=start_idx):
+            if char == '{':
+                brace_count += 1
+            elif char == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    return content[start_idx:i+1]
 
-    return content
+    return content.strip()

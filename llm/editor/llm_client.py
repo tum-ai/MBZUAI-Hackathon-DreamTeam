@@ -384,3 +384,75 @@ Output ONLY the JSON object, no other text."""
             "slots": {},
             "error": f"Could not parse component: {str(e)}"
         }
+
+
+def generate_vue_component_direct(intent: str, existing_content: str) -> str:
+    """
+    Generate a complete Vue Single File Component (SFC) based on the user's intent and existing content.
+    
+    Args:
+        intent: User's request
+        existing_content: Current content of the Vue file
+    
+    Returns:
+        Complete Vue SFC code (template, script, style)
+    """
+    client = get_k2_client()
+    
+    prompt = f"""You are an expert Vue.js developer. Your task is to UPDATE an existing Vue Single File Component (SFC) based on the user's request.
+
+**USER REQUEST**: {intent}
+
+**EXISTING FILE CONTENT**:
+```vue
+{existing_content}
+```
+
+**INSTRUCTIONS**:
+1.  Analyze the existing content and the user's request.
+2.  Output the **COMPLETE, UPDATED** Vue SFC code.
+3.  Include `<script setup>`, `<template>`, and `<style scoped>` tags.
+4.  **DO NOT** output markdown code fences (like ```vue ... ```). Output **ONLY** the raw code.
+5.  Ensure the code is valid Vue 3 using the Composition API (`<script setup>`).
+6.  Preserve existing functionality unless the user explicitly asks to change it.
+7.  If the user asks to add a component or feature, implement it fully using standard HTML/CSS or existing components if inferred.
+8.  Make the design modern and professional (Apple/DeepMind style) if adding new UI elements.
+
+**OUTPUT**:
+"""
+
+    messages = [{"role": "user", "content": prompt}]
+    
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=messages,
+        stream=False
+    )
+    
+    content = response.choices[0].message.content.strip()
+    
+    # Clean up markdown code blocks if present
+    if content.startswith("```vue"):
+        content = content[6:]
+    elif content.startswith("```html"):
+        content = content[7:]
+    elif content.startswith("```"):
+        content = content[3:]
+        
+    if content.endswith("```"):
+        content = content[:-3]
+        
+    # Strip <think> tags and content
+    import re
+    content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL)
+    
+    # Strip <answer> tags (keep content inside)
+    content = content.replace("<answer>", "").replace("</answer>", "")
+    
+    # Strip any leading text before the first <template> or <script>
+    # This helps if the model outputs "Here is the code:" before the actual code
+    match = re.search(r'(<template>|<script)', content)
+    if match:
+        content = content[match.start():]
+        
+    return content.strip()

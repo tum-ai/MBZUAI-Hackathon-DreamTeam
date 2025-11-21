@@ -32,7 +32,7 @@ export const captureDOMSnapshot = () => {
     const tagName = element.tagName.toLowerCase()
     const text = element.textContent?.trim().substring(0, 100) || ''
     const isVisible = isElementVisible(element)
-    
+
     // Get element position for spatial reasoning
     const rect = element.getBoundingClientRect()
     const position = {
@@ -94,13 +94,13 @@ export const highlightElement = (element, duration = 1000) => {
   const originalTransition = element.style.transition
   const originalBoxShadow = element.style.boxShadow
   const originalBorderRadius = element.style.borderRadius
-  
+
   // Get the computed border-radius to match rounded corners
   const computedStyle = window.getComputedStyle(element)
   const borderRadius = computedStyle.borderRadius
-  
+
   element.style.transition = 'all 0.2s ease'
-  
+
   // If the element has border-radius, use box-shadow with matching border-radius
   if (borderRadius && borderRadius !== '0px') {
     element.style.boxShadow = `0 0 0 3px #EF5D2A`
@@ -110,7 +110,7 @@ export const highlightElement = (element, duration = 1000) => {
     element.style.outline = '3px solid #EF5D2A'
     element.style.outlineOffset = '0px'
   }
-  
+
   setTimeout(() => {
     element.style.boxShadow = originalBoxShadow
     element.style.outline = originalOutline
@@ -132,7 +132,7 @@ export const captureIframeDOMSnapshot = () => {
     let iframe = null
     let matchedSelector = null
     let iframeContext = {}
-    
+
     for (const selector of IFRAME_SELECTORS) {
       const found = document.querySelector(selector)
       if (found && found.contentWindow) {
@@ -176,11 +176,11 @@ export const captureIframeDOMSnapshot = () => {
       // Title format: "Editing Design Option A" or "Inspecting Design Option A"
       const templateMatch = iframe.title?.match(/Option ([A-D])/i)
       const editModeMatch = iframe.title?.match(/Editing/i)
-      
+
       iframeContext.mode = editModeMatch ? 'editing' : 'inspecting'
       iframeContext.templateId = templateMatch?.[1] || null
       iframeContext.editMode = !!editModeMatch
-      
+
       // Also check for the footer as a backup way to detect edit mode
       const modal = iframe.closest('.inspection-modal')
       const hasFooter = modal?.querySelector('.inspection-modal__footer')
@@ -188,7 +188,7 @@ export const captureIframeDOMSnapshot = () => {
         iframeContext.editMode = true
         iframeContext.mode = 'editing'
       }
-      
+
       console.log(`[DOM Snapshot] Capturing from Template ${iframeContext.templateId || '?'} - ${iframeContext.editMode ? 'EDIT MODE' : 'INSPECTION MODE'}`)
     } else if (matchedSelector === '.template-selection__iframe') {
       iframeContext.mode = 'grid-view'
@@ -218,7 +218,8 @@ export const captureIframeDOMSnapshot = () => {
         cleanup()
         // Add iframe context metadata to the snapshot
         const snapshotWithContext = {
-          ...event.data.snapshot,
+          elements: event.data.snapshot,
+          iframeLocation: event.data.location,
           iframeContext
         }
         resolve(snapshotWithContext)
@@ -249,7 +250,7 @@ export const captureCombinedDOMSnapshot = async () => {
   try {
     iframeSnapshot = await captureIframeDOMSnapshot()
     console.log('[DOM Snapshot] Captured iframe:', iframeSnapshot.elements?.length || 0, 'elements')
-    
+
     // Log which iframe was captured
     if (iframeSnapshot.iframeContext) {
       const ctx = iframeSnapshot.iframeContext
@@ -281,7 +282,8 @@ export const captureCombinedDOMSnapshot = async () => {
     iframeElementCount: iframeSnapshot.elements?.length || 0,
     totalElementCount: combinedElements.length,
     // Include iframe context so consumers know which iframe was captured
-    activeIframe: iframeSnapshot.iframeContext || null
+    activeIframe: iframeSnapshot.iframeContext || null,
+    iframeLocation: iframeSnapshot.iframeLocation || null
   }
 }
 

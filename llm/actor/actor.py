@@ -183,6 +183,14 @@ def parse_action_string(action_string: str) -> dict:
         "type(targetId='search-box', text='hello')" → {"action": "type", "targetId": "search-box", "text": "hello"}
     """
     import re
+    import json
+    
+    # Try to parse as JSON first
+    try:
+        if action_string.strip().startswith("{"):
+            return json.loads(action_string.strip())
+    except json.JSONDecodeError:
+        pass
     
     # Extract action name
     action_match = re.match(r"(\w+)\((.*)\)", action_string.strip())

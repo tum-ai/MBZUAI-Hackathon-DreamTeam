@@ -1,11 +1,15 @@
+import asyncio
 import json
 import logging
 import os
 from pathlib import Path
 from typing import Optional
+from uuid import uuid4
+from urllib.parse import urlparse
 import httpx
+import websockets
 from .models import EditRequest, EditResponse
-from .llm_client import generate_component_direct
+from .llm_client import generate_component_direct, generate_vue_component_direct
 from .manifest_loader import load_all_manifests
 
 logger = logging.getLogger(__name__)
@@ -107,48 +111,110 @@ async def apply_component_to_compiler(component: dict, page_name: str = "home") 
         return {"status": "error", "message": str(e)}
 
 
+async def fetch_dom_snapshot_simple() -> dict:
+    """
+    Fetch DOM snapshot to get current URL.
+    """
+    ws_url = os.getenv("DOM_SNAPSHOT_WS_URL", "ws://localhost:5173/dom-snapshot")
+    try:
+        async with websockets.connect(ws_url) as websocket:
+            await websocket.send(json.dumps({"type": "register", "role": "backend"}))
+            request_id = str(uuid4())
+            await websocket.send(json.dumps({"type": "get_dom_snapshot", "requestId": request_id}))
+            
+            try:
+                while True:
+                    msg = await asyncio.wait_for(websocket.recv(), timeout=5.0)
+                    data = json.loads(msg)
+                    if data.get("type") == "dom_snapshot_response" and data.get("requestId") == request_id:
+                        return data
+            except asyncio.TimeoutError:
+                logger.warning("Timeout waiting for DOM snapshot")
+                return {}
+    except Exception as e:
+        logger.error(f"Failed to fetch DOM snapshot: {e}")
+        return {}
+
+
 async def process_edit_request(request: EditRequest) -> EditResponse:
     """
-    Process edit request through the editor agent using optimized single-step LLM process.
-    
-    Steps:
-    1. Load all component manifests (from cache)
-    2. Load current AST (provides context for edits)
-    3. Call LLM once to generate component directly
-    4. Apply component to compiler via JSON Patch
-    5. Return EditResponse with component JSON and compiler status
-    
-    Args:
-        request: EditRequest with session_id, step_id, intent, context
-    
-    Returns:
-        EditResponse with generated component JSON as string and compiler status
+    Process edit request by directly modifying the active Vue file.
     """
-    # Get cached manifests
-    manifests = load_all_manifests()
+    # 1. Determine Target File
+    snapshot = await fetch_dom_snapshot_simple()
     
-    # Load AST for context (helps LLM understand existing components)
-    current_ast = load_current_ast()
+    # Prefer iframe location if available (since we are editing the iframe content)
+    iframe_loc = snapshot.get("iframeLocation")
+    if iframe_loc and iframe_loc.get("hash"):
+        current_url = iframe_loc.get("hash")
+    elif iframe_loc and iframe_loc.get("path"):
+        current_url = iframe_loc.get("path")
+    else:
+        current_url = snapshot.get("currentUrl", "/")
     
-    # Single LLM call to generate component directly
-    component = generate_component_direct(
-        intent=request.intent,
-        context=request.context,
-        manifests=manifests,
-        current_ast=current_ast
-    )
+    logger.info(f"Using URL for targeting: {current_url}")
     
-    # Apply to compiler
-    compiler_result = await apply_component_to_compiler(component, page_name="home")
-    compiler_status = compiler_result.get("status") if compiler_result else "not_applied"
+    # Normalize URL to find the path
+    path = "/"
+    if current_url:
+        if "http" in current_url:
+            parsed = urlparse(current_url)
+            # Check for hash routing
+            if parsed.fragment:
+                # fragment is like "/pricing" or "/pricing?foo=bar"
+                path = parsed.fragment
+                if path.startswith("#"):
+                    path = path[1:]
+            else:
+                path = parsed.path
+        elif current_url.startswith("#"):
+             path = current_url[1:]
+        else:
+            path = current_url
+            
+    # Remove query params if any
+    if "?" in path:
+        path = path.split("?")[0]
+        
+    logger.info(f"Detected path from URL {current_url}: {path}")
     
-    response = EditResponse(
+    # Map to file
+    repo_root = Path("/home/kesava89/Repos/MBZUAI-Hackathon-DreamTeam")
+    base_views = repo_root / "iframe-content/src/views"
+    
+    target_file = base_views / "Home.vue" # Default
+    
+    path_lower = path.lower()
+    if "features" in path_lower:
+        target_file = base_views / "Features.vue"
+    elif "pricing" in path_lower:
+        target_file = base_views / "Pricing.vue"
+    elif "compare" in path_lower:
+        target_file = base_views / "Compare.vue"
+        
+    logger.info(f"Targeting file: {target_file}")
+    
+    # 2. Read Existing Content
+    if target_file.exists():
+        existing_content = target_file.read_text()
+    else:
+        logger.warning(f"Target file {target_file} does not exist, using empty template")
+        existing_content = "<template><div>Page not found</div></template>"
+        
+    # 3. Generate New Code
+    # Note: generate_vue_component_direct is synchronous
+    new_code = generate_vue_component_direct(request.intent, existing_content)
+    
+    # 4. Write to File
+    target_file.write_text(new_code)
+    logger.info(f"Successfully wrote updated code to {target_file}")
+    
+    # 5. Return Response
+    return EditResponse(
         session_id=request.session_id,
         step_id=request.step_id,
         intent=request.intent,
         context=request.context,
-        code=json.dumps(component, indent=2),
-        compiler_status=compiler_status
+        code=new_code,
+        compiler_status="bypassed_direct_write"
     )
-    
-    return response

@@ -472,63 +472,6 @@
               }
             ]
           }
-        },
-        {
-          "id": "android-product-name",
-          "type": "Text",
-          "props": {
-            "content": "Android",
-            "as": "h1",
-            "style": {
-              "fontSize": "2.5rem",
-              "color": "#2d3436",
-              "fontWeight": "600",
-              "margin": "0"
-            }
-          },
-          "slots": {}
-        },
-        {
-          "id": "root",
-          "type": "Box",
-          "props": {},
-          "slots": {
-            "default": [
-              {
-                "id": "android-product-title",
-                "type": "Text",
-                "props": {
-                  "content": "Android",
-                  "as": "h2",
-                  "style": {
-                    "fontSize": "24px",
-                    "fontWeight": "600",
-                    "margin": "0 0 16px 0"
-                  }
-                },
-                "slots": {}
-              },
-              {
-                "id": "explore-android-button",
-                "type": "Button",
-                "props": {
-                  "text": "Explore Android",
-                  "style": {
-                    "fontSize": "16px",
-                    "padding": "12px 24px",
-                    "backgroundColor": "#2c3e50",
-                    "color": "#ffffff",
-                    "border": "none",
-                    "borderRadius": "8px",
-                    "textAlign": "center",
-                    "cursor": "pointer",
-                    "transition": "background-color 0.2s ease"
-                  }
-                },
-                "slots": {}
-              }
-            ]
-          }
         }
       ]
     }
