@@ -413,10 +413,12 @@ def generate_vue_component_direct(intent: str, existing_content: str) -> str:
 2.  Output the **COMPLETE, UPDATED** Vue SFC code.
 3.  Include `<script setup>`, `<template>`, and `<style scoped>` tags.
 4.  **DO NOT** output markdown code fences (like ```vue ... ```). Output **ONLY** the raw code.
-5.  Ensure the code is valid Vue 3 using the Composition API (`<script setup>`).
-6.  Preserve existing functionality unless the user explicitly asks to change it.
-7.  If the user asks to add a component or feature, implement it fully using standard HTML/CSS or existing components if inferred.
-8.  Make the design modern and professional (Apple/DeepMind style) if adding new UI elements.
+5.  **CRITICAL**: Ensure ALL HTML tags are properly closed. Do not leave any unclosed `<div>` or other elements.
+6.  Ensure the code is valid Vue 3 using the Composition API (`<script setup>`).
+7.  Preserve existing functionality unless the user explicitly asks to change it.
+8.  If the user asks to add a component or feature, implement it fully using standard HTML/CSS or existing components if inferred.
+9.  Make the design modern and professional (Apple/DeepMind style) if adding new UI elements.
+10. **VERIFY**: Check that every opening tag has a matching closing tag before outputting.
 
 **OUTPUT**:
 """

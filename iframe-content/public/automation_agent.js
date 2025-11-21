@@ -2,12 +2,12 @@
 // This script runs INSIDE the compiled Vue.js iframe
 // It is a vanilla JS combination of your domCapture.js and actionExecutor.js
 
-(function() {
+(function () {
     console.log('[Automation Agent] Injected and running.');
 
     // --- Part 1: DOM Capture ("The Eyes") ---
     // Based on your domCapture.js
-    
+
     /**
      * Checks if an element is actually visible on the page
      */
@@ -100,7 +100,7 @@
 
     const executeClick = (action) => {
         const element = getElementByNavId(action.targetId);
-        
+
         // Highlight the element
         const originalOutline = element.style.outline;
         element.style.outline = '3px solid #3B82F6';
@@ -181,7 +181,7 @@
     window.addEventListener('message', (event) => {
         // IMPORTANT: In a real app, you MUST verify the origin
         // e.g., if (event.origin !== 'http://your-main-app.com') return;
-        
+
         // --- FIX: Check for 'null' origin when running from file:// ---
         // If event.origin is "null" (from a local file), use "*" as the target.
         // Otherwise, use the event's origin.
@@ -193,10 +193,15 @@
         if (event.data.type === 'DOM_SNAPSHOT_REQUEST') {
             const snapshot = captureDOMSnapshot();
             console.log('[Automation Agent] Sending DOM snapshot:', snapshot);
-            
+
             event.source.postMessage({
                 type: 'DOM_SNAPSHOT_RESPONSE',
-                snapshot
+                snapshot,
+                location: {
+                    url: window.location.href,
+                    path: window.location.pathname,
+                    hash: window.location.hash
+                }
             }, targetOrigin); // <-- USE THE FIXED targetOrigin
         }
 
@@ -204,7 +209,7 @@
         if (event.data.type === 'EXECUTE_ACTION') {
             const result = executeAction(event.data.action);
             console.log('[Automation Agent] Action result:', result);
-            
+
             event.source.postMessage({
                 type: 'ACTION_RESULT',
                 result

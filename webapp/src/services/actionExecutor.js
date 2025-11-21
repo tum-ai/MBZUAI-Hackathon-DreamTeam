@@ -10,7 +10,7 @@ import { findElementByNavId, highlightElement } from '../utils/domSnapshot'
  */
 export const isReversible = (action) => {
   if (!action || !action.action) return false
-  
+
   switch (action.action) {
     case 'navigate':
     case 'scroll':
@@ -18,14 +18,14 @@ export const isReversible = (action) => {
     case 'type':
     case 'clear':
       return true
-    
+
     case 'submit':
       return false // ⚠️ Cannot undo form submission
-    
+
     case 'wait':
     case 'focus':
       return null // No state change to undo
-    
+
     default:
       return false
   }
@@ -36,7 +36,7 @@ export const isReversible = (action) => {
  */
 export const getNonReversibleReason = (action) => {
   if (!action || !action.action) return 'Unknown action'
-  
+
   switch (action.action) {
     case 'submit':
       return 'Form submissions cannot be undone as they may have already been processed by the server'
@@ -50,7 +50,7 @@ export const getNonReversibleReason = (action) => {
  */
 export const captureBeforeState = (action) => {
   if (!action || !action.action) return {}
-  
+
   try {
     switch (action.action) {
       case 'navigate':
@@ -58,13 +58,13 @@ export const captureBeforeState = (action) => {
           url: window.location.pathname,
           scrollY: window.scrollY
         }
-      
+
       case 'scroll':
       case 'scrollToElement':
         return {
           scrollY: window.scrollY
         }
-      
+
       case 'type':
       case 'clear':
         const element = findElementByNavId(action.targetId)
@@ -72,12 +72,12 @@ export const captureBeforeState = (action) => {
           value: element?.value || '',
           targetId: action.targetId
         }
-      
+
       case 'submit':
         return {
           warning: 'Form submission cannot be fully undone'
         }
-      
+
       default:
         return {}
     }
@@ -101,31 +101,31 @@ export const executeAction = async (action) => {
   switch (action.action) {
     case 'navigate':
       return await executeNavigate(action)
-    
+
     case 'scroll':
       return await executeScroll(action)
-    
+
     case 'scrollToElement':
       return await executeScrollToElement(action)
-    
+
     case 'wait':
       return await executeWait(action)
-    
+
     case 'type':
       return await executeType(action)
-    
+
     case 'focus':
       return await executeFocus(action)
-    
+
     case 'submit':
       return await executeSubmit(action)
-    
+
     case 'clear':
       return await executeClear(action)
-    
+
     case 'error':
       return executeError(action)
-    
+
     default:
       throw new Error(`Unknown action type: ${action.action}`)
   }
@@ -136,20 +136,20 @@ export const executeAction = async (action) => {
  */
 const executeNavigate = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
 
   // Visual feedback: highlight before clicking
   highlightElement(element, 800)
-  
+
   // Wait a moment for visual feedback
   await sleep(400)
-  
+
   // Execute the click
   element.click()
-  
+
   return {
     success: true,
     message: `Clicked on ${action.targetId}`,
@@ -157,12 +157,60 @@ const executeNavigate = async (action) => {
   }
 }
 
+const IFRAME_SELECTORS = [
+  '.inspection-modal__iframe',
+  '.template-selection__iframe',
+  '#dynamic-content-iframe'
+]
+
+const isElementVisible = (element) => {
+  const style = window.getComputedStyle(element)
+  return (
+    style.display !== 'none' &&
+    style.visibility !== 'hidden' &&
+    style.opacity !== '0'
+  )
+}
+
+const findActiveIframe = () => {
+  for (const selector of IFRAME_SELECTORS) {
+    const found = document.querySelector(selector)
+    if (found && found.contentWindow) {
+      return found
+    }
+  }
+  // Fallback
+  const allIframes = document.querySelectorAll('iframe')
+  for (const candidateIframe of allIframes) {
+    if (candidateIframe.contentWindow && isElementVisible(candidateIframe)) {
+      return candidateIframe
+    }
+  }
+  return null
+}
+
 /**
  * Execute scroll action
  */
 const executeScroll = async (action) => {
   const { direction, amount } = action
-  
+
+  // Try to scroll iframe first
+  const iframe = findActiveIframe()
+  if (iframe) {
+    console.log('Delegating scroll to iframe')
+    iframe.contentWindow.postMessage({
+      type: 'EXECUTE_ACTION',
+      action
+    }, '*')
+
+    return {
+      success: true,
+      message: `Sent scroll ${direction} to iframe`,
+      action
+    }
+  }
+
   let scrollOptions = {
     behavior: 'smooth'
   }
@@ -171,22 +219,22 @@ const executeScroll = async (action) => {
     case 'up':
       window.scrollBy({ top: -(amount || 300), ...scrollOptions })
       break
-    
+
     case 'down':
       window.scrollBy({ top: (amount || 300), ...scrollOptions })
       break
-    
+
     case 'top':
       window.scrollTo({ top: 0, ...scrollOptions })
       break
-    
+
     case 'bottom':
-      window.scrollTo({ 
-        top: document.documentElement.scrollHeight, 
-        ...scrollOptions 
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        ...scrollOptions
       })
       break
-    
+
     default:
       throw new Error(`Unknown scroll direction: ${direction}`)
   }
@@ -203,17 +251,17 @@ const executeScroll = async (action) => {
  */
 const executeScrollToElement = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
 
   // Visual feedback: highlight the target
   highlightElement(element, 1500)
-  
+
   // Scroll to element smoothly
-  element.scrollIntoView({ 
-    behavior: 'smooth', 
+  element.scrollIntoView({
+    behavior: 'smooth',
     block: 'start',
     inline: 'nearest'
   })
@@ -231,7 +279,7 @@ const executeScrollToElement = async (action) => {
 const executeWait = async (action) => {
   const duration = action.duration || 500
   await sleep(duration)
-  
+
   return {
     success: true,
     message: `Waited ${duration}ms`,
@@ -244,7 +292,7 @@ const executeWait = async (action) => {
  */
 const executeType = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
@@ -257,18 +305,18 @@ const executeType = async (action) => {
 
   // Visual feedback: highlight the input
   highlightElement(element, 1000)
-  
+
   // Focus the element
   element.focus()
   await sleep(200)
-  
+
   // Set the value
   element.value = action.text
-  
+
   // Trigger input event for React/Vue reactivity
   const inputEvent = new Event('input', { bubbles: true })
   element.dispatchEvent(inputEvent)
-  
+
   // Trigger change event
   const changeEvent = new Event('change', { bubbles: true })
   element.dispatchEvent(changeEvent)
@@ -285,14 +333,14 @@ const executeType = async (action) => {
  */
 const executeFocus = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
 
   // Visual feedback
   highlightElement(element, 800)
-  
+
   // Focus the element
   element.focus()
 
@@ -308,26 +356,26 @@ const executeFocus = async (action) => {
  */
 const executeSubmit = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
 
   // Check if it's a form or submit button
   const tagName = element.tagName.toLowerCase()
-  
+
   if (tagName === 'form') {
     // Highlight form briefly
     highlightElement(element, 1000)
     await sleep(500)
-    
+
     // Submit the form
     element.submit()
   } else if (tagName === 'button' || (tagName === 'input' && element.type === 'submit')) {
     // Highlight button
     highlightElement(element, 800)
     await sleep(400)
-    
+
     // Click the submit button
     element.click()
   } else {
@@ -346,7 +394,7 @@ const executeSubmit = async (action) => {
  */
 const executeClear = async (action) => {
   const element = findElementByNavId(action.targetId)
-  
+
   if (!element) {
     throw new Error(`Element not found: ${action.targetId}`)
   }
@@ -359,14 +407,14 @@ const executeClear = async (action) => {
 
   // Visual feedback
   highlightElement(element, 800)
-  
+
   // Clear the value
   element.value = ''
-  
+
   // Trigger events for reactivity
   const inputEvent = new Event('input', { bubbles: true })
   element.dispatchEvent(inputEvent)
-  
+
   const changeEvent = new Event('change', { bubbles: true })
   element.dispatchEvent(changeEvent)
 
@@ -386,7 +434,7 @@ const executeUndo = async (historyEntry) => {
   }
 
   const { action, beforeState } = historyEntry
-  
+
   switch (action.action) {
     case 'navigate':
       // Navigate back to previous URL
@@ -399,13 +447,13 @@ const executeUndo = async (historyEntry) => {
         window.scrollTo({ top: beforeState.scrollY, behavior: 'smooth' })
       }
       break
-    
+
     case 'scroll':
     case 'scrollToElement':
       // Scroll back to previous position
       window.scrollTo({ top: beforeState.scrollY, behavior: 'smooth' })
       break
-    
+
     case 'type':
     case 'clear':
       // Restore previous input value
@@ -417,11 +465,11 @@ const executeUndo = async (historyEntry) => {
         highlightElement(element, 800)
       }
       break
-    
+
     default:
       throw new Error(`Cannot undo action type: ${action.action}`)
   }
-  
+
   return {
     success: true,
     message: `Undid: ${historyEntry.command}`,
@@ -455,14 +503,14 @@ export { executeUndo }
  */
 export const executeActionSequence = async (actions, onProgress) => {
   const results = []
-  
+
   console.log(`Executing action sequence (${actions.length} actions)`)
-  
+
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i]
-    
+
     console.log(`Step ${i + 1}/${actions.length}:`, action)
-    
+
     if (onProgress) {
       onProgress(i, actions.length, action)
     }
@@ -473,7 +521,7 @@ export const executeActionSequence = async (actions, onProgress) => {
       if (Array.isArray(action)) {
         throw new Error('Nested action sequences are not supported')
       }
-      
+
       // Execute single action
       switch (action.action) {
         case 'navigate':
@@ -506,9 +554,9 @@ export const executeActionSequence = async (actions, onProgress) => {
         default:
           throw new Error(`Unknown action type: ${action.action}`)
       }
-      
+
       results.push(result)
-      
+
       // Brief pause between actions (unless it's a wait action)
       if (action.action !== 'wait') {
         await sleep(300)
@@ -527,8 +575,8 @@ export const executeActionSequence = async (actions, onProgress) => {
   const allSuccess = results.every(r => r.success)
   return {
     success: allSuccess,
-    message: allSuccess 
-      ? `Completed ${results.length} actions successfully` 
+    message: allSuccess
+      ? `Completed ${results.length} actions successfully`
       : `Failed after ${results.filter(r => r.success).length} actions`,
     actions: results,
     isSequence: true

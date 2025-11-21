@@ -141,7 +141,8 @@ async def process_edit_request(request: EditRequest) -> EditResponse:
     Process edit request by directly modifying the active Vue file.
     """
     # 1. Determine Target File
-    snapshot = await fetch_dom_snapshot_simple()
+    response_data = await fetch_dom_snapshot_simple()
+    snapshot = response_data.get("snapshot", {})
     
     # Prefer iframe location if available (since we are editing the iframe content)
     iframe_loc = snapshot.get("iframeLocation")
