@@ -228,3 +228,5 @@ package-lock.json
 # Vite build artifacts
 .vite/
 */.vite/
+
+sandbox-kesava/
