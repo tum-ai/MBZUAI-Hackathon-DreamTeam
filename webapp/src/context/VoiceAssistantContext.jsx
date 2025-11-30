@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useVoiceAssistant } from '../hooks/useVoiceAssistant';
+import { useStreamingPlan } from '../hooks/useStreamingPlan';
 import { speakText as playTTS } from '../lib/voice/tts';
 import { captureCombinedDOMSnapshot } from '../utils/domSnapshot';
 import { validateAction, parseActionPayload } from '../services/llmAgent';
@@ -14,6 +15,10 @@ const generateId = () => {
   }
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 };
+
+// Feature flag for streaming execution
+// Set VITE_USE_STREAMING_PLAN=true in .env to enable
+const USE_STREAMING = import.meta.env?.VITE_USE_STREAMING_PLAN === 'true';
 
 const BASE_BIAS_PHRASES = [
   'canvas',
@@ -102,6 +107,23 @@ export function VoiceAssistantProvider({ children }) {
     return 'http://localhost:8000';
   }, []);
 
+  // Initialize streaming plan hook (only if enabled)
+  const streamingPlan = USE_STREAMING ? useStreamingPlan({
+    wsUrl: `${llmApiBase.replace('http', 'ws')}/plan-stream`
+  }) : null;
+
+  useEffect(() => {
+    if (USE_STREAMING) {
+      console.log('[VoiceAssistant] Streaming mode ENABLED');
+      console.log('[VoiceAssistant] WebSocket connection:', streamingPlan?.isConnected ? 'Connected' : 'Disconnected');
+    } else {
+      console.log('[VoiceAssistant] Streaming mode DISABLED (using traditional /plan endpoint)');
+    }
+  }, [streamingPlan?.isConnected]);
+
+  // Ref for triggerTTS to avoid dependency issues
+  const triggerTTSRef = useRef(null);
+
   const ensureSessionId = useCallback(() => {
     if (sessionIdRef.current) return sessionIdRef.current;
     const generated = generateId();
@@ -121,6 +143,98 @@ export function VoiceAssistantProvider({ children }) {
       setSubmissionError(null);
       setIsSubmitting(true);
 
+      // Use streaming if enabled and connected
+      if (USE_STREAMING && streamingPlan?.isConnected) {
+        try {
+          console.log('[VoiceAssistant] Using STREAMING mode');
+
+          let domSnapshot = null;
+          const executionRecords = [];
+
+          return new Promise((resolve, reject) => {
+            streamingPlan.sendPlanRequest(trimmed, sid, {
+              onStepComplete: async (stepData) => {
+                console.log('[VoiceAssistant] Stream step completed:', stepData.stepType);
+
+                try {
+                  // Handle action steps
+                  if (stepData.stepType === 'act') {
+                    // Capture DOM if not already done
+                    if (!domSnapshot) {
+                      domSnapshot = await captureCombinedDOMSnapshot();
+                    }
+
+                    const actionPayload = parseActionPayload(stepData.result);
+                    if (!validateAction(actionPayload)) {
+                      throw new Error('Invalid action payload');
+                    }
+
+                    console.log('[VoiceAssistant] Executing action immediately:', actionPayload);
+                    const executionResult = await routeAndExecuteAction(actionPayload, domSnapshot);
+
+                    const record = {
+                      sessionId: sid,
+                      stepId: stepData.stepId,
+                      command: trimmed,
+                      action: actionPayload,
+                      result: executionResult,
+                      agentType: stepData.stepType,
+                      timestamp: Date.now(),
+                    };
+
+                    executionRecords.push(record);
+                    setLastActionResult(record);
+                    notifyListeners('onActionExecuted', record);
+
+                    // Refresh DOM for next action
+                    domSnapshot = await captureCombinedDOMSnapshot();
+                  }
+
+                  // Handle clarifications
+                  if (stepData.stepType === 'clarify') {
+                    if (triggerTTSRef.current) {
+                      await triggerTTSRef.current(stepData.result);
+                    }
+                    notifyListeners('onClarifyResult', {
+                      step_id: stepData.stepId,
+                      result: stepData.result,
+                      agent_type: 'clarify'
+                    });
+                  }
+                } catch (err) {
+                  console.error('[VoiceAssistant] Error executing step:', err);
+                  setSubmissionError(err);
+                  notifyListeners('onActionError', err);
+                }
+              },
+              onFinish: (data) => {
+                console.log('[VoiceAssistant] Stream finished:', data);
+                setIsSubmitting(false);
+                resolve({
+                  plan: { totalSteps: data.totalSteps },
+                  actions: executionRecords
+                });
+              },
+              onError: (error) => {
+                console.error('[VoiceAssistant] Stream error:', error);
+                setSubmissionError(error);
+                setIsSubmitting(false);
+                notifyListeners('onActionError', error);
+                reject(error);
+              }
+            });
+          });
+        } catch (err) {
+          const normalized = err instanceof Error ? err : new Error('Streaming request failed.');
+          setSubmissionError(normalized);
+          setIsSubmitting(false);
+          notifyListeners('onActionError', normalized);
+          throw normalized;
+        }
+      }
+
+      // Fall back to traditional /plan endpoint
+      console.log('[VoiceAssistant] Using TRADITIONAL mode');
       try {
         console.log('[VoiceAssistant] Sending /plan request:', {
           command: trimmed,
@@ -251,7 +365,7 @@ export function VoiceAssistantProvider({ children }) {
         setIsSubmitting(false);
       }
     },
-    [ensureSessionId, llmApiBase, notifyListeners],
+    [ensureSessionId, llmApiBase, streamingPlan, notifyListeners],
   );
 
   const voice = useVoiceAssistant({
@@ -415,6 +529,11 @@ export function VoiceAssistantProvider({ children }) {
       fallbackSpeak,
     ],
   );
+
+  // Update ref when triggerTTS changes
+  useEffect(() => {
+    triggerTTSRef.current = triggerTTS;
+  }, [triggerTTS]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
