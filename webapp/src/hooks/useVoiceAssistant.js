@@ -100,6 +100,12 @@ export function useVoiceAssistant(options = {}) {
           finalCallbackRef.current?.(joined, segments);
         },
         onError: event => {
+          // Ignore "no-speech" errors - these are not real errors, just timeouts
+          if (event?.error === 'no-speech') {
+            console.log('[VoiceAssistant] No speech detected (timeout), ignoring...');
+            return;
+          }
+
           console.warn('[VoiceAssistant] Controller error:', event);
           setError(event);
         },

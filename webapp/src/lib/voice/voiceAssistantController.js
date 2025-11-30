@@ -323,6 +323,11 @@ export class VoiceAssistantController {
       },
       onError: event => {
         try {
+          if (event?.error === 'no-speech') {
+            console.log('[VoiceAssistant] No speech detected (timeout), ignoring...');
+            return;
+          }
+
           console.warn('[VoiceAssistant] recognition onerror:', event);
         } catch {
           /* noop */
