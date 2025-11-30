@@ -2,15 +2,19 @@ import logging
 import sys
 import time
 import json
+import shutil
 from typing import List
 from uuid import uuid4
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 from llm.planner.models import PlanRequest, PlanResponse, AgentResult, TimingMetadata
 from llm_new.agent import app as agent_app
+from llm_new.session_manager import SessionManager
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -25,6 +29,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="LLM Agent API (New)", version="1.0.0")
+
+# Initialize SessionManager
+session_manager = SessionManager(
+    base_dir=Path("/tmp/vite-sessions"),
+    template_dir=Path(__file__).parent / "templates" / "vite-vue-base",
+    port_range=(3000, 4000),
+    max_sessions=50
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -194,6 +206,147 @@ async def stream_plan_execution(
         import traceback
         traceback.print_exc()
         raise
+
+
+# ============================================
+# Session Management Endpoints
+# ============================================
+
+@app.post("/sessions/create")
+async def create_session(session_id: str):
+    """
+    Create a new Vite project for a session.
+    Returns session info and Vite server URL.
+    """
+    try:
+        logger.info(f"[API] Creating session: {session_id}")
+        session_info = await session_manager.create_session(session_id)
+        
+        return {
+            "session_id": session_info.session_id,
+            "vite_url": f"http://localhost:{session_info.vite_port}",
+            "vite_port": session_info.vite_port,
+            "created_at": session_info.created_at.isoformat(),
+            "pages": session_info.pages_created
+        }
+    except Exception as e:
+        logger.error(f"[API] Failed to create session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/sessions/{session_id}/exists")
+async def session_exists(session_id: str):
+    """Check if a session still exists"""
+    exists = session_manager.session_exists(session_id)
+    return {"exists": exists}
+
+
+@app.get("/sessions/{session_id}/info")
+async def get_session_info(session_id: str):
+    """Get detailed session information"""
+    session = session_manager.get_session(session_id)
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    return {
+        "session_id": session.session_id,
+        "vite_url": f"http://localhost:{session.vite_port}",
+        "vite_port": session.vite_port,
+        "created_at": session.created_at.isoformat(),
+        "last_active": session.last_active.isoformat(),
+        "pages": session.pages_created,
+        "files_created": session.files_created
+    }
+
+
+@app.get("/sessions/{session_id}/export")
+async def export_session(session_id: str):
+    """
+    Export session project as downloadable .zip file
+    """
+    session = session_manager.get_session(session_id)
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    try:
+        # Create zip archive
+        zip_path = f"/tmp/{session_id}.zip"
+        shutil.make_archive(
+            zip_path.replace('.zip', ''),
+            'zip',
+            session.project_path
+        )
+        
+        logger.info(f"[API] Exporting session {session_id} as zip")
+        
+        return FileResponse(
+            zip_path,
+            filename=f"my-website-{session_id}.zip",
+            media_type="application/zip"
+        )
+    except Exception as e:
+        logger.error(f"[API] Failed to export session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/sessions/{session_id}")
+async def delete_session(session_id: str):
+    """Manually delete a session"""
+    if not session_manager.session_exists(session_id):
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    try:
+        await session_manager.cleanup_session(session_id)
+        logger.info(f"[API] Session {session_id} deleted")
+        return {"deleted": True}
+    except Exception as e:
+        logger.error(f"[API] Failed to delete session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/sessions/stats")
+async def get_sessions_stats():
+    """Get statistics about all sessions"""
+    return session_manager.get_session_stats()
+
+
+# ============================================
+# Startup/Shutdown Events
+# ============================================
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background cleanup task on server startup"""
+    import asyncio
+    
+    async def cleanup_loop():
+        """Run cleanup every minute"""
+        while True:
+            await asyncio.sleep(60)
+            try:
+                logger.info("[Cleanup] Running inactive session cleanup")
+                await session_manager.cleanup_inactive_sessions(timeout_seconds=300)
+            except Exception as e:
+                logger.error(f"[Cleanup] Error during cleanup: {e}")
+    
+    # Start cleanup task in background
+    asyncio.create_task(cleanup_loop())
+    logger.info("[Server] Background cleanup task started (5min timeout)")
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Clean up all sessions on server shutdown"""
+    logger.info("[Server] Shutting down, cleaning up all sessions")
+    session_ids = list(session_manager.sessions.keys())
+    
+    for session_id in session_ids:
+        try:
+            await session_manager.cleanup_session(session_id)
+        except Exception as e:
+            logger.error(f"[Shutdown] Error cleaning up {session_id}: {e}")
 
 
 if __name__ == "__main__":
