@@ -1,64 +1,73 @@
 import asyncio
 import json
+import logging
 from typing import Dict, Any
 
-from llm.editor.models import EditRequest
-from llm.editor.editor import process_edit_request
-from llm.actor.models import ActionRequest
-from llm.actor.actor import process_action_request
-from llm.clarifier.models import ClarifyRequest
-from llm.clarifier.clarifier import process_clarification_request
+# Import new Langchain-based agents
+from llm_new.actor_agent import generate_action_llm
+from llm_new.editor_agent import generate_code_llm
+from llm_new.clarifier_agent import generate_clarification_llm
+
+logger = logging.getLogger(__name__)
 
 async def edit_tool(session_id: str, step_id: str, intent: str, context: str) -> str:
     """
-    Wraps the existing editor agent.
+    Wraps the new editor agent using Langchain.
     """
     print(f"   [TOOL RUNNING] Edit Tool: {intent}")
-    request = EditRequest(
-        session_id=session_id,
-        step_id=step_id,
-        intent=intent,
-        context=context
-    )
+    logger.info(f"[EDIT_TOOL] Input - session_id: {session_id}, step_id: {step_id}")
+    logger.info(f"[EDIT_TOOL] Intent: {intent}")
+    logger.info(f"[EDIT_TOOL] Context: {context}")
+    
     try:
-        response = await process_edit_request(request)
-        return f"Success: Generated code patch: {response.code}"
+        code_json = await generate_code_llm(intent, context)
+        logger.info(f"[EDIT_TOOL] Output length: {len(code_json)}")
+        logger.info(f"[EDIT_TOOL] Output (first 200 chars): {code_json[:200]}")
+        return code_json
     except Exception as e:
+        logger.error(f"[EDIT_TOOL] Error: {str(e)}")
+        import traceback
+        logger.error(f"[EDIT_TOOL] Traceback: {traceback.format_exc()}")
         return f"Error in Edit Tool: {str(e)}"
 
 async def action_tool(session_id: str, step_id: str, intent: str, context: str) -> str:
     """
-    Wraps the existing actor agent.
+    Wraps the new actor agent using Langchain.
     """
     print(f"   [TOOL RUNNING] Action Tool: {intent}")
-    request = ActionRequest(
-        session_id=session_id,
-        step_id=step_id,
-        intent=intent,
-        context=context
-    )
+    logger.info(f"[ACTION_TOOL] Input - session_id: {session_id}, step_id: {step_id}")
+    logger.info(f"[ACTION_TOOL] Intent: {intent}")
+    logger.info(f"[ACTION_TOOL] Context: {context}")
+    
     try:
-        response = await process_action_request(request)
+        action_json = await generate_action_llm(intent, context, session_id, step_id)
+        logger.info(f"[ACTION_TOOL] Output length: {len(action_json)}")
+        logger.info(f"[ACTION_TOOL] Output (first 200 chars): {action_json[:200]}")
         # Return just the action JSON for frontend consumption
-        return response.action
+        return action_json
     except Exception as e:
+        logger.error(f"[ACTION_TOOL] Error: {str(e)}")
+        import traceback
+        logger.error(f"[ACTION_TOOL] Traceback: {traceback.format_exc()}")
         return f"Error in Action Tool: {str(e)}"
 
 async def clarify_tool(session_id: str, step_id: str, intent: str, context: str) -> str:
     """
-    Wraps the existing clarifier agent.
+    Wraps the new clarifier agent using Langchain.
     """
     print(f"   [TOOL RUNNING] Clarify Tool: {intent}")
-    request = ClarifyRequest(
-        session_id=session_id,
-        step_id=step_id,
-        intent=intent,
-        context=context
-    )
+    logger.info(f"[CLARIFY_TOOL] Input - session_id: {session_id}, step_id: {step_id}")
+    logger.info(f"[CLARIFY_TOOL] Intent: {intent}")
+    logger.info(f"[CLARIFY_TOOL] Context: {context}")
+    
     try:
-        response = await process_clarification_request(request)
-        return f"Success: Generated clarification: {response.reply}"
+        clarification = await generate_clarification_llm(intent, context)
+        logger.info(f"[CLARIFY_TOOL] Output: {clarification}")
+        return clarification
     except Exception as e:
+        logger.error(f"[CLARIFY_TOOL] Error: {str(e)}")
+        import traceback
+        logger.error(f"[CLARIFY_TOOL] Traceback: {traceback.format_exc()}")
         return f"Error in Clarify Tool: {str(e)}"
 
 # Map string names to functions
