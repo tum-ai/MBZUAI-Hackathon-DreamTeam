@@ -112,6 +112,82 @@ export function VoiceAssistantProvider({ children }) {
     wsUrl: `${llmApiBase.replace('http', 'ws')}/plan-stream`
   }) : null;
 
+  // Session state for Vite editor
+  const [viteUrl, setViteUrl] = useState(null);
+  const [isInitializingSession, setIsInitializingSession] = useState(false);
+  const initializationStartedRef = useRef(false);
+
+  useEffect(() => {
+    const initSession = async () => {
+      if (initializationStartedRef.current) return;
+      initializationStartedRef.current = true;
+
+      try {
+        setIsInitializingSession(true);
+
+        // Try to recover existing session from localStorage
+        let sessionId = localStorage.getItem('vite_session_id');
+
+        if (sessionId) {
+          // Check if session still exists
+          try {
+            const response = await fetch(`http://localhost:8000/sessions/${sessionId}/exists`);
+            if (response.ok) {
+              const { exists } = await response.json();
+
+              if (!exists) {
+                console.log('[VoiceAssistant] Previous session expired, creating new one');
+                sessionId = null;
+              } else {
+                console.log('[VoiceAssistant] Recovered existing session:', sessionId);
+                // Get session info
+                const infoResponse = await fetch(`http://localhost:8000/sessions/${sessionId}/info`);
+                if (infoResponse.ok) {
+                  const sessionInfo = await infoResponse.json();
+                  setViteUrl(sessionInfo.vite_url);
+                  sessionIdRef.current = sessionId;
+                  setSessionId(sessionId);
+                }
+              }
+            }
+          } catch (e) {
+            console.warn('[VoiceAssistant] Failed to check session existence:', e);
+            sessionId = null;
+          }
+        }
+
+        // Create new session if needed
+        if (!sessionId) {
+          sessionId = crypto.randomUUID();
+          console.log('[VoiceAssistant] Creating new session:', sessionId);
+
+          const response = await fetch('http://localhost:8000/sessions/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+
+          if (response.ok) {
+            const sessionInfo = await response.json();
+            console.log('[VoiceAssistant] Session created:', sessionInfo);
+
+            setViteUrl(sessionInfo.vite_url);
+            sessionIdRef.current = sessionId;
+            setSessionId(sessionId);
+            localStorage.setItem('vite_session_id', sessionId);
+          }
+        }
+
+      } catch (error) {
+        console.error('[VoiceAssistant] Failed to initialize session:', error);
+      } finally {
+        setIsInitializingSession(false);
+      }
+    };
+
+    initSession();
+  }, []);
+
   useEffect(() => {
     if (USE_STREAMING) {
       console.log('[VoiceAssistant] Streaming mode ENABLED');
@@ -633,6 +709,9 @@ export function VoiceAssistantProvider({ children }) {
       submissionError,
       lastActionResult,
       lastPlanResponse,
+      // Session state
+      viteUrl,
+      isInitializingSession,
     }),
     [
       voice,
@@ -648,6 +727,8 @@ export function VoiceAssistantProvider({ children }) {
       submissionError,
       lastActionResult,
       lastPlanResponse,
+      viteUrl,
+      isInitializingSession,
     ],
   );
 

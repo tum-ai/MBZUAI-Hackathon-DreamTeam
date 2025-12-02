@@ -211,3 +211,11 @@ async def clarify_tool(intent: str, context: str) -> str:
     except Exception as e:
         logger.error(f"[CLARIFY_TOOL] Error: {e}")
         return f"Error generating clarification: {str(e)}"
+
+
+# Tool mapping
+TOOL_MAP = {
+    "edit_tool": edit_tool,
+    "action_tool": action_tool,
+    "clarify_tool": clarify_tool
+}

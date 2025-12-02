@@ -88,6 +88,25 @@ export function useStreamingPlan({ wsUrl = 'ws://localhost:8000/plan-stream' } =
         };
     }, [wsUrl, isConnecting]);
 
+    // Heartbeat to keep session alive
+    useEffect(() => {
+        if (!isConnected) return;
+
+        const heartbeatInterval = setInterval(() => {
+            if (wsRef.current?.readyState === WebSocket.OPEN) {
+                const sessionId = localStorage.getItem('vite_session_id');
+                if (sessionId) {
+                    wsRef.current.send(JSON.stringify({
+                        type: 'heartbeat',
+                        sessionId: sessionId
+                    }));
+                }
+            }
+        }, 30000); // Every 30 seconds
+
+        return () => clearInterval(heartbeatInterval);
+    }, [isConnected]);
+
     /**
      * Send a plan request and stream results.
      * @param {string} text - User command text

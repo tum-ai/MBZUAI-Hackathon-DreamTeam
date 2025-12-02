@@ -7,8 +7,9 @@ from typing import List
 from uuid import uuid4
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, Body
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from fastapi.responses import FileResponse
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
@@ -37,6 +38,14 @@ session_manager = SessionManager(
     port_range=(3000, 4000),
     max_sessions=50
 )
+
+# Initialize FileManager
+from llm_new.file_manager import FileManager
+file_manager = FileManager(session_manager)
+
+# Initialize tools with managers
+from llm_new.tools import initialize_tools
+initialize_tools(file_manager, session_manager)
 
 app.add_middleware(
     CORSMiddleware,
@@ -212,13 +221,17 @@ async def stream_plan_execution(
 # Session Management Endpoints
 # ============================================
 
+class CreateSessionRequest(BaseModel):
+    session_id: str
+
 @app.post("/sessions/create")
-async def create_session(session_id: str):
+async def create_session(request: CreateSessionRequest):
     """
     Create a new Vite project for a session.
     Returns session info and Vite server URL.
     """
     try:
+        session_id = request.session_id
         logger.info(f"[API] Creating session: {session_id}")
         session_info = await session_manager.create_session(session_id)
         

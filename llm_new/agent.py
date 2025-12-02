@@ -76,7 +76,7 @@ async def executor_node(state: AgentState):
     if tool_name in TOOL_MAP:
         try:
             # Tools are async
-            result = await TOOL_MAP[tool_name](**args)
+            result = await TOOL_MAP[tool_name].ainvoke(args)
         except Exception as e:
             result = f"Error: {str(e)}"
     else:

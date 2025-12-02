@@ -1,0 +1,13 @@
+.workspace {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+}
+
+.workspace__content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}

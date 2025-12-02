@@ -10,7 +10,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set
-import json
+import sys
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,9 @@ class SessionManager:
         self.sessions: Dict[str, SessionInfo] = {}
         self.allocated_ports: Set[int] = set()
         
+        # Determine npm command based on OS
+        self.npm_cmd = "npm.cmd" if sys.platform == "win32" else "npm"
+        
         # Create base directory
         self.base_dir.mkdir(parents=True, exist_ok=True)
         
@@ -86,27 +90,36 @@ class SessionManager:
             
             # Allocate port
             vite_port = self._get_available_port()
-            
-            # Start Vite dev server
-            vite_process = await self._start_vite_server(project_path, vite_port)
-            
-            # Create session info
-            session_info = SessionInfo(
-                session_id=session_id,
-                project_path=project_path,
-                vite_port=vite_port,
-                vite_process=vite_process,
-                created_at=datetime.now(),
-                last_active=datetime.now(),
-                files_created=[],
-                pages_created=["Home", "Features", "Compare", "Pricing"]  # Default pages
-            )
-            
-            self.sessions[session_id] = session_info
             self.allocated_ports.add(vite_port)
+            logger.info(f"[SessionManager] Allocated port {vite_port} for session {session_id}")
             
-            logger.info(f"[SessionManager] Session {session_id} created on port {vite_port}")
-            return session_info
+            try:
+                # Start Vite dev server
+                vite_process = await self._start_vite_server(project_path, vite_port)
+                
+                # Create session info
+                session_info = SessionInfo(
+                    session_id=session_id,
+                    project_path=project_path,
+                    vite_port=vite_port,
+                    vite_process=vite_process,
+                    created_at=datetime.now(),
+                    last_active=datetime.now(),
+                    files_created=[],
+                    pages_created=["Home", "Features", "Compare", "Pricing"]  # Default pages
+                )
+                
+                self.sessions[session_id] = session_info
+                # self.allocated_ports.add(vite_port) # Already added
+                
+                logger.info(f"[SessionManager] Session {session_id} created on port {vite_port}")
+                return session_info
+                
+            except Exception as e:
+                # Release port on failure
+                if vite_port in self.allocated_ports:
+                    self.allocated_ports.remove(vite_port)
+                raise e
             
         except Exception as e:
             logger.error(f"[SessionManager] Failed to create session {session_id}: {e}")
@@ -138,7 +151,7 @@ class SessionManager:
         logger.info(f"[SessionManager] Installing dependencies for {project_path.name}")
         
         process = await asyncio.create_subprocess_exec(
-            "npm", "install",
+            self.npm_cmd, "install",
             cwd=project_path,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
@@ -173,14 +186,12 @@ class SessionManager:
         logger.info(f"[SessionManager] Starting Vite server on port {port} for {project_path.name}")
         
         # Set environment variable for port
-        env = {
-            "VITE_PORT": str(port),
-            "PATH": subprocess.os.environ.get("PATH", "")
-        }
+        env = os.environ.copy()
+        env["VITE_PORT"] = str(port)
         
         # Start Vite dev server
         process = subprocess.Popen(
-            ["npm", "run", "dev", "--", "--port", str(port), "--host", "0.0.0.0"],
+            [self.npm_cmd, "run", "dev", "--", "--port", str(port), "--host", "0.0.0.0"],
             cwd=project_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -192,7 +203,13 @@ class SessionManager:
         
         if process.poll() is not None:
             # Process died
-            raise RuntimeError(f"Vite server failed to start on port {port}")
+            stdout, stderr = process.communicate()
+            error_msg = stderr.decode() if stderr else "No stderr output"
+            stdout_msg = stdout.decode() if stdout else "No stdout output"
+            logger.error(f"[SessionManager] Vite failed to start. Return code: {process.returncode}")
+            logger.error(f"[SessionManager] Vite stdout: {stdout_msg}")
+            logger.error(f"[SessionManager] Vite stderr: {error_msg}")
+            raise RuntimeError(f"Vite server failed to start on port {port}. Error: {error_msg}")
         
         # Store port in file for reference
         port_file = project_path / ".vite-port"

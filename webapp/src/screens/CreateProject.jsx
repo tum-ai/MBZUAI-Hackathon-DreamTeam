@@ -7,26 +7,26 @@ function CreateProject() {
   const navigate = useNavigate()
 
   const handleCreate = () => {
-    navigate('/templates')
+    navigate('/workspace')
   }
 
   return (
     <div className="create-project">
       <ColorBends
-                colors={['#EF5D2A', '#FF8F5A', '#FF6B4A']}
-                rotation={0}
-                speed={0.3}
-                scale={1.2}
-                frequency={1.4}
-                warpStrength={1}
-                mouseInfluence={0.8}
-                parallax={0.6}
-                noise={0.05}
-                transparent
-        
+        colors={['#EF5D2A', '#FF8F5A', '#FF6B4A']}
+        rotation={0}
+        speed={0.3}
+        scale={1.2}
+        frequency={1.4}
+        warpStrength={1}
+        mouseInfluence={0.8}
+        parallax={0.6}
+        noise={0.05}
+        transparent
+
       />
       <TopBar title="Voice-First Platform" />
-      
+
       <div className="create-project__content">
         <div className="create-project__center">
           <h1 className="create-project__title">Create new project</h1>
